@@ -42,3 +42,17 @@ TEMPLATE_FILES=$(INCDIR)/display $(INCDIR)/pros/llemu.*
 ################################################################################
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
+
+TEMPLATE_KERNEL_SEMVER:=">=4.0.0"
+
+template: clean-template library
+	$(VV)mkdir -p $(TEMPLATE_DIR)
+	@echo "Moving template files to $(TEMPLATE_DIR)"
+	$Dcp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR)
+	$(VV)mkdir -p $(TEMPLATE_DIR)/firmware
+	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
+	@echo "Creating template"
+	$Dprosv5 c create-template \
+		$(TEMPLATE_DIR) $(LIBNAME) $(VERSION) \
+		$(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") \
+		--target v5 --kernels $(TEMPLATE_KERNEL_SEMVER)
