@@ -1,0 +1,29 @@
+name: "format code"
+
+# run on pull requests to develop
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      # check out HEAD on the branch
+      - name: checkout code
+        uses: actions/checkout@2
+        with:
+          ref: ${{ github.head_ref }}
+      # format the latest commit
+      - name: format code
+        uses: purduesigbots/clang-format-action@1
+        # use one of clang-format's supported styles or leave this out to use the style in your .clang-format file
+        with:
+          style: file
+      # commit the changes
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4.1.2
+        with:
+          commit_message: 🎨 apply clang-format changes
+          branch: ${{ github.head_ref }}
