@@ -17,7 +17,7 @@ jobs:
           ref: ${{ github.head_ref }}
       # format the latest commit
       - name: format code
-        uses: purduesigbots/clang-format-action@1
+        uses: purduesigbots/clang-format-action@1.0.1
         # use one of clang-format's supported styles or leave this out to use the style in your .clang-format file
         with:
           style: file
