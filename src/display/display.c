@@ -25,13 +25,15 @@ static void disp_daemon(void* ign) {
 	}
 }
 
-static void vex_display_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t* color) {
+static void vex_display_flush(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_t* color/*int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t* color*/) {
 	void vexDisplayCopyRect(int32_t, int32_t, int32_t, int32_t, uint32_t*, int32_t);
-	vexDisplayCopyRect(x1, y1, x2, y2, (uint32_t*)color, x2 - x1 + 1);
-	lv_flush_ready();
+
+    // TODO: figure out if stride calculation is still correct
+	vexDisplayCopyRect(area->x1, area->y1, area->x2, area->y2, (uint32_t*)color, area->x2 - area->x1 + 1);
+	lv_disp_flush_ready(disp_drv);
 }
 
-static bool vex_read_touch(lv_indev_data_t* data) {
+static bool vex_read_touch(lv_indev_drv_t* _, lv_indev_data_t* data) {
 	static struct {
 		enum {
 			kTouchEventRelease,
@@ -63,23 +65,30 @@ static bool vex_read_touch(lv_indev_data_t* data) {
 	return false;
 }
 
+static lv_disp_buf_t disp_buf;
+static lv_color_t buf1[480 * 10];
+static lv_color_t buf2[480 * 10];
+
+static lv_disp_drv_t disp_drv;
+static lv_indev_drv_t touch_drv;
+
 void display_initialize(void) {
 	lv_init();
 
-	lv_disp_drv_t disp_drv;
+    lv_disp_buf_init(&disp_buf, buf1, buf2, 480 * 10);
+
 	lv_disp_drv_init(&disp_drv);
-
-	disp_drv.disp_flush = vex_display_flush;
-
-	lv_disp_drv_register(&disp_drv);
+    disp_drv.buffer = &disp_buf;
+	disp_drv.flush_cb = vex_display_flush;
+    lv_disp_t* disp = lv_disp_drv_register(&disp_drv);
 
 	lv_indev_drv_t touch_drv;
 	lv_indev_drv_init(&touch_drv);
 	touch_drv.type = LV_INDEV_TYPE_POINTER;
-	touch_drv.read = vex_read_touch;
+	touch_drv.read_cb = vex_read_touch;
 	lv_indev_drv_register(&touch_drv);
 
-	lv_theme_set_current(lv_theme_alien_init(40, NULL));
+	// lv_theme_set_current(lv_theme_alien_init(40, NULL));
 	lv_obj_t* page = lv_obj_create(NULL, NULL);
 	lv_obj_set_size(page, 480, 240);
 	lv_scr_load(page);

@@ -14,6 +14,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "lv_core/lv_disp.h"
+#include "lv_core/lv_obj.h"
+#include "lv_core/lv_obj_style_dec.h"
+#include "lv_font/lv_font.h"
+#include "lv_misc/lv_color.h"
+#include "lv_widgets/lv_btn.h"
 #define _GNU_SOURCE
 // NOTE: this would normally be in the C file, but it won't compile that way
 #include <stdio.h>  // vasprintf (GNU extension)
@@ -27,7 +33,7 @@ static lv_style_t screen_style;
 static lv_style_t button_style;
 static lv_style_t button_pressed_style;
 
-static lv_res_t __touch_bits_update_pressed(lv_obj_t* btn) {
+static void touch_bits_update_pressed(lv_obj_t* btn) {
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lv_obj_get_parent(lv_obj_get_parent(lv_obj_get_parent(btn))));
 
 	if (btn == lcd->btns[0])
@@ -36,89 +42,87 @@ static lv_res_t __touch_bits_update_pressed(lv_obj_t* btn) {
 		lcd->touch_bits |= (1 << 1);
 	else if (btn == lcd->btns[2])
 		lcd->touch_bits |= (1 << 0);
-
-	return LV_RES_OK;
 }
 
-void __touch_bits_update_released(lcd_s_t* lcd, size_t btn) {
+void touch_bits_update_released(lcd_s_t* lcd, size_t btn) {
 	lcd->touch_bits &= ~(1 << btn);
 }
 
-static lv_res_t __wrap_cb(lv_obj_t* btn) {
+static void button_event_handler(lv_obj_t* btn, lv_event_t event) {
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lv_obj_get_parent(lv_obj_get_parent(lv_obj_get_parent(btn))));
-	if (btn == lcd->btns[0]) {
-		if (lcd->callbacks[0]) (lcd->callbacks[0])();
-		__touch_bits_update_released(lcd, 2);
-	} else if (btn == lcd->btns[1]) {
-		if (lcd->callbacks[1]) (lcd->callbacks[1])();
-		__touch_bits_update_released(lcd, 1);
-	} else if (btn == lcd->btns[2]) {
-		if (lcd->callbacks[2]) (lcd->callbacks[2])();
-		__touch_bits_update_released(lcd, 0);
-	}
+    switch (event) {
+        case LV_EVENT_PRESSED:
+            touch_bits_update_pressed(btn);
+            break;
 
-	return LV_RES_OK;
+        case LV_EVENT_CLICKED:
+            if (btn == lcd->btns[0]) {
+                if (lcd->callbacks[0]) (lcd->callbacks[0])();
+                touch_bits_update_released(lcd, 2);
+            } else if (btn == lcd->btns[1]) {
+                if (lcd->callbacks[1]) (lcd->callbacks[1])();
+                touch_bits_update_released(lcd, 1);
+            } else if (btn == lcd->btns[2]) {
+                if (lcd->callbacks[2]) (lcd->callbacks[2])();
+                touch_bits_update_released(lcd, 0);
+            }
+            break;
+    }
 }
 
 static lv_obj_t* _create_lcd(void) {
-	lv_style_copy(&frame_style, &lv_style_pretty_color);
-	frame_style.body.main_color = LV_COLOR_GRAY;
-	frame_style.body.grad_color = LV_COLOR_SILVER;
+    lv_style_set_bg_color(&frame_style, LV_STATE_DEFAULT, LV_COLOR_GRAY);
+    lv_style_set_bg_grad_color(&frame_style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
+    lv_style_set_bg_grad_dir(&frame_style, LV_STATE_DEFAULT, LV_GRAD_DIR_VER);
 
-	lv_style_copy(&screen_style, &lv_style_plain);
-	screen_style.body.main_color = LV_COLOR_MAKE(0x5A, 0xBC, 0x03);
-	screen_style.body.grad_color = LV_COLOR_MAKE(0x5A, 0xBC, 0x03);
-	screen_style.text.color = LV_COLOR_MAKE(0x32, 0x3D, 0x13);
-	screen_style.text.font = &pros_font_dejavu_mono_20;
+    lv_style_set_bg_color(&screen_style, LV_STATE_DEFAULT, LV_COLOR_MAKE(0x5A, 0xBC, 0x03));
+    lv_style_set_text_color(&screen_style, LV_STATE_DEFAULT, LV_COLOR_MAKE(0x32, 0x3D, 0x13));
+    lv_style_set_text_font(&screen_style, LV_STATE_DEFAULT, &lv_font_unscii_16); // TODO: does this need to be 20px?
 
-	lv_style_copy(&button_style, &lv_style_plain);
-	button_style.body.main_color = LV_COLOR_GRAY;
-	button_style.body.grad_color = LV_COLOR_MAKE(0x30, 0x30, 0x30);
+    lv_style_set_bg_color(&button_style, LV_STATE_DEFAULT, LV_COLOR_GRAY);
+    lv_style_set_bg_grad_color(&button_style, LV_STATE_DEFAULT, LV_COLOR_MAKE(0x30, 0x30, 0x30));
+    lv_style_set_bg_color(&button_style, LV_STATE_PRESSED, LV_COLOR_MAKE(0x0A, 0x0A, 0x0A));
+    lv_style_set_bg_grad_color(&button_style, LV_STATE_PRESSED, LV_COLOR_MAKE(0x80, 0x80, 0x80));
+    lv_style_set_bg_grad_dir(&button_style, LV_STATE_DEFAULT | LV_STATE_PRESSED, LV_GRAD_DIR_VER);
 
-	lv_style_copy(&button_pressed_style, &lv_style_plain);
-	button_pressed_style.body.main_color = LV_COLOR_MAKE(0x0A, 0x0A, 0x0A);
-	button_pressed_style.body.grad_color = LV_COLOR_MAKE(0x80, 0x80, 0x80);
+    static lv_style_t lv_style_transp_fit;
+    lv_style_set_border_width(&lv_style_transp_fit, LV_STATE_DEFAULT, 0);
+    lv_style_set_pad_all(&lv_style_transp_fit, LV_STATE_DEFAULT, 0);
 
 	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act(), NULL);
-	lv_obj_set_size(lcd_dummy, 480, 240);
+	lv_obj_set_size(lcd_dummy, LV_HOR_RES, LV_VER_RES);
 
 	lv_obj_t* frame = lv_cont_create(lcd_dummy, NULL);
-	lv_obj_set_size(frame, 480, 240);
-	lv_obj_set_style(frame, &frame_style);
+	lv_obj_set_size(frame, LV_HOR_RES, LV_VER_RES);
+	lv_obj_add_style(frame, LV_OBJ_PART_MAIN, &frame_style);
 
 	lv_obj_t* screen = lv_cont_create(frame, NULL);
 	lv_obj_set_size(screen, 426, 160);
 	lv_obj_align(screen, frame, LV_ALIGN_IN_TOP_MID, 0, 19);
-	lv_obj_set_style(screen, &screen_style);
+	lv_obj_add_style(screen, LV_OBJ_PART_MAIN, &screen_style);
 
 	lv_obj_t* btn_container = lv_cont_create(frame, NULL);
 	lv_obj_set_size(btn_container, 426, 30);
 	lv_obj_align(btn_container, frame, LV_ALIGN_IN_BOTTOM_MID, 0, -20);
-	lv_cont_set_style(btn_container, &lv_style_transp_fit);
+	lv_obj_add_style(btn_container, LV_OBJ_PART_MAIN, &lv_style_transp_fit);
 
 	lv_obj_t* btn_left = lv_btn_create(btn_container, NULL);
 	lv_obj_set_width(btn_left, 80);
 	lv_obj_align(btn_left, btn_container, LV_ALIGN_IN_LEFT_MID, 0, 0);
-	lv_btn_set_style(btn_left, LV_BTN_STYLE_REL, &button_style);
-	lv_btn_set_style(btn_left, LV_BTN_STYLE_PR, &button_pressed_style);
-	lv_btn_set_action(btn_left, LV_BTN_ACTION_PR, __touch_bits_update_pressed);
-	lv_btn_set_action(btn_left, LV_BTN_ACTION_CLICK, __wrap_cb);
+	lv_obj_add_style(btn_left, LV_BTN_PART_MAIN, &button_style);
+    lv_obj_set_event_cb(btn_left, button_event_handler);
 
 	lv_obj_t* btn_center = lv_btn_create(btn_container, NULL);
 	lv_obj_set_width(btn_center, 80);
 	lv_obj_align(btn_center, btn_container, LV_ALIGN_CENTER, 0, 0);
-	lv_btn_set_style(btn_center, LV_BTN_STYLE_REL, &button_style);
-	lv_btn_set_style(btn_center, LV_BTN_STYLE_PR, &button_pressed_style);
-	lv_btn_set_action(btn_center, LV_BTN_ACTION_PR, __touch_bits_update_pressed);
-	lv_btn_set_action(btn_center, LV_BTN_ACTION_CLICK, __wrap_cb);
+	lv_obj_add_style(btn_center, LV_BTN_PART_MAIN, &button_style);
+    lv_obj_set_event_cb(btn_center, button_event_handler);
 
 	lv_obj_t* btn_right = lv_btn_create(btn_container, NULL);
 	lv_obj_set_width(btn_right, 80);
 	lv_obj_align(btn_right, btn_container, LV_ALIGN_IN_RIGHT_MID, 0, 0);
-	lv_btn_set_style(btn_right, LV_BTN_STYLE_REL, &button_style);
-	lv_btn_set_style(btn_right, LV_BTN_STYLE_PR, &button_pressed_style);
-	lv_btn_set_action(btn_right, LV_BTN_ACTION_PR, __touch_bits_update_pressed);
-	lv_btn_set_action(btn_right, LV_BTN_ACTION_CLICK, __wrap_cb);
+	lv_obj_add_style(btn_right, LV_BTN_PART_MAIN, &button_style);
+	lv_obj_set_event_cb(btn_right, button_event_handler);
 
 	lcd_s_t* lcd = lv_obj_allocate_ext_attr(lcd_dummy, sizeof(lcd_s_t));
 	lcd->frame = frame;
@@ -195,12 +199,10 @@ void _lcd_set_left_callback(lv_obj_t* lcd_dummy, lcd_btn_cb_fn_t cb) {
 void _lcd_set_center_callback(lv_obj_t* lcd_dummy, lcd_btn_cb_fn_t cb) {
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
 	lcd->callbacks[1] = cb;
-	lv_btn_set_action(lcd->btns[1], LV_BTN_ACTION_CLICK, __wrap_cb);
 }
 void _lcd_set_right_callback(lv_obj_t* lcd_dummy, lcd_btn_cb_fn_t cb) {
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
 	lcd->callbacks[2] = cb;
-	lv_btn_set_action(lcd->btns[2], LV_BTN_ACTION_CLICK, __wrap_cb);
 }
 
 uint8_t _lcd_read_buttons(lv_obj_t* lcd_dummy) {

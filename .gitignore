@@ -8,25 +8,12 @@
 
 # PROS
 bin/
-template/
-*.ini
-
-# this project
-liblvgl*.zip
-
-# IDEs
 .vscode/
-.idea/
-
-# static analysis and build tools
-.d/
-.clangd/
-.ccls-cache/
-.ccls
-cquery_log.txt
+template/
 compile_commands.json
-
-# misc
 temp.log
 temp.errors
-.*.sw*
+*.ini
+.d/
+.clangd/
+.cache/
