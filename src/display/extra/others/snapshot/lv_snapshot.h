@@ -16,7 +16,7 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 
-#include "../../../lv_conf_internal.h"
+#include "include/display/lv_conf_internal.h"
 #include "../../../core/lv_obj.h"
 
 /*********************
