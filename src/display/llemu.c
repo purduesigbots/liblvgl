@@ -16,7 +16,7 @@
 
 #include "core/lv_disp.h"
 #include "core/lv_obj.h"
-#include "core/lv_obj_style_gen.h"
+#include "core/lv_obj_style.h"
 #include "font/lv_font.h"
 #include "misc/lv_color.h"
 #include "widgets/lv_btn.h"
@@ -34,7 +34,7 @@ static lv_style_t button_style;
 static lv_style_t button_pressed_style;
 
 static void touch_bits_update_pressed(lv_obj_t* btn) {
-	lcd_s_t* lcd = lv_obj_get_ext_attr(lv_obj_get_parent(lv_obj_get_parent(lv_obj_get_parent(btn))));
+	lcd_s_t* lcd = lv_obj_get_state(lv_obj_get_parent(lv_obj_get_parent(lv_obj_get_parent(btn))));
 
 	if (btn == lcd->btns[0])
 		lcd->touch_bits |= (1 << 2);
@@ -48,7 +48,7 @@ void touch_bits_update_released(lcd_s_t* lcd, size_t btn) {
 	lcd->touch_bits &= ~(1 << btn);
 }
 
-static void button_event_handler(lv_obj_t* btn, lv_event_t event) {
+static void button_event_handler(lv_obj_t* btn, lv_event_code_t event) {
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lv_obj_get_parent(lv_obj_get_parent(lv_obj_get_parent(btn))));
     switch (event) {
         case LV_EVENT_PRESSED:
@@ -71,57 +71,57 @@ static void button_event_handler(lv_obj_t* btn, lv_event_t event) {
 }
 
 static lv_obj_t* _create_lcd(void) {
-    lv_obj_style_set_bg_color(&frame_style, LV_STATE_DEFAULT, LV_COLOR_GRAY);
-    lv_obj_style_set_bg_grad_color(&frame_style, LV_STATE_DEFAULT, LV_COLOR_SILVER);
-    lv_obj_style_set_bg_grad_dir(&frame_style, LV_STATE_DEFAULT, LV_GRAD_DIR_VER);
+    lv_obj_set_style_bg_color(&frame_style, lv_color_hex(0x808080), LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(&frame_style, lv_color_hex(0xC0C0C0), LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(&frame_style, LV_STATE_DEFAULT, LV_GRAD_DIR_VER);
 
-    lv_obj_style_set_bg_color(&screen_style, LV_STATE_DEFAULT, LV_COLOR_MAKE(0x5A, 0xBC, 0x03));
-    lv_obj_style_set_text_color(&screen_style, LV_STATE_DEFAULT, LV_COLOR_MAKE(0x32, 0x3D, 0x13));
-    lv_obj_style_set_text_font(&screen_style, LV_STATE_DEFAULT, &lv_font_unscii_16); // TODO: does this need to be 20px?
+    lv_obj_set_style_bg_color(&screen_style, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(&screen_style, lv_color_hex(0x323D13), LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(&screen_style, LV_STATE_DEFAULT, &lv_font_unscii_16); // TODO: does this need to be 20px?
 
-    lv_obj_style_set_bg_color(&button_style, LV_STATE_DEFAULT, LV_COLOR_GRAY);
-    lv_obj_style_set_bg_grad_color(&button_style, LV_STATE_DEFAULT, LV_COLOR_MAKE(0x30, 0x30, 0x30));
-    lv_obj_style_set_bg_color(&button_style, LV_STATE_PRESSED, LV_COLOR_MAKE(0x0A, 0x0A, 0x0A));
-    lv_obj_style_set_bg_grad_color(&button_style, LV_STATE_PRESSED, LV_COLOR_MAKE(0x80, 0x80, 0x80));
-    lv_obj_style_set_bg_grad_dir(&button_style, LV_STATE_DEFAULT | LV_STATE_PRESSED, LV_GRAD_DIR_VER);
+    lv_obj_set_style_bg_color(&button_style, lv_color_hex(0x808080),  LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(&button_style, lv_color_hex(0x303030), LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(&button_style, lv_color_hex(0x0A0A0A), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_grad_color(&button_style, lv_color_hex(0x808080), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_grad_dir(&button_style, LV_STATE_DEFAULT | LV_STATE_PRESSED, LV_GRAD_DIR_VER);
 
     static lv_style_t lv_style_transp_fit;
-    lv_obj_style_set_border_width(&lv_style_transp_fit, LV_STATE_DEFAULT, 0);
-    lv_obj_style_set_pad_all(&lv_style_transp_fit, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_border_width(&lv_style_transp_fit, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_pad_all(&lv_style_transp_fit, LV_STATE_DEFAULT, 0);
 
 	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act());
 	lv_obj_set_size(lcd_dummy, LV_HOR_RES, LV_VER_RES);
 
 	lv_obj_t* frame = lv_cont_create(lcd_dummy, NULL);
 	lv_obj_set_size(frame, LV_HOR_RES, LV_VER_RES);
-	lv_obj_add_style(frame, &frame_style);
+	lv_obj_add_style(frame, &frame_style, LV_STATE_DEFAULT);
 
 	lv_obj_t* screen = lv_cont_create(frame, NULL);
 	lv_obj_set_size(screen, 426, 160);
 	lv_obj_align(screen, LV_ALIGN_TOP_MID, 0, 19);
-	lv_obj_add_style(screen, LV_OBJ_PART_MAIN, &screen_style);
+	lv_obj_add_style(screen, &screen_style, LV_PART_MAIN);
 
 	lv_obj_t* btn_container = lv_cont_create(frame, NULL);
 	lv_obj_set_size(btn_container, 426, 30);
 	lv_obj_align(btn_container, LV_ALIGN_BOTTOM_MID, 0, -20);
-	lv_obj_add_style(btn_container, LV_OBJ_PART_MAIN, &lv_style_transp_fit);
+	lv_obj_add_style(btn_container, LV_PART_MAIN, &lv_style_transp_fit);
 
 	lv_obj_t* btn_left = lv_btn_create(btn_container);
 	lv_obj_set_width(btn_left, 80);
 	lv_obj_align(btn_left, LV_ALIGN_LEFT_MID, 0, 0);
-	lv_obj_add_style(btn_left, LV_BTN_PART_MAIN, &button_style);
+	lv_obj_add_style(btn_left, LV_PART_MAIN, &button_style);
     lv_obj_set_event_cb(btn_left, button_event_handler);
 
 	lv_obj_t* btn_center = lv_btn_create(btn_container);
 	lv_obj_set_width(btn_center, 80);
 	lv_obj_align(btn_center, LV_ALIGN_CENTER, 0, 0);
-	lv_obj_add_style(btn_center, LV_BTN_PART_MAIN, &button_style);
+	lv_obj_add_style(btn_center, LV_PART_MAIN, &button_style);
     lv_obj_set_event_cb(btn_center, button_event_handler);
 
 	lv_obj_t* btn_right = lv_btn_create(btn_container);
 	lv_obj_set_width(btn_right, 80);
 	lv_obj_align(btn_right, LV_ALIGN_RIGHT_MID, 0, 0);
-	lv_obj_add_style(btn_right, LV_BTN_PART_MAIN, &button_style);
+	lv_obj_add_style(btn_right, LV_PART_MAIN, &button_style);
 	lv_obj_set_event_cb(btn_right, button_event_handler);
 
 	lcd_s_t* lcd = lv_obj_allocate_ext_attr(lcd_dummy, sizeof(lcd_s_t));
@@ -140,9 +140,9 @@ static lv_obj_t* _create_lcd(void) {
 		lcd->lcd_text[i] = lv_label_create(lcd->screen);
 		lv_obj_set_width(lcd->lcd_text[i], 426);
 		lv_obj_align(lcd->lcd_text[i], LV_ALIGN_TOP_LEFT, 5, 20 * i);
-		lv_label_set_align(lcd->lcd_text[i], LV_LABEL_ALIGN_LEFT);
-		lv_label_set_long_mode(lcd->lcd_text[i], LV_LABEL_LONG_CROP);
-		// lv_label_set_no_break(lcd->lcd_text[i], true);
+		lv_label_set_align(lcd->lcd_text[i], LV_TEXT_ALIGN_LEFT);
+		lv_label_set_long_mode(lcd->lcd_text[i], LV_LABEL_LONG_CLIP);
+		// lv_label_set_no_break(lcd->lcd_text[i], true); 
 		lv_label_set_text(lcd->lcd_text[i], "");
 	}
 
