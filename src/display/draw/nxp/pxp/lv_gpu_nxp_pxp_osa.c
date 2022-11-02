@@ -34,7 +34,7 @@
 #include "lv_gpu_nxp_pxp_osa.h"
 
 #if LV_USE_GPU_NXP_PXP && LV_USE_GPU_NXP_PXP_AUTO_INIT
-#include "../../../misc/lv_log.h"
+#include "display/misc/lv_log.h"
 #include "fsl_pxp.h"
 
 #if defined(SDK_OS_FREE_RTOS)

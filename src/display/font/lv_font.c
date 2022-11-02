@@ -8,9 +8,9 @@
  *********************/
 
 #include "lv_font.h"
-#include "../misc/lv_utils.h"
-#include "../misc/lv_log.h"
-#include "../misc/lv_assert.h"
+#include "display/misc/lv_utils.h"
+#include "display/misc/lv_log.h"
+#include "display/misc/lv_assert.h"
 
 /*********************
  *      DEFINES

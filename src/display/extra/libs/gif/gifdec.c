@@ -1,7 +1,7 @@
 #include "gifdec.h"
-#include "../../../misc/lv_log.h"
-#include "../../../misc/lv_mem.h"
-#include "../../../misc/lv_color.h"
+#include "display/misc/lv_log.h"
+#include "display/misc/lv_mem.h"
+#include "display/misc/lv_color.h"
 #if LV_USE_GIF
 
 #include <stdlib.h>

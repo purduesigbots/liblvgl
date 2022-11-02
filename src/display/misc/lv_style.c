@@ -7,8 +7,8 @@
  *      INCLUDES
  *********************/
 #include "lv_style.h"
-#include "../misc/lv_gc.h"
-#include "../misc/lv_mem.h"
+#include "display/misc/lv_gc.h"
+#include "display/misc/lv_mem.h"
 #include "lv_assert.h"
 #include "lv_types.h"
 

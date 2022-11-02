@@ -9,7 +9,7 @@
 #include "lv_meter.h"
 #if LV_USE_METER != 0
 
-#include "../../../misc/lv_assert.h"
+#include "display/misc/lv_assert.h"
 
 /*********************
  *      DEFINES

@@ -8,7 +8,7 @@
  *********************/
 #include "lv_anim.h"
 
-#include "../hal/lv_hal_tick.h"
+#include "display/hal/lv_hal_tick.h"
 #include "lv_assert.h"
 #include "lv_timer.h"
 #include "lv_math.h"

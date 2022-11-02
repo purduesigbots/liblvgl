@@ -7,11 +7,11 @@
  *      INCLUDES
  *********************/
 #include "lv_draw_sw.h"
-#include "../../misc/lv_math.h"
-#include "../../misc/lv_mem.h"
-#include "../../misc/lv_area.h"
-#include "../../misc/lv_color.h"
-#include "../lv_draw_rect.h"
+#include "display/misc/lv_math.h"
+#include "display/misc/lv_mem.h"
+#include "display/misc/lv_area.h"
+#include "display/misc/lv_color.h"
+#include "display/draw/lv_draw_rect.h"
 
 /*********************
  *      DEFINES

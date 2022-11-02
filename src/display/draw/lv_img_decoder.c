@@ -7,10 +7,10 @@
  *      INCLUDES
  *********************/
 #include "lv_img_decoder.h"
-#include "../misc/lv_assert.h"
-#include "../draw/lv_draw_img.h"
-#include "../misc/lv_ll.h"
-#include "../misc/lv_gc.h"
+#include "display/misc/lv_assert.h"
+#include "display/draw/lv_draw_img.h"
+#include "display/misc/lv_ll.h"
+#include "display/misc/lv_gc.h"
 
 /*********************
  *      DEFINES

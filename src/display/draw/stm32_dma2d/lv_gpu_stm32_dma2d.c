@@ -7,7 +7,7 @@
  *      INCLUDES
  *********************/
 #include "lv_gpu_stm32_dma2d.h"
-#include "../../core/lv_refr.h"
+#include "display/core/lv_refr.h"
 
 #if LV_USE_GPU_STM32_DMA2D
 

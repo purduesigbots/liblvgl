@@ -11,24 +11,24 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "lv_hal.h"
-#include "../misc/lv_mem.h"
-#include "../misc/lv_gc.h"
-#include "../misc/lv_assert.h"
-#include "../core/lv_obj.h"
-#include "../core/lv_refr.h"
-#include "../core/lv_theme.h"
-#include "../draw/sdl/lv_draw_sdl.h"
-#include "../draw/sw/lv_draw_sw.h"
-#include "../draw/sdl/lv_draw_sdl.h"
-#include "../draw/stm32_dma2d/lv_gpu_stm32_dma2d.h"
-#include "../draw/swm341_dma2d/lv_gpu_swm341_dma2d.h"
-#include "../draw/arm2d/lv_gpu_arm2d.h"
+#include "display/misc/lv_mem.h"
+#include "display/misc/lv_gc.h"
+#include "display/misc/lv_assert.h"
+#include "display/core/lv_obj.h"
+#include "display/core/lv_refr.h"
+#include "display/core/lv_theme.h"
+#include "display/draw/sdl/lv_draw_sdl.h"
+#include "display/draw/sw/lv_draw_sw.h"
+#include "display/draw/sdl/lv_draw_sdl.h"
+#include "display/draw/stm32_dma2d/lv_gpu_stm32_dma2d.h"
+#include "display/draw/swm341_dma2d/lv_gpu_swm341_dma2d.h"
+#include "display/draw/arm2d/lv_gpu_arm2d.h"
 #if LV_USE_GPU_NXP_PXP || LV_USE_GPU_NXP_VG_LITE
-    #include "../draw/nxp/lv_gpu_nxp.h"
+    #include "display/draw/nxp/lv_gpu_nxp.h"
 #endif
 
 #if LV_USE_THEME_DEFAULT
-    #include "../extra/themes/default/lv_theme_default.h"
+    #include "display/extra/themes/default/lv_theme_default.h"
 #endif
 
 /*********************

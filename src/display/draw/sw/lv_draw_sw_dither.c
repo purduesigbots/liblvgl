@@ -8,7 +8,7 @@
  *********************/
 #include "lv_draw_sw_dither.h"
 #include "lv_draw_sw_gradient.h"
-#include "../../misc/lv_color.h"
+#include "display/misc/lv_color.h"
 
 /**********************
  *   STATIC FUNCTIONS

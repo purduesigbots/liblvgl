@@ -7,8 +7,8 @@
  *      INCLUDES
  *********************/
 #include "lv_disp.h"
-#include "../misc/lv_math.h"
-#include "../core/lv_refr.h"
+#include "display/misc/lv_math.h"
+#include "display/core/lv_refr.h"
 
 /*********************
  *      DEFINES

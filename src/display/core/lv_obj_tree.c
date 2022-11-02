@@ -10,9 +10,9 @@
 
 #include "lv_obj.h"
 #include "lv_indev.h"
-#include "../misc/lv_anim.h"
-#include "../misc/lv_gc.h"
-#include "../misc/lv_async.h"
+#include "display/misc/lv_anim.h"
+#include "display/misc/lv_gc.h"
+#include "display/misc/lv_async.h"
 
 /*********************
  *      DEFINES

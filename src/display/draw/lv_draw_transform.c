@@ -8,8 +8,8 @@
  *********************/
 #include "lv_draw.h"
 #include "lv_draw_transform.h"
-#include "../misc/lv_assert.h"
-#include "../misc/lv_area.h"
+#include "display/misc/lv_assert.h"
+#include "display/misc/lv_area.h"
 
 /*********************
  *      DEFINES

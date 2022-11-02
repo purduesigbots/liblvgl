@@ -15,11 +15,11 @@
  *********************/
 #define MY_CLASS &lv_menu_class
 
-#include "../../../core/lv_obj.h"
-#include "../../layouts/flex/lv_flex.h"
-#include "../../../widgets/lv_label.h"
-#include "../../../widgets/lv_btn.h"
-#include "../../../widgets/lv_img.h"
+#include "display/core/lv_obj.h"
+#include "display/extra/layouts/flex/lv_flex.h"
+#include "display/widgets/lv_label.h"
+#include "display/widgets/lv_btn.h"
+#include "display/widgets/lv_img.h"
 
 /**********************
  *      TYPEDEFS

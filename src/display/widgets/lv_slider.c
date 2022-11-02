@@ -9,12 +9,12 @@
 #include "lv_slider.h"
 #if LV_USE_SLIDER != 0
 
-#include "../misc/lv_assert.h"
-#include "../core/lv_group.h"
-#include "../core/lv_indev.h"
-#include "../draw/lv_draw.h"
-#include "../misc/lv_math.h"
-#include "../core/lv_disp.h"
+#include "display/misc/lv_assert.h"
+#include "display/core/lv_group.h"
+#include "display/core/lv_indev.h"
+#include "display/draw/lv_draw.h"
+#include "display/misc/lv_math.h"
+#include "display/core/lv_disp.h"
 #include "lv_img.h"
 
 /*********************

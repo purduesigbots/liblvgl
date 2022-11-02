@@ -14,10 +14,10 @@ extern "C" {
  *      INCLUDES
  *********************/
 #include "lv_draw_sw_blend.h"
-#include "../lv_draw.h"
-#include "../../misc/lv_area.h"
-#include "../../misc/lv_color.h"
-#include "../../hal/lv_hal_disp.h"
+#include "display/draw/lv_draw.h"
+#include "display/misc/lv_area.h"
+#include "display/misc/lv_color.h"
+#include "display/hal/lv_hal_disp.h"
 
 /*********************
  *      DEFINES

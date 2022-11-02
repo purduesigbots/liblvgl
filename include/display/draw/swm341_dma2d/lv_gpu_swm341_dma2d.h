@@ -13,9 +13,9 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "../../misc/lv_color.h"
-#include "../../hal/lv_hal_disp.h"
-#include "../sw/lv_draw_sw.h"
+#include "display/misc/lv_color.h"
+#include "display/hal/lv_hal_disp.h"
+#include "display/draw/sw/lv_draw_sw.h"
 
 #if LV_USE_GPU_SWM341_DMA2D
 

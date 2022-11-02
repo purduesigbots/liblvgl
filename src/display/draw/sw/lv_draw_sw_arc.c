@@ -7,10 +7,10 @@
  *      INCLUDES
  *********************/
 #include "lv_draw_sw.h"
-#include "../../misc/lv_math.h"
-#include "../../misc/lv_log.h"
-#include "../../misc/lv_mem.h"
-#include "../lv_draw.h"
+#include "display/misc/lv_math.h"
+#include "display/misc/lv_log.h"
+#include "display/misc/lv_mem.h"
+#include "display/draw/lv_draw.h"
 
 /*********************
  *      DEFINES

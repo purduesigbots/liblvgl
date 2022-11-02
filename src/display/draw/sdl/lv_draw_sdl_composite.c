@@ -6,12 +6,12 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "../../lv_conf_internal.h"
+#include "display/lv_conf_internal.h"
 
 #if LV_USE_GPU_SDL
 
-#include "../../misc/lv_gc.h"
-#include "../../core/lv_refr.h"
+#include "display/misc/lv_gc.h"
+#include "display/core/lv_refr.h"
 #include "lv_draw_sdl_composite.h"
 #include "lv_draw_sdl_utils.h"
 #include "lv_draw_sdl_priv.h"

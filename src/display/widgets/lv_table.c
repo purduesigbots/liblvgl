@@ -9,13 +9,13 @@
 #include "lv_table.h"
 #if LV_USE_TABLE != 0
 
-#include "../core/lv_indev.h"
-#include "../misc/lv_assert.h"
-#include "../misc/lv_txt.h"
-#include "../misc/lv_txt_ap.h"
-#include "../misc/lv_math.h"
-#include "../misc/lv_printf.h"
-#include "../draw/lv_draw.h"
+#include "display/core/lv_indev.h"
+#include "display/misc/lv_assert.h"
+#include "display/misc/lv_txt.h"
+#include "display/misc/lv_txt_ap.h"
+#include "display/misc/lv_math.h"
+#include "display/misc/lv_printf.h"
+#include "display/draw/lv_draw.h"
 
 /*********************
  *      DEFINES

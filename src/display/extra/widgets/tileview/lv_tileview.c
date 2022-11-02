@@ -7,7 +7,7 @@
  *      INCLUDES
  *********************/
 #include "lv_tileview.h"
-#include "../../../core/lv_indev.h"
+#include "display/core/lv_indev.h"
 #if LV_USE_TILEVIEW
 
 /*********************

@@ -6,7 +6,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "../lv_layouts.h"
+#include "display/extra/layouts/lv_layouts.h"
 
 #if LV_USE_FLEX
 

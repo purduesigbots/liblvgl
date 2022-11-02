@@ -35,7 +35,7 @@
 
 #if LV_USE_GPU_NXP_PXP
 #include "lv_gpu_nxp_pxp_osa.h"
-#include "../../../core/lv_refr.h"
+#include "display/core/lv_refr.h"
 
 /*********************
  *      DEFINES

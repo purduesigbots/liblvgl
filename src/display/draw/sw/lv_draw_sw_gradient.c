@@ -7,8 +7,8 @@
  *      INCLUDES
  *********************/
 #include "lv_draw_sw_gradient.h"
-#include "../../misc/lv_gc.h"
-#include "../../misc/lv_types.h"
+#include "display/misc/lv_gc.h"
+#include "display/misc/lv_types.h"
 
 /*********************
  *      DEFINES

@@ -7,15 +7,15 @@
  *      INCLUDES
  *********************/
 
-#include "../../lv_conf_internal.h"
+#include "display/lv_conf_internal.h"
 
 #if LV_USE_GPU_SDL
 
-#include "../lv_draw_rect.h"
-#include "../lv_draw_img.h"
-#include "../lv_draw_label.h"
-#include "../lv_draw_mask.h"
-#include "../../core/lv_refr.h"
+#include "display/draw/lv_draw_rect.h"
+#include "display/draw/lv_draw_img.h"
+#include "display/draw/lv_draw_label.h"
+#include "display/draw/lv_draw_mask.h"
+#include "display/core/lv_refr.h"
 #include "lv_draw_sdl_utils.h"
 #include "lv_draw_sdl_texture_cache.h"
 #include "lv_draw_sdl_composite.h"

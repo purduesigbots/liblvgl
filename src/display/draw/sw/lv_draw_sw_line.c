@@ -8,8 +8,8 @@
  *********************/
 #include <stdbool.h>
 #include "lv_draw_sw.h"
-#include "../../misc/lv_math.h"
-#include "../../core/lv_refr.h"
+#include "display/misc/lv_math.h"
+#include "display/core/lv_refr.h"
 
 /*********************
  *      DEFINES

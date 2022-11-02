@@ -14,13 +14,13 @@
     #error "lv_animimg: lv_img is required. Enable it in lv_conf.h (LV_USE_IMG  1) "
 #endif
 
-#include "../../../misc/lv_assert.h"
-#include "../../../draw/lv_img_decoder.h"
-#include "../../../misc/lv_fs.h"
-#include "../../../misc/lv_txt.h"
-#include "../../../misc/lv_math.h"
-#include "../../../misc/lv_log.h"
-#include "../../../misc/lv_anim.h"
+#include "display/misc/lv_assert.h"
+#include "display/draw/lv_img_decoder.h"
+#include "display/misc/lv_fs.h"
+#include "display/misc/lv_txt.h"
+#include "display/misc/lv_math.h"
+#include "display/misc/lv_log.h"
+#include "display/misc/lv_anim.h"
 
 /*********************
  *      DEFINES

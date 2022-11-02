@@ -9,11 +9,11 @@
 #include "lv_roller.h"
 #if LV_USE_ROLLER != 0
 
-#include "../misc/lv_assert.h"
-#include "../draw/lv_draw.h"
-#include "../core/lv_group.h"
-#include "../core/lv_indev.h"
-#include "../core/lv_indev_scroll.h"
+#include "display/misc/lv_assert.h"
+#include "display/draw/lv_draw.h"
+#include "display/core/lv_group.h"
+#include "display/core/lv_indev.h"
+#include "display/core/lv_indev_scroll.h"
 
 /*********************
  *      DEFINES

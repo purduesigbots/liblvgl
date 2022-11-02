@@ -7,14 +7,14 @@
  *      INCLUDES
  *********************/
 #include "lv_canvas.h"
-#include "../misc/lv_assert.h"
-#include "../misc/lv_math.h"
-#include "../draw/lv_draw.h"
-#include "../core/lv_refr.h"
+#include "display/misc/lv_assert.h"
+#include "display/misc/lv_math.h"
+#include "display/draw/lv_draw.h"
+#include "display/core/lv_refr.h"
 
 #if LV_USE_CANVAS != 0
 
-#include "../draw/sw/lv_draw_sw.h"
+#include "display/draw/sw/lv_draw_sw.h"
 
 /*********************
  *      DEFINES

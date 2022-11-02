@@ -13,10 +13,10 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "../lv_conf_internal.h"
+#include "display/lv_conf_internal.h"
 
-#include "../misc/lv_style.h"
-#include "../misc/lv_txt.h"
+#include "display/misc/lv_style.h"
+#include "display/misc/lv_txt.h"
 #include "lv_img_decoder.h"
 #include "lv_img_cache.h"
 

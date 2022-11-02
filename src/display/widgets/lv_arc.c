@@ -9,11 +9,11 @@
 #include "lv_arc.h"
 #if LV_USE_ARC != 0
 
-#include "../core/lv_group.h"
-#include "../core/lv_indev.h"
-#include "../misc/lv_assert.h"
-#include "../misc/lv_math.h"
-#include "../draw/lv_draw_arc.h"
+#include "display/core/lv_group.h"
+#include "display/core/lv_indev.h"
+#include "display/misc/lv_assert.h"
+#include "display/misc/lv_math.h"
+#include "display/draw/lv_draw_arc.h"
 
 /*********************
  *      DEFINES

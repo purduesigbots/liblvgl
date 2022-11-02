@@ -6,7 +6,7 @@
  *      INCLUDES
  *********************/
 #include "lv_timer.h"
-#include "../hal/lv_hal_tick.h"
+#include "display/hal/lv_hal_tick.h"
 #include "lv_assert.h"
 #include "lv_mem.h"
 #include "lv_ll.h"

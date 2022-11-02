@@ -13,13 +13,13 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "../lv_conf_internal.h"
+#include "display/lv_conf_internal.h"
 
 #include <stdint.h>
 #include "lv_img_buf.h"
-#include "../misc/lv_fs.h"
-#include "../misc/lv_types.h"
-#include "../misc/lv_area.h"
+#include "display/misc/lv_fs.h"
+#include "display/misc/lv_types.h"
+#include "display/misc/lv_area.h"
 
 /*********************
  *      DEFINES

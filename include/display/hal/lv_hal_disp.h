@@ -18,11 +18,11 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include "lv_hal.h"
-#include "../draw/lv_draw.h"
-#include "../misc/lv_color.h"
-#include "../misc/lv_area.h"
-#include "../misc/lv_ll.h"
-#include "../misc/lv_timer.h"
+#include "display/draw/lv_draw.h"
+#include "display/misc/lv_color.h"
+#include "display/misc/lv_area.h"
+#include "display/misc/lv_ll.h"
+#include "display/misc/lv_timer.h"
 
 /*********************
  *      DEFINES

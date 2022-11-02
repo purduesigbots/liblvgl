@@ -9,9 +9,9 @@
 #include "lv_gridnav.h"
 #if LV_USE_GRIDNAV
 
-#include "../../../misc/lv_assert.h"
-#include "../../../misc/lv_math.h"
-#include "../../../core/lv_indev.h"
+#include "display/misc/lv_assert.h"
+#include "display/misc/lv_math.h"
+#include "display/core/lv_indev.h"
 
 /*********************
  *      DEFINES

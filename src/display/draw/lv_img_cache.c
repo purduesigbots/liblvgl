@@ -6,12 +6,12 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "../misc/lv_assert.h"
+#include "display/misc/lv_assert.h"
 #include "lv_img_cache.h"
 #include "lv_img_decoder.h"
 #include "lv_draw_img.h"
-#include "../hal/lv_hal_tick.h"
-#include "../misc/lv_gc.h"
+#include "display/hal/lv_hal_tick.h"
+#include "display/misc/lv_gc.h"
 
 /*********************
  *      DEFINES

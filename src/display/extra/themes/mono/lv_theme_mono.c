@@ -6,12 +6,12 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "../../../lvgl.h"
+#include "lvgl.h"
 
 #if LV_USE_THEME_MONO
 
 #include "lv_theme_mono.h"
-#include "../../../misc/lv_gc.h"
+#include "display/misc/lv_gc.h"
 
 /*********************
  *      DEFINES

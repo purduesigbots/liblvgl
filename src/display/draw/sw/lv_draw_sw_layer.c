@@ -7,9 +7,9 @@
  *      INCLUDES
  *********************/
 #include "lv_draw_sw.h"
-#include "../../hal/lv_hal_disp.h"
-#include "../../misc/lv_area.h"
-#include "../../core/lv_refr.h"
+#include "display/hal/lv_hal_disp.h"
+#include "display/misc/lv_area.h"
+#include "display/core/lv_refr.h"
 
 /*********************
  *      DEFINES

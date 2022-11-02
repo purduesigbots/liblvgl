@@ -9,7 +9,7 @@
 #include "lv_spinbox.h"
 #if LV_USE_SPINBOX
 
-#include "../../../misc/lv_assert.h"
+#include "display/misc/lv_assert.h"
 
 /*********************
  *      DEFINES

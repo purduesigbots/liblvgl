@@ -7,9 +7,9 @@
  *      INCLUDES
  *********************/
 #include "lv_draw_sw.h"
-#include "../../misc/lv_assert.h"
-#include "../../misc/lv_area.h"
-#include "../../core/lv_refr.h"
+#include "display/misc/lv_assert.h"
+#include "display/misc/lv_area.h"
+#include "display/core/lv_refr.h"
 
 #if LV_DRAW_COMPLEX
 /*********************

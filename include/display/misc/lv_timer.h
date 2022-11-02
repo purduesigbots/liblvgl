@@ -12,8 +12,8 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "../lv_conf_internal.h"
-#include "../hal/lv_hal_tick.h"
+#include "display/lv_conf_internal.h"
+#include "display/hal/lv_hal_tick.h"
 
 #include <stdint.h>
 #include <stdbool.h>

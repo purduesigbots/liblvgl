@@ -10,8 +10,8 @@
 #if LV_USE_CALENDAR_HEADER_DROPDOWN
 
 #include "lv_calendar.h"
-#include "../../../widgets/lv_dropdown.h"
-#include "../../layouts/flex/lv_flex.h"
+#include "display/widgets/lv_dropdown.h"
+#include "display/extra/layouts/flex/lv_flex.h"
 
 /*********************
  *      DEFINES

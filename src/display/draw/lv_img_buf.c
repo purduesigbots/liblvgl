@@ -10,9 +10,9 @@
 #include <string.h>
 #include "lv_img_buf.h"
 #include "lv_draw_img.h"
-#include "../misc/lv_math.h"
-#include "../misc/lv_log.h"
-#include "../misc/lv_mem.h"
+#include "display/misc/lv_math.h"
+#include "display/misc/lv_log.h"
+#include "display/misc/lv_mem.h"
 
 /*********************
  *      DEFINES

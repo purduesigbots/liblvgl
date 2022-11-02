@@ -15,12 +15,12 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "../lv_conf_internal.h"
+#include "display/lv_conf_internal.h"
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "../misc/lv_area.h"
-#include "../misc/lv_timer.h"
+#include "display/misc/lv_area.h"
+#include "display/misc/lv_timer.h"
 
 /*********************
  *      DEFINES
