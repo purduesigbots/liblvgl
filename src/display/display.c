@@ -65,7 +65,7 @@ static bool vex_read_touch(lv_indev_drv_t* _, lv_indev_data_t* data) {
 	return false;
 }
 
-static lv_disp_buf_t disp_buf;
+static lv_disp_draw_buf_t disp_buf;
 static lv_color_t buf1[480 * 10];
 static lv_color_t buf2[480 * 10];
 
@@ -78,7 +78,7 @@ void display_initialize(void) {
     lv_disp_buf_init(&disp_buf, buf1, buf2, 480 * 10);
 
 	lv_disp_drv_init(&disp_drv);
-    disp_drv.buffer = &disp_buf;
+    disp_drv.draw_buf = &disp_buf;
 	disp_drv.flush_cb = vex_display_flush;
     lv_disp_t* disp = lv_disp_drv_register(&disp_drv);
 
@@ -89,7 +89,7 @@ void display_initialize(void) {
 	lv_indev_drv_register(&touch_drv);
 
 	// lv_theme_set_current(lv_theme_alien_init(40, NULL));
-	lv_obj_t* page = lv_obj_create(NULL, NULL);
+	lv_obj_t* page = lv_obj_create(NULL);
 	lv_obj_set_size(page, 480, 240);
 	lv_scr_load(page);
 

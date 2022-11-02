@@ -14,12 +14,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "lv_core/lv_disp.h"
-#include "lv_core/lv_obj.h"
-#include "lv_core/lv_obj_style_dec.h"
-#include "lv_font/lv_font.h"
-#include "lv_misc/lv_color.h"
-#include "lv_widgets/lv_btn.h"
+#include "core/lv_disp.h"
+#include "core/lv_obj.h"
+#include "core/lv_obj_style_dec.h"
+#include "font/lv_font.h"
+#include "misc/lv_color.h"
+#include "widgets/lv_btn.h"
 #define _GNU_SOURCE
 // NOTE: this would normally be in the C file, but it won't compile that way
 #include <stdio.h>  // vasprintf (GNU extension)
