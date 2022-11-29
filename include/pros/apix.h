@@ -1,5 +1,6 @@
 /**
  * \file pros/apix.h
+ * \ingroup apix
  *
  * PROS Extended API header
  *
@@ -12,22 +13,24 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup apix Extended API
+ * \note Also included in the Extended API is [LVGL.](https://lvgl.io/)
  */
 
 #ifndef _PROS_API_EXTENDED_H_
 #define _PROS_API_EXTENDED_H_
 
-#define PROS_KERNEL_PRE_INIT 110
-
-#define PROS_KERNEL_INIT     120
-
 #include "api.h"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wall"
+#pragma GCC diagnostic pop
 #include "pros/serial.h"
 
 #ifdef __cplusplus
@@ -36,12 +39,18 @@ namespace pros::c {
 extern "C" {
 #endif
 
-/******************************************************************************/
-/**                             RTOS FACILITIES                              **/
-/**                                                                          **/
-/**                                                                          **/
-/**See https://pros.cs.purdue.edu/v5/extended/multitasking.html to learn more**/
-/******************************************************************************/
+/**
+ * \ingroup apix
+ */
+
+/**
+ * \addtogroup apix
+ *  @{
+ */
+
+/// \name RTOS Facilities
+/// See https://pros.cs.purdue.edu/v5/extended/multitasking.html to learn more
+///@{
 
 typedef void* queue_t;
 typedef void* sem_t;
@@ -284,9 +293,8 @@ bool queue_append(queue_t queue, const void* item, uint32_t timeout);
  * \param buffer
  *        Pointer to a buffer to which the received item will be copied
  * \param timeout
- *        Time to wait for space to become available. A timeout of 0 can be used
- *        to attempt to post without blocking. TIMEOUT_MAX can be used to block
- *        indefinitely.
+ *        The maximum amount of time the task should block waiting for an item to receive should the queue be empty at
+ *        the time of the call. TIMEOUT_MAX can be used to block indefinitely.
  *
  * \return True if an item was copied into the buffer, false otherwise.
  */
@@ -303,9 +311,10 @@ bool queue_peek(queue_t queue, void* const buffer, uint32_t timeout);
  * \param buffer
  *        Pointer to a buffer to which the received item will be copied
  * \param timeout
- *        Time to wait for space to become available. A timeout of 0 can be used
- *        to attempt to post without blocking. TIMEOUT_MAX can be used to block
- *        indefinitely.
+ *        The maximum amount of time the task should block
+ *        waiting for an item to receive should the queue be empty at the time
+ *        of the call. queue_recv() will return immediately if timeout
+ *        is zero and the queue is empty.
  *
  * \return True if an item was copied into the buffer, false otherwise.
  */
@@ -356,9 +365,10 @@ void queue_delete(queue_t queue);
  */
 void queue_reset(queue_t queue);
 
-/******************************************************************************/
-/**                           Device Registration                            **/
-/******************************************************************************/
+///@}
+
+/// \name Device Registration
+///@{
 
 /*
  * List of possible v5 devices
@@ -376,19 +386,21 @@ typedef enum v5_device_e {
 	E_DEVICE_VISION = 11,
 	E_DEVICE_ADI = 12,
 	E_DEVICE_OPTICAL = 16,
-	E_DEVICE_GENERIC = 129,
+	E_DEVICE_GPS = 20,
+	E_DEVICE_SERIAL = 129,
+	E_DEVICE_GENERIC __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = E_DEVICE_SERIAL,
 	E_DEVICE_UNDEFINED = 255
 } v5_device_e_t;
 
-/*
- * Registers a device in the given port
+/**
+ * Registers a device in the given zero-indexed port
  *
  * Registers a device of the given type in the given port into the registry, if
  * that type of device is detected to be plugged in to that port.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21), or a
+ * ENXIO - The given value is not within the range of V5 ports (0-20), or a
  * a different device than specified is plugged in.
  * EADDRINUSE - The port is already registered to another device.
  *
@@ -401,14 +413,14 @@ typedef enum v5_device_e {
  */
 int registry_bind_port(uint8_t port, v5_device_e_t device_type);
 
-/*
- * Deregisters a devices from the given port
+/**
+ * Deregisters a devices from the given zero-indexed port
  *
  * Removes the device registed in the given port, if there is one.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
  *        The port number to deregister
@@ -417,9 +429,41 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type);
  */
 int registry_unbind_port(uint8_t port);
 
-/******************************************************************************/
-/**                               Filesystem                                 **/
-/******************************************************************************/
+/**
+ * Returns the type of device registered to the zero-indexed port.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
+ *
+ * \param port
+ *        The V5 port number from 0-20
+ *
+ * \return The type of device that is registered into the port (NOT what is
+ * plugged in)
+ */
+v5_device_e_t registry_get_bound_type(uint8_t port);
+
+/**
+ * Returns the type of the device plugged into the zero-indexed port.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
+ *
+ * \param port
+ *        The V5 port number from 0-20
+ *
+ * \return The type of device that is plugged into the port (NOT what is
+ * registered)
+ */
+v5_device_e_t registry_get_plugged_type(uint8_t port);
+
+///@}
+
+/// \name Filesystem
+///@{
+
 /**
  * Control settings of the serial driver.
  *
@@ -552,6 +596,10 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  * The extra argument is the baudrate.
  */
 #define DEVCTL_SET_BAUDRATE 17
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }
