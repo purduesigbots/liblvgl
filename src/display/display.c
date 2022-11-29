@@ -12,6 +12,9 @@
 
 #include "display/lvgl.h"
 #include "api.h"
+#include "pros/optical.h"
+#include "pros/screen.h"
+#include <errno.h>
 #include <stdint.h>
 
 static task_t disp_daemon_task;
@@ -25,43 +28,33 @@ static void disp_daemon(void* ign) {
 	}
 }
 
-static void vex_display_flush(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_t* color/*int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t* color*/) {
-	void vexDisplayCopyRect(int32_t, int32_t, int32_t, int32_t, uint32_t*, int32_t);
-
-    // TODO: figure out if stride calculation is still correct
-	vexDisplayCopyRect(area->x1, area->y1, area->x2, area->y2, (uint32_t*)color, area->x2 - area->x1 + 1);
-	lv_disp_flush_ready(disp_drv);
+static void lvgl_display_flush(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_t* color) {
+	if (screen_copy_area(area->x1, area->y1, area->x2, area->y2, (uint32_t*)color, area->x2 - area->x1 + 1) != 1) {
+		errno = PROS_ERR;
+	} else {
+		lv_disp_flush_ready(disp_drv);
+	}
 }
 
-static bool vex_read_touch(lv_indev_drv_t* _, lv_indev_data_t* data) {
-	static struct {
-		enum {
-			kTouchEventRelease,
-			kTouchEventPress,
-			kTouchEventPressAuto,
-		} lastEvent;
-		int16_t lastXpos;
-		int16_t lastYpos;
-		int32_t pressCount;
-		int32_t releaseCount;
-	} v5_touch_status;
+static bool lvgl_read_touch(lv_indev_drv_t* _, lv_indev_data_t* data) {
+	screen_touch_status_s_t status = screen_touch_status();
 
-	bool vexTouchDataGet( typeof(v5_touch_status)* );
-	vexTouchDataGet(&v5_touch_status);
-
-	switch (v5_touch_status.lastEvent) {
-		case kTouchEventPress:
-		case kTouchEventPressAuto:
+	switch (status.touch_status) {
+		case E_TOUCH_PRESSED:
+		case E_TOUCH_HELD:
 			data->state = LV_INDEV_STATE_PR;
 			break;
-		case kTouchEventRelease:
+		case E_TOUCH_RELEASED:
 			data->state = LV_INDEV_STATE_REL;
+			break;
+		case E_TOUCH_ERROR:
+			errno = PROS_ERR;
 			break;
 	}
 	// return last (x,y) pos in all cases https://doc.littlevgl.com/#Porting and
 	// purduesigbots/pros#79
-	data->point.x = v5_touch_status.lastXpos;
-	data->point.y = v5_touch_status.lastYpos;
+	data->point.x = status.x;
+	data->point.y = status.y;
 	return false;
 }
 
@@ -79,13 +72,13 @@ void display_initialize(void) {
 
 	lv_disp_drv_init(&disp_drv);
     disp_drv.buffer = &disp_buf;
-	disp_drv.flush_cb = vex_display_flush;
+	disp_drv.flush_cb = lvgl_display_flush;
     lv_disp_t* disp = lv_disp_drv_register(&disp_drv);
 
 	lv_indev_drv_t touch_drv;
 	lv_indev_drv_init(&touch_drv);
 	touch_drv.type = LV_INDEV_TYPE_POINTER;
-	touch_drv.read_cb = vex_read_touch;
+	touch_drv.read_cb = lvgl_read_touch;
 	lv_indev_drv_register(&touch_drv);
 
 	// lv_theme_set_current(lv_theme_alien_init(40, NULL));
