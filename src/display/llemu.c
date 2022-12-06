@@ -28,10 +28,14 @@
 #include <string.h>
 #include "pros/llemu.h"
 
+#define LINE_WIDTH 33
+
 static lv_style_t frame_style;
 static lv_style_t screen_style;
 static lv_style_t button_style;
 static lv_style_t button_pressed_style;
+
+static text_align_e_t text_align;
 
 static void touch_bits_update_pressed(lv_obj_t* btn) {
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lv_obj_get_parent(lv_obj_get_parent(lv_obj_get_parent(btn))));
@@ -154,13 +158,30 @@ bool _lcd_vprint(lv_obj_t* lcd_dummy, int16_t line, const char* fmt, va_list arg
 		errno = EINVAL;
 		return false;
 	}
+
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
-	char buf[33];
-	vsnprintf(buf, 33, fmt, args);
+	char buf[LINE_WIDTH];
+	memset(buf, ' ', LINE_WIDTH);
+
+	int paddingCount = 0;
+	int len = vsnprintf(NULL, 0, fmt, args);
+	if (text_align == LCD_TEXT_ALIGN_CENTER) {
+		paddingCount = (LINE_WIDTH - len) / 2;
+	} else if (text_align == LCD_TEXT_ALIGN_RIGHT) {
+		paddingCount = LINE_WIDTH - len;
+	}
+
+	if (paddingCount < 0) paddingCount = 0;
+	
+	vsnprintf(buf + paddingCount, LINE_WIDTH - paddingCount, fmt, args);
 
 	lv_label_set_text(lcd->lcd_text[line], buf);
 	lv_obj_set_width(lcd->lcd_text[line], 426);
 	return true;
+}
+
+void lcd_set_text_align(text_align_e_t alignment) {
+	text_align = alignment;
 }
 
 bool _lcd_print(lv_obj_t* lcd_dummy, int16_t line, const char* fmt, ...) {

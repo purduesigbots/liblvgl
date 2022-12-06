@@ -28,8 +28,15 @@
 
 #include "pros/llemu.h"
 
+typedef enum class lcd_text_align {
+	LCD_TEXT_ALIGN_LEFT,
+	LCD_TEXT_ALIGN_CENTER,
+	LCD_TEXT_ALIGN_RIGHT
+} text_align_e_t;
+
 namespace pros {
 namespace lcd {
+
 /**
  * Checks whether the emulated three-button LCD has already been initialized.
  *
@@ -177,6 +184,19 @@ void register_btn1_cb(lcd_btn_cb_fn_t cb);
  * A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
  */
 void register_btn2_cb(lcd_btn_cb_fn_t cb);
+
+/**
+ * Changes the alignment of text on the LCD background
+ * 
+ * \param alignment
+ * 		An enum specifying the alignment. Available alignments are:
+ * 			TEXT_ALIGN_LEFT
+ * 			TEXT_ALIGN_RIGHT
+ * 			TEXT_ALIGN_CENTER
+ * 
+ * \return void
+ */
+void set_text_align(text_align_e_t alignment);
 
 /**
  * Gets the button status from the emulated three-button LCD.

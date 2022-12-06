@@ -38,6 +38,10 @@ bool clear_line(std::int16_t line) {
 	return lcd_clear_line(line);
 }
 
+void set_text_align(text_align_e_t alignment) {
+	lcd_set_text_align(alignment);
+}
+
 void register_btn0_cb(lcd_btn_cb_fn_t cb) {
 	lcd_register_btn0_cb(cb);
 }
