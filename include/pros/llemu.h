@@ -54,7 +54,7 @@ typedef struct lcd_s {
 	                               // multitouch support)
 } lcd_s_t;
 
-typedef enum lcd_text_align {
+typedef enum lcd_text_align_e {
 	LCD_TEXT_ALIGN_LEFT,
 	LCD_TEXT_ALIGN_CENTER,
 	LCD_TEXT_ALIGN_RIGHT
