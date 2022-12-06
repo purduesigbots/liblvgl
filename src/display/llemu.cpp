@@ -18,11 +18,6 @@
 namespace pros {
 namespace lcd {
 using namespace pros::c;
-enum class lcd_text_align {
-	TEXT_ALIGN_LEFT,
-	TEXT_ALIGN_CENTER,
-	TEXT_ALIGN_RIGHT
-};
 
 bool is_initialized(void) {
 	return lcd_is_initialized();
@@ -43,16 +38,8 @@ bool clear_line(std::int16_t line) {
 	return lcd_clear_line(line);
 }
 
-void set_text_align(lcd_text_align alignment) {
-	text_align_e_t alignment_c = LCD_TEXT_ALIGN_LEFT;
-	switch (alignment) {
-		case lcd_text_align::TEXT_ALIGN_CENTER:
-			alignment_c = LCD_TEXT_ALIGN_CENTER;
-			break;
-		case lcd_text_align::TEXT_ALIGN_RIGHT:
-			alignment_c = LCD_TEXT_ALIGN_RIGHT;
-	}
-	lcd_set_text_align((text_align_e_t) alignment_c);
+void set_text_align(Text_Align alignment) {
+	lcd_set_text_align((text_align_e_t) alignment);
 }
 
 void register_btn0_cb(lcd_btn_cb_fn_t cb) {

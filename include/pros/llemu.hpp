@@ -30,7 +30,11 @@
 
 namespace pros {
 namespace lcd {
-typedef enum lcd_text_align;
+enum class Text_Align {
+	TEXT_ALIGN_LEFT = 0,
+	TEXT_ALIGN_CENTER = 1,
+	TEXT_ALIGN_RIGHT = 2
+};
 /**
  * Checks whether the emulated three-button LCD has already been initialized.
  *
@@ -190,7 +194,7 @@ void register_btn2_cb(lcd_btn_cb_fn_t cb);
  * 
  * \return void
  */
-void set_text_align(text_align_e_t alignment);
+void set_text_align(Text_Align alignment);
 
 /**
  * Gets the button status from the emulated three-button LCD.
