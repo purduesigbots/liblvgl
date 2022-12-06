@@ -28,15 +28,9 @@
 
 #include "pros/llemu.h"
 
-typedef enum class lcd_text_align {
-	LCD_TEXT_ALIGN_LEFT,
-	LCD_TEXT_ALIGN_CENTER,
-	LCD_TEXT_ALIGN_RIGHT
-} text_align_e_t;
-
 namespace pros {
 namespace lcd {
-
+typedef enum lcd_text_align;
 /**
  * Checks whether the emulated three-button LCD has already been initialized.
  *

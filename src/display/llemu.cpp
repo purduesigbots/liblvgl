@@ -18,6 +18,11 @@
 namespace pros {
 namespace lcd {
 using namespace pros::c;
+enum class lcd_text_align {
+	LCD_TEXT_ALIGN_LEFT,
+	LCD_TEXT_ALIGN_CENTER,
+	LCD_TEXT_ALIGN_RIGHT
+} text_align_e_t;
 
 bool is_initialized(void) {
 	return lcd_is_initialized();
