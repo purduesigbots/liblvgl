@@ -55,9 +55,9 @@ typedef struct lcd_s {
 } lcd_s_t;
 
 typedef enum lcd_text_align_e {
-	LCD_TEXT_ALIGN_LEFT,
-	LCD_TEXT_ALIGN_CENTER,
-	LCD_TEXT_ALIGN_RIGHT
+	LCD_TEXT_ALIGN_LEFT = 0,
+	LCD_TEXT_ALIGN_CENTER = 1,
+	LCD_TEXT_ALIGN_RIGHT = 2
 } text_align_e_t;
 
 #ifdef __cplusplus
