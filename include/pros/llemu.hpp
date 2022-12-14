@@ -30,6 +30,10 @@
 
 namespace pros {
 namespace lcd {
+/**
+ * @brief enum class to set text alignment
+ * 
+ */
 enum class Text_Align {
 	TEXT_ALIGN_LEFT = 0,
 	TEXT_ALIGN_CENTER = 1,
