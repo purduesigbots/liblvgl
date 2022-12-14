@@ -160,6 +160,7 @@ bool _lcd_vprint(lv_obj_t* lcd_dummy, int16_t line, const char* fmt, va_list arg
 	}
 
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
+
 	char buf[LINE_WIDTH];
 	memset(buf, ' ', LINE_WIDTH);
 
@@ -168,7 +169,7 @@ bool _lcd_vprint(lv_obj_t* lcd_dummy, int16_t line, const char* fmt, va_list arg
 	if (text_align == LCD_TEXT_ALIGN_CENTER) {
 		paddingCount = (LINE_WIDTH - len) / 2;
 	} else if (text_align == LCD_TEXT_ALIGN_RIGHT) {
-		paddingCount = LINE_WIDTH - len;
+		paddingCount = (LINE_WIDTH - len) - 1;
 	}
 
 	if (paddingCount < 0) paddingCount = 0;
