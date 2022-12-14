@@ -408,8 +408,8 @@ namespace lcd {
   extern __attribute__((weak)) std::uint8_t read_buttons(void) {return 0xf;}
   extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb) {}
 
-  template <typename... Params>
-  extern __attribute__((weak)) bool print(std::int16_t line, const char* fmt, Params... args) {return false;}
+  //template <typename... Params>
+  //extern __attribute__((weak)) bool print(std::int16_t line, const char* fmt, Params... args) {return false;}
 
   #ifndef LCD_BTN_LEFT
     #define LCD_BTN_LEFT 4
