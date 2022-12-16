@@ -71,7 +71,7 @@ void display_initialize(void) {
     lv_disp_draw_buf_init(&disp_buf, buf1, buf2, 480 * 10);
 
 	lv_disp_drv_init(&disp_drv);
-    disp_drv.buffer = &disp_buf;
+    disp_drv.draw_buf = &disp_buf;
 	disp_drv.flush_cb = lvgl_display_flush;
     lv_disp_t* disp = lv_disp_drv_register(&disp_drv);
 
