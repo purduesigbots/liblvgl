@@ -7,7 +7,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "lvgl.h"
+#include "display/lvgl.h"
 #if LV_USE_FS_WIN32 != '\0'
 
 #include <windows.h>

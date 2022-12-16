@@ -28,6 +28,8 @@
 #include <string.h>
 #include "pros/llemu.h"
 
+#if 0
+
 static lv_style_t frame_style;
 static lv_style_t screen_style;
 static lv_style_t button_style;
@@ -307,3 +309,5 @@ uint8_t lcd_read_buttons(void) {
 	}
 	return _lcd_read_buttons(_llemu_lcd);
 }
+
+#endif // #if 10

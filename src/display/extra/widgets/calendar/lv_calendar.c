@@ -7,7 +7,7 @@
  *      INCLUDES
  *********************/
 #include "lv_calendar.h"
-#include "lvgl.h"
+#include "display/lvgl.h"
 #if LV_USE_CALENDAR
 
 #include "display/misc/lv_assert.h"

@@ -6,7 +6,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "lvgl.h"
+#include "display/lvgl.h"
 #if LV_USE_BMP
 
 #include <string.h>

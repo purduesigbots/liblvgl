@@ -75,7 +75,7 @@ static lv_indev_drv_t touch_drv;
 void display_initialize(void) {
 	lv_init();
 
-    lv_disp_buf_init(&disp_buf, buf1, buf2, 480 * 10);
+    lv_disp_draw_buf_init(&disp_buf, buf1, buf2, 480 * 10);
 
 	lv_disp_drv_init(&disp_drv);
     disp_drv.draw_buf = &disp_buf;
