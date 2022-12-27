@@ -310,4 +310,4 @@ uint8_t lcd_read_buttons(void) {
 	return _lcd_read_buttons(_llemu_lcd);
 }
 
-#endif // #if 10
+#endif // if 1
