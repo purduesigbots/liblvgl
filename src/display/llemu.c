@@ -26,6 +26,7 @@
 #undef _GNU_SOURCE
 #include <stdarg.h>
 #include <string.h>
+#include <stdlib.h>
 #include "pros/llemu.h"
 
 
@@ -74,8 +75,6 @@ static void button_event_handler(lv_obj_t* btn, lv_event_code_t event) {
 
 static lv_obj_t* _create_lcd(void) {
     static lv_style_t lv_style_transp_fit;
-    lv_obj_set_style_border_width(&lv_style_transp_fit, LV_STATE_DEFAULT, 0);
-    lv_obj_set_style_pad_all(&lv_style_transp_fit, LV_STATE_DEFAULT, 0);
 
 	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act());
 	lv_obj_set_size(lcd_dummy, LV_HOR_RES, LV_VER_RES);
@@ -93,7 +92,9 @@ static lv_obj_t* _create_lcd(void) {
 	lv_obj_t* btn_container = lv_obj_create(frame);
 	lv_obj_set_size(btn_container, 426, 30);
 	lv_obj_align(btn_container, LV_ALIGN_BOTTOM_MID, 0, -20);
-	lv_obj_add_style(btn_container, LV_PART_MAIN, &lv_style_transp_fit);
+	lv_obj_add_style(btn_container, &lv_style_transp_fit, LV_PART_MAIN);
+	lv_obj_set_style_border_width(btn_container, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_pad_all(btn_container, LV_STATE_DEFAULT, 0);
 	lv_obj_set_flex_flow(btn_container, LV_FLEX_FLOW_ROW);
 
 	lv_obj_t* btn_left = lv_btn_create(btn_container);
@@ -120,7 +121,7 @@ static lv_obj_t* _create_lcd(void) {
 
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen, lv_color_hex(0x323D13), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen, LV_STATE_DEFAULT, &lv_font_unscii_16); // TODO: does this need to be 20px?
+    lv_obj_set_style_text_font(screen, &lv_font_unscii_16, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
 
     lv_obj_set_style_bg_color(btn_left, lv_color_hex(0x808080),  LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(btn_left, lv_color_hex(0x303030), LV_STATE_DEFAULT);
