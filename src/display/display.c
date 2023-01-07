@@ -64,19 +64,43 @@ static void lvgl_read_touch(lv_indev_drv_t* _, lv_indev_data_t* data) {
 }
 
 static lv_disp_draw_buf_t disp_buf;
-static lv_color_t buf1[480 * 10];
-static lv_color_t buf2[480 * 10];
+static lv_color_t buf1[LV_HOR_RES_MAX * 10];
+static lv_color_t buf2[LV_HOR_RES_MAX * 10];
 
 static lv_disp_drv_t disp_drv;
 static lv_indev_drv_t touch_drv;
 
+/*
+So this is what this function is supposed to do, and why it's important.
+
+Everything is pulled from here: 
+https://docs.lvgl.io/latest/en/html/porting/project.html#configuration-file
+
+TLDR, this is what it is supposed to do:
+1. Call lv_init().
+
+2. Initialize your drivers.
+
+3. Register the display and input devices drivers in LVGL. 
+More about Display and Input device registration.
+
+4. Call lv_tick_inc(x) in every x milliseconds in an interrupt 
+to tell the elapsed time. Learn more.
+
+5. Call lv_task_handler() periodically in every few milliseconds 
+to handle LVGL related tasks. Learn more.
+*/
+
 void display_initialize(void) {
+	// 1. Call lv_init().
 	printf("Initializing Display\n");
 	lv_init();
 
+	// 2. Initialize your drivers.
 	printf("    lv_disp_draw_buff_init\n");
-    lv_disp_draw_buf_init(&disp_buf, buf1, buf2, 480 * 10);
+    lv_disp_draw_buf_init(&disp_buf, buf1, buf2, LV_HOR_RES_MAX * 10);
 
+	// 3. Register the display and input devices drivers in LVGL.
 	printf("    lv_disp_drv_buff_init\n");
 	lv_disp_drv_init(&disp_drv);
     disp_drv.draw_buf = &disp_buf;
@@ -94,10 +118,11 @@ void display_initialize(void) {
 	if (lv_indev_drv_register(&touch_drv) == NULL) {
 		printf("    Error initializing input driver\n");
 	}
-
+	uint32_t time = millis();
+	task_delay_until(&time, 2);
 	// lv_theme_set_current(lv_theme_alien_init(40, NULL));
 	lv_obj_t* page = lv_obj_create(NULL);
-	lv_obj_set_size(page, 480, 240);
+	lv_obj_set_size(page, LV_HOR_RES_MAX, LV_VER_RES_MAX);
 	lv_scr_load(page);
 
 	printf("    Starting display daemon\n");
