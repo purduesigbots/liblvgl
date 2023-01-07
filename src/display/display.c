@@ -74,7 +74,7 @@ static lv_indev_drv_t touch_drv;
 So this is what this function is supposed to do, and why it's important.
 
 Everything is pulled from here: 
-https://docs.lvgl.io/latest/en/html/porting/project.html#configuration-file
+https://docs.lvgl.io/8.3/porting/index.html
 
 TLDR, this is what it is supposed to do:
 1. Call lv_init().
@@ -88,7 +88,9 @@ More about Display and Input device registration.
 to tell the elapsed time. Learn more.
 
 5. Call lv_task_handler() periodically in every few milliseconds 
-to handle LVGL related tasks. Learn more.
+to handle LVGL related tasks. This is *supposed* to be done with 
+disp_daemon_task and it does, but it's not working as the flush_cb,
+touch_cb, and other callbacks aren't triggering after boot-up. 
 */
 
 void display_initialize(void) {
@@ -109,7 +111,7 @@ void display_initialize(void) {
 	if (disp == NULL) {
 		printf("    Error initializing display driver\n");
 	}
-
+	
 	printf("    lv_indev_drv_init\n");
 	lv_indev_drv_t touch_drv;
 	lv_indev_drv_init(&touch_drv);
@@ -118,8 +120,7 @@ void display_initialize(void) {
 	if (lv_indev_drv_register(&touch_drv) == NULL) {
 		printf("    Error initializing input driver\n");
 	}
-	uint32_t time = millis();
-	task_delay_until(&time, 2);
+	
 	// lv_theme_set_current(lv_theme_alien_init(40, NULL));
 	lv_obj_t* page = lv_obj_create(NULL);
 	lv_obj_set_size(page, LV_HOR_RES_MAX, LV_VER_RES_MAX);
