@@ -51,9 +51,10 @@ void touch_bits_update_released(lcd_s_t* lcd, size_t btn) {
 	lcd->touch_bits &= ~(1 << btn);
 }
 
-static void button_event_handler(lv_obj_t* btn, lv_event_code_t event) {
+static void button_event_handler(lv_event_t* event) {
+	lv_obj_t* btn = event->current_target;
 	lcd_s_t* lcd = lv_obj_get_parent(lv_obj_get_parent(lv_obj_get_parent(btn)))->user_data;
-    switch (event) {
+    switch (event->code) {
         case LV_EVENT_PRESSED:
             touch_bits_update_pressed(btn);
             break;
@@ -101,19 +102,19 @@ static lv_obj_t* _create_lcd(void) {
 	lv_obj_set_width(btn_left, 80);
 	lv_obj_align(btn_left, LV_ALIGN_LEFT_MID, 0, 0);
 	lv_obj_add_style(btn_left, &button_style, LV_PART_MAIN);
-    //lv_obj_set_event_cb(btn_left, button_event_handler);
+    lv_obj_add_event_cb(btn_left, button_event_handler, LV_EVENT_ALL, NULL);
 
 	lv_obj_t* btn_center = lv_btn_create(btn_container);
 	lv_obj_set_width(btn_center, 80);
 	lv_obj_align(btn_center, LV_ALIGN_CENTER, 0, 0);
 	lv_obj_add_style(btn_center, &button_style, LV_PART_MAIN);
-    //lv_obj_set_event_cb(btn_center, button_event_handler);
+    lv_obj_add_event_cb(btn_center, button_event_handler, LV_EVENT_ALL, NULL);
 
 	lv_obj_t* btn_right = lv_btn_create(btn_container);
 	lv_obj_set_width(btn_right, 80);
 	lv_obj_align(btn_right, LV_ALIGN_RIGHT_MID, 0, 0);
 	lv_obj_add_style(btn_right, &button_style, LV_PART_MAIN);
-	//lv_obj_set_event_cb(btn_right, button_event_handler);
+	lv_obj_add_event_cb(btn_right, button_event_handler, LV_EVENT_ALL, NULL);
 
 	lv_obj_set_style_bg_color(frame, lv_color_hex(0x808080), LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(frame, lv_color_hex(0xC0C0C0), LV_STATE_DEFAULT);
@@ -123,7 +124,9 @@ static lv_obj_t* _create_lcd(void) {
     lv_obj_set_style_text_color(screen, lv_color_hex(0x323D13), LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(screen, &lv_font_unscii_16, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
 
-    lv_obj_set_style_bg_color(btn_left, lv_color_hex(0x808080),  LV_STATE_DEFAULT);
+    //even though all 3 buttons use the same lv_style_t object, for some reason it is not possible to update one and
+	//expect all 3 buttons to reference the same lv_style_t object.
+	lv_obj_set_style_bg_color(btn_left, lv_color_hex(0x808080),  LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(btn_left, lv_color_hex(0x303030), LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(btn_left, lv_color_hex(0x0A0A0A), LV_STATE_PRESSED);
     lv_obj_set_style_bg_grad_color(btn_left, lv_color_hex(0x808080), LV_STATE_PRESSED);
