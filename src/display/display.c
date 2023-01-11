@@ -108,7 +108,6 @@ void display_initialize(void) {
 		printf("Error initializing display driver\n");
 	}
 	
-	lv_indev_drv_t touch_drv;
 	lv_indev_drv_init(&touch_drv);
 	touch_drv.type = LV_INDEV_TYPE_POINTER;
 	touch_drv.read_cb = lvgl_read_touch;
