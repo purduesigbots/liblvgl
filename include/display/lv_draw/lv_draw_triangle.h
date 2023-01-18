@@ -13,7 +13,7 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_draw_rect.h"
+#include "lv_draw.h"
 
 /*********************
  *      DEFINES
@@ -26,28 +26,23 @@ extern "C" {
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
+/*Experimental use for 3D modeling*/
+#define USE_LV_TRIANGLE 1
 
+#if USE_LV_TRIANGLE != 0
 /**
- * Draw a triangle
+ *
  * @param points pointer to an array with 3 points
- * @param clip_area the triangle will be drawn only in this area
- * @param draw_dsc pointer to an initialized `lv_draw_rect_dsc_t` variable
+ * @param mask the triangle will be drawn only in this mask
+ * @param color color of the triangle
  */
-void lv_draw_triangle(const lv_point_t points[], const lv_area_t * clip, const lv_draw_rect_dsc_t * draw_dsc);
-
-/**
- * Draw a polygon. Only convex polygons are supported.
- * @param points an array of points
- * @param point_cnt number of points
- * @param clip_area polygon will be drawn only in this area
- * @param draw_dsc pointer to an initialized `lv_draw_rect_dsc_t` variable
- */
-void lv_draw_polygon(const lv_point_t points[], uint16_t point_cnt, const lv_area_t * mask,
-                     const lv_draw_rect_dsc_t * draw_dsc);
+void lv_draw_triangle(const lv_point_t * points, const lv_area_t * mask, lv_color_t color);
+#endif
 
 /**********************
  *      MACROS
  **********************/
+
 
 #ifdef __cplusplus
 } /* extern "C" */
