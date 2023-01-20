@@ -23,6 +23,9 @@
 #define LV_HOR_RES_MAX          (480)
 #define LV_VER_RES_MAX          (240)
 
+#define LV_MUTEX_GIVE() 
+#define LV_MUTEX_TAKE()
+
 /* Color depth:
  * - 1:  1 byte per pixel
  * - 8:  RGB332
