@@ -93,7 +93,7 @@ const char* convert_args(const std::string& arg) {
  */
 template <typename... Params>
 bool print(std::int16_t line, const char* fmt, Params... args) {
-	return false; //return pros::c::lcd_print(line, fmt, convert_args(args)...);
+	return pros::c::lcd_print(line, fmt, convert_args(args)...);
 }
 
 /**
