@@ -20,7 +20,6 @@
 #undef _GNU_SOURCE
 #include <stdarg.h>
 #include <string.h>
-#include "kapi.h"
 #include "pros/llemu.h"
 
 #define LCD_WIDTH	480 

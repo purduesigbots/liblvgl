@@ -14,6 +14,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 #include "pros/llemu.hpp"
+#include "pros/llemu.h"
+
 
 namespace pros {
 namespace lcd {

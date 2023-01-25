@@ -225,6 +225,14 @@ bool lcd_register_btn2_cb(lcd_btn_cb_fn_t cb);
  */
 uint8_t lcd_read_buttons(void);
 
+/*
+
+*/
+void lcd_set_background_color(lv_color_t color);
+
+
+void lcd_set_text_color(lv_color_t color);
+
 #ifdef __cplusplus
 }  // namespace c
 }  // namespace pros
