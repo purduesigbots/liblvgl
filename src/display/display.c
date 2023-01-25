@@ -81,6 +81,6 @@ void display_initialize(void) {
 
 	printf("Hello");
 
-	disp_daemon_task = task_create_static(disp_daemon, NULL, TASK_PRIORITY_MIN + 2, TASK_STACK_DEPTH_DEFAULT,
+	disp_daemon_task = task_create(disp_daemon, NULL, TASK_PRIORITY_MIN + 2, TASK_STACK_DEPTH_DEFAULT,
 	                                      "Display Daemon (PROS)");
 }
