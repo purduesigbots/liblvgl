@@ -18,9 +18,11 @@ static task_t disp_daemon_task;
 static void disp_daemon(void* ign) {
 	uint32_t time = millis();
 	while (true) {
-		printf("Daemon");
+		printf("Before task handler");
 		lv_task_handler();
+		printf("Before delay");
 		task_delay_until(&time, 2);
+		printf("Before tick");
 		lv_tick_inc(2);
 	}
 }
@@ -81,6 +83,6 @@ void display_initialize(void) {
 
 	printf("Hello");
 
-	disp_daemon_task = task_create_static(disp_daemon, NULL, TASK_PRIORITY_MIN + 2, TASK_STACK_DEPTH_DEFAULT,
+	disp_daemon_task = task_create(disp_daemon, NULL, TASK_PRIORITY_MIN + 2, TASK_STACK_DEPTH_DEFAULT,
 	                                      "Display Daemon (PROS)");
 }
