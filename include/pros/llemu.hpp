@@ -35,9 +35,9 @@ namespace lcd {
  * 
  */
 enum class Text_Align {
-	TEXT_ALIGN_LEFT = 0,
-	TEXT_ALIGN_CENTER = 1,
-	TEXT_ALIGN_RIGHT = 2
+	LEFT = 0,
+	CENTER = 1,
+	RIGHT = 2
 };
 /**
  * Checks whether the emulated three-button LCD has already been initialized.

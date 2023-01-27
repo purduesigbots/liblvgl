@@ -190,7 +190,7 @@ bool _lcd_vprint(lv_obj_t* lcd_dummy, int16_t line, const char* fmt, va_list arg
 		return false;
 	}
 
-	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
+	lcd_s_t* lcd = lcd_dummy->user_data;;
 
 	char buf[LINE_WIDTH];
 	memset(buf, ' ', LINE_WIDTH);
