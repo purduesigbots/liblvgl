@@ -54,6 +54,12 @@ typedef struct lcd_s {
 	                               // multitouch support)
 } lcd_s_t;
 
+typedef enum lcd_text_align_e {
+	LCD_TEXT_ALIGN_LEFT = 0,
+	LCD_TEXT_ALIGN_CENTER = 1,
+	LCD_TEXT_ALIGN_RIGHT = 2
+} text_align_e_t;
+
 #ifdef __cplusplus
 namespace c {
 #endif
@@ -224,6 +230,18 @@ bool lcd_register_btn2_cb(lcd_btn_cb_fn_t cb);
  * \return The buttons pressed as a bit mask
  */
 uint8_t lcd_read_buttons(void);
+/**
+ * Changes the alignment of text on the LCD background
+ * 
+ * \param alignment
+ * 		An enum specifying the alignment. Available alignments are:
+ * 			TEXT_ALIGN_LEFT
+ * 			TEXT_ALIGN_RIGHT
+ * 			TEXT_ALIGN_CENTER
+ * 
+ * \return void
+ */
+void lcd_set_text_align(text_align_e_t alignment);
 
 #ifdef __cplusplus
 }  // namespace c

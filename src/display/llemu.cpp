@@ -19,8 +19,6 @@ namespace pros {
 namespace lcd {
 using namespace pros::c;
 
-
-
 bool is_initialized(void) {
 	return lcd_is_initialized();
 }
@@ -40,6 +38,10 @@ bool clear_line(std::int16_t line) {
 	return lcd_clear_line(line);
 }
 
+void set_text_align(Text_Align alignment) {
+	lcd_set_text_align((text_align_e_t) alignment);
+}
+
 void register_btn0_cb(lcd_btn_cb_fn_t cb) {
 	lcd_register_btn0_cb(cb);
 }
@@ -53,8 +55,6 @@ std::uint8_t read_buttons(void) {
 	return lcd_read_buttons();
 }
 
-
 }  // namespace lcd
-
 
 }  // namespace pros

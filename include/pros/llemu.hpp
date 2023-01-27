@@ -31,6 +31,15 @@
 namespace pros {
 namespace lcd {
 /**
+ * @brief enum class to set text alignment
+ * 
+ */
+enum class Text_Align {
+	LEFT = 0,
+	CENTER = 1,
+	RIGHT = 2
+};
+/**
  * Checks whether the emulated three-button LCD has already been initialized.
  *
  * \return True if the LCD has been initialized or false if not.
@@ -177,6 +186,19 @@ void register_btn1_cb(lcd_btn_cb_fn_t cb);
  * A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
  */
 void register_btn2_cb(lcd_btn_cb_fn_t cb);
+
+/**
+ * Changes the alignment of text on the LCD background
+ * 
+ * \param alignment
+ * 		An enum specifying the alignment. Available alignments are:
+ * 			TEXT_ALIGN_LEFT
+ * 			TEXT_ALIGN_RIGHT
+ * 			TEXT_ALIGN_CENTER
+ * 
+ * \return void
+ */
+void set_text_align(Text_Align alignment);
 
 /**
  * Gets the button status from the emulated three-button LCD.
