@@ -48,12 +48,12 @@
 
 /* Default display refresh period.
  * Can be changed in the display driver (`lv_disp_drv_t`).*/
-#define LV_DISP_DEF_REFR_PERIOD      30      /*[ms]*/
+#define LV_DISP_DEF_REFR_PERIOD      40      /*[ms]*/
 
 /* Dot Per Inch: used to initialize default sizes.
  * E.g. a button with width = LV_DPI / 2 -> half inch wide
  * (Not so important, you can adjust it to modify default sizes and spaces)*/
-#define LV_DPI              130     /*[px]*/
+#define LV_DPI              126     /*[px]*/
 
 /* The the real width of the display changes some default values:
  * default object sizes, layout of examples, etc.
@@ -121,13 +121,13 @@ typedef int16_t lv_coord_t;
  * Can be changed in the Input device driver (`lv_indev_drv_t`)*/
 
 /* Input device read period in milliseconds */
-#define LV_INDEV_DEF_READ_PERIOD          30
+#define LV_INDEV_DEF_READ_PERIOD          50
 
 /* Drag threshold in pixels */
 #define LV_INDEV_DEF_DRAG_LIMIT           10
 
 /* Drag throw slow-down in [%]. Greater value -> faster slow-down */
-#define LV_INDEV_DEF_DRAG_THROW           10
+#define LV_INDEV_DEF_DRAG_THROW           20
 
 /* Long press time in milliseconds.
  * Time to send `LV_EVENT_LONG_PRESSED`) */
@@ -191,7 +191,7 @@ typedef void * lv_group_user_data_t;
 #endif  /*LV_USE_GROUP*/
 
 /* 1: Enable GPU interface*/
-#define LV_USE_GPU              1   /*Only enables `gpu_fill_cb` and `gpu_blend_cb` in the disp. drv- */
+#define LV_USE_GPU              0   /*Only enables `gpu_fill_cb` and `gpu_blend_cb` in the disp. drv- */
 #define LV_USE_GPU_STM32_DMA2D  0
 /*If enabling LV_USE_GPU_STM32_DMA2D, LV_GPU_DMA2D_CMSIS_INCLUDE must be defined to include path of CMSIS header of target processor
 e.g. "stm32f769xx.h" or "stm32f429xx.h" */
@@ -218,7 +218,7 @@ typedef void * lv_fs_drv_user_data_t;
 #endif
 
 /*1: Add a `user_data` to drivers and objects*/
-#define LV_USE_USER_DATA        0
+#define LV_USE_USER_DATA        1
 
 /*1: Show CPU usage and FPS count in the right bottom corner*/
 #define LV_USE_PERF_MONITOR     0
@@ -651,7 +651,7 @@ typedef void * lv_obj_user_data_t;
 #endif
 
 /*LED (dependencies: -)*/
-#define LV_USE_LED      0
+#define LV_USE_LED      1
 #if LV_USE_LED
 #  define LV_LED_BRIGHT_MIN  120      /*Minimal brightness*/
 #  define LV_LED_BRIGHT_MAX  255     /*Maximal brightness*/

@@ -21,7 +21,7 @@ USE_PACKAGE:=1
 
 # Add libraries you do not wish to include in the cold image here
 # EXCLUDE_COLD_LIBRARIES:= $(FWDIR)/your_library.a
-EXCLUDE_COLD_LIBRARIES:= 
+EXCLUDE_COLD_LIBRARIES:=
 
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 IS_LIBRARY:=1
@@ -43,7 +43,7 @@ TEMPLATE_FILES=$(INCDIR)/display $(INCDIR)/pros/llemu.*
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-TEMPLATE_KERNEL_SEMVER:=">=4.0.0"
+TEMPLATE_KERNEL_SEMVER:=">=3.0.0"
 
 template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)

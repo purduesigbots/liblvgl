@@ -54,5 +54,7 @@ void register_btn2_cb(lcd_btn_cb_fn_t cb) {
 std::uint8_t read_buttons(void) {
 	return lcd_read_buttons();
 }
+
 }  // namespace lcd
+
 }  // namespace pros
