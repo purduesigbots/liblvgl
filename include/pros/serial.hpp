@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -24,13 +24,14 @@
 
 #include <cstdint>
 #include "pros/serial.h"
+#include "pros/device.hpp"
 
 namespace pros {
 /**
  * \ingroup cpp-serial
  *  @{
  */
-class Serial {
+class Serial : public Device {
 	/**
 	 * \addtogroup cpp-serial
 	 *  @{
@@ -131,13 +132,6 @@ class Serial {
 	virtual std::int32_t get_write_free() const;
 
 	/**
-	 * Gets the port number of the serial port.
-	 *
-	 * \return The serial port's port number.
-	 */
-	std::uint8_t get_port() const;
-
-	/**
 	 * Reads the next byte avaliable in the port's input buffer without removing it.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -228,8 +222,13 @@ class Serial {
 	 */
 	virtual std::int32_t write(std::uint8_t* buffer, std::int32_t length) const;
 
+	/**
+     * Returns the type of device
+     *
+	 */
+	pros::DeviceType get_type() const;
+
 	private:
-	const std::uint8_t _port;
 	///@}
 };
 
