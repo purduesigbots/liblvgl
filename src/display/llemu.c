@@ -86,9 +86,8 @@ static lv_obj_t* _create_lcd_dummy(void) {
 	lv_obj_set_style_pad_all(lcd_dummy, 0, LV_STATE_DEFAULT);
 	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
 
-	lv_obj_set_style_bg_color(lcd_dummy, lv_color_hex(0x404040), LV_STATE_DEFAULT);
-	lv_obj_set_style_border_color(lcd_dummy, lv_color_hex(0x404040), LV_STATE_DEFAULT);
-
+	lv_obj_set_style_bg_color(lcd_dummy, lv_color_hex(0x808080), LV_STATE_DEFAULT);
+	lv_obj_set_style_border_color(lcd_dummy, lv_color_hex(0x808080), LV_STATE_DEFAULT);
 	return lcd_dummy;
 }
 
@@ -100,6 +99,10 @@ static lv_obj_t* _create_frame(lv_obj_t* lcd_dummy) {
 	lv_obj_set_flex_flow(frame, LV_FLEX_FLOW_COLUMN);
 	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
 
+	// set the frame's border color
+	lv_obj_set_style_border_color(frame, lv_color_hex(0x808080), LV_STATE_DEFAULT);
+
+	// set frame color of the area around the frame 
 	lv_obj_set_style_bg_color(frame, lv_color_hex(0x808080), LV_STATE_DEFAULT);
 
 	return frame;
@@ -114,7 +117,7 @@ static lv_obj_t* _create_screen(lv_obj_t* frame) {
 	lv_obj_add_style(screen, &screen_style, LV_PART_MAIN);
 	lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
 
-	lv_obj_set_style_border_color(screen, lv_color_hex(0x404040), LV_STATE_DEFAULT);
+	lv_obj_set_style_border_color(screen, lv_color_hex(0x606060), LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen, lv_color_hex(0x202020), LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(screen, &pros_font_dejavu_mono_20, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
@@ -131,6 +134,7 @@ static lv_obj_t* _create_btn_container(lv_obj_t* frame) {
 	lv_obj_align(btn_container, LV_ALIGN_BOTTOM_MID, 0, -20);
 	lv_obj_add_style(btn_container, &lv_style_transp_fit, LV_PART_MAIN);
 	lv_obj_set_style_bg_color(btn_container, lv_color_hex(0xA0A0A0), LV_STATE_DEFAULT);
+	lv_obj_set_style_border_color(btn_container, lv_color_hex(0x808080), LV_STATE_DEFAULT);
 	lv_obj_set_style_border_width(btn_container, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_pad_all(btn_container, LV_STATE_DEFAULT, 0);
 	lv_obj_set_flex_flow(btn_container, LV_FLEX_FLOW_ROW);
