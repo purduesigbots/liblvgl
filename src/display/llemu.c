@@ -76,12 +76,18 @@ static void button_event_handler(lv_event_t* event) {
     }
 }
 
+const uint32_t COL_BTN_NORMAL = 0x0000A0;
+const uint32_t COL_BTN_PRESSED = 0x000040;
+
 static lv_obj_t* _create_lcd_dummy(void) {
 	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act());
 
 	lv_obj_set_size(lcd_dummy, LV_HOR_RES, LV_VER_RES);
 	lv_obj_set_style_pad_all(lcd_dummy, 0, LV_STATE_DEFAULT);
 	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
+
+	lv_obj_set_style_bg_color(lcd_dummy, lv_color_hex(0x404040), LV_STATE_DEFAULT);
+	lv_obj_set_style_border_color(lcd_dummy, lv_color_hex(0x404040), LV_STATE_DEFAULT);
 
 	return lcd_dummy;
 }
@@ -94,6 +100,8 @@ static lv_obj_t* _create_frame(lv_obj_t* lcd_dummy) {
 	lv_obj_set_flex_flow(frame, LV_FLEX_FLOW_COLUMN);
 	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
 
+	lv_obj_set_style_bg_color(frame, lv_color_hex(0x808080), LV_STATE_DEFAULT);
+
 	return frame;
 }
 
@@ -102,24 +110,23 @@ static lv_obj_t* _create_screen(lv_obj_t* frame) {
 
 	lv_obj_set_size(screen, 440, 160);
 	lv_obj_align(screen, LV_ALIGN_CENTER, 0, 19);
+	lv_obj_set_style_pad_all(screen, 2, LV_PART_MAIN);
 	lv_obj_add_style(screen, &screen_style, LV_PART_MAIN);
 	lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
+
+	lv_obj_set_style_border_color(screen, lv_color_hex(0x404040), LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(screen, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(screen, lv_color_hex(0x202020), LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(screen, &pros_font_dejavu_mono_20, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
 
 	return screen;
 }
 
-static lv_obj_t* _create_lcd(void) {
+static lv_obj_t* _create_btn_container(lv_obj_t* frame) {
     static lv_style_t lv_style_transp_fit;
 
-	lv_obj_set_style_pad_all(lv_scr_act(), -20, LV_STATE_DEFAULT);
-	lv_obj_set_scrollbar_mode(lv_scr_act(), LV_SCROLLBAR_MODE_OFF);
-	lv_obj_clear_flag(lv_scr_act(), LV_OBJ_FLAG_SCROLLABLE);
-
-	lv_obj_t* lcd_dummy = _create_lcd_dummy();
-	lv_obj_t* frame = _create_frame(lcd_dummy);
-	lv_obj_t* screen = _create_screen(frame);
-
 	lv_obj_t* btn_container = lv_obj_create(frame);
+
 	lv_obj_set_size(btn_container, 440, 30);
 	lv_obj_align(btn_container, LV_ALIGN_BOTTOM_MID, 0, -20);
 	lv_obj_add_style(btn_container, &lv_style_transp_fit, LV_PART_MAIN);
@@ -129,53 +136,70 @@ static lv_obj_t* _create_lcd(void) {
 	lv_obj_set_flex_align(btn_container, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_AROUND);
 	lv_obj_clear_flag(btn_container, LV_OBJ_FLAG_SCROLLABLE);
 
+	return btn_container;
+}
+
+// even though all 3 buttons use the same lv_style_t object, for some reason it 
+// is not possible to update one and expect all 3 buttons to reference the same 
+// lv_style_t object.
+static lv_obj_t* _create_btn_left(lv_obj_t* btn_container) {
 	lv_obj_t* btn_left = lv_btn_create(btn_container);
 	lv_obj_set_width(btn_left, 80);
 	lv_obj_align(btn_left, LV_ALIGN_LEFT_MID, 0, 0);
 	lv_obj_add_style(btn_left, &button_style, LV_PART_MAIN);
     lv_obj_add_event_cb(btn_left, button_event_handler, LV_EVENT_ALL, NULL);
+	
+	lv_obj_set_style_bg_color(btn_left, lv_color_hex(COL_BTN_NORMAL),  LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(btn_left, lv_color_hex(COL_BTN_PRESSED), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_grad_dir(btn_left, LV_STATE_DEFAULT | LV_STATE_PRESSED, LV_GRAD_DIR_VER);
 
+	return btn_left;
+}
+
+static lv_obj_t* _create_btn_center(lv_obj_t* btn_container) {
 	lv_obj_t* btn_center = lv_btn_create(btn_container);
+
 	lv_obj_set_width(btn_center, 80);
 	lv_obj_align(btn_center, LV_ALIGN_CENTER, 0, 0);
 	lv_obj_add_style(btn_center, &button_style, LV_PART_MAIN);
     lv_obj_add_event_cb(btn_center, button_event_handler, LV_EVENT_ALL, NULL);
 
+	lv_obj_set_style_bg_color(btn_center, lv_color_hex(COL_BTN_NORMAL),  LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(btn_center, lv_color_hex(COL_BTN_PRESSED), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_grad_dir(btn_center, LV_STATE_DEFAULT | LV_STATE_PRESSED, LV_GRAD_DIR_VER);
+
+	return btn_center;
+}
+
+static lv_obj_t* _create_btn_right(lv_obj_t* btn_container) {
 	lv_obj_t* btn_right = lv_btn_create(btn_container);
 	lv_obj_set_width(btn_right, 80);
 	lv_obj_align(btn_right, LV_ALIGN_RIGHT_MID, 0, 0);
 	lv_obj_add_style(btn_right, &button_style, LV_PART_MAIN);
 	lv_obj_add_event_cb(btn_right, button_event_handler, LV_EVENT_ALL, NULL);
 
-	lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0xA0A0A0), LV_STATE_DEFAULT);
-
-	lv_obj_set_style_bg_color(frame, lv_color_hex(0x808080), LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(frame, lv_color_hex(0xC0C0C0), LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(frame, LV_STATE_DEFAULT, LV_GRAD_DIR_VER);
-
-    lv_obj_set_style_bg_color(screen, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(screen, lv_color_hex(0x323D13), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen, &pros_font_dejavu_mono_20, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
-
-    //even though all 3 buttons use the same lv_style_t object, for some reason it is not possible to update one and
-	//expect all 3 buttons to reference the same lv_style_t object.
-	lv_obj_set_style_bg_color(btn_left, lv_color_hex(0x808080),  LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(btn_left, lv_color_hex(0x303030), LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(btn_left, lv_color_hex(0x0A0A0A), LV_STATE_PRESSED);
-    lv_obj_set_style_bg_grad_color(btn_left, lv_color_hex(0x808080), LV_STATE_PRESSED);
-    lv_obj_set_style_bg_grad_dir(btn_left, LV_STATE_DEFAULT | LV_STATE_PRESSED, LV_GRAD_DIR_VER);
-
-	lv_obj_set_style_bg_color(btn_right, lv_color_hex(0x808080),  LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(btn_right, lv_color_hex(0x303030), LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(btn_right, lv_color_hex(0x0A0A0A), LV_STATE_PRESSED);
-    lv_obj_set_style_bg_grad_color(btn_right, lv_color_hex(0x808080), LV_STATE_PRESSED);
+	lv_obj_set_style_bg_color(btn_right, lv_color_hex(COL_BTN_NORMAL),  LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(btn_right, lv_color_hex(COL_BTN_PRESSED), LV_STATE_PRESSED);
     lv_obj_set_style_bg_grad_dir(btn_right, LV_STATE_DEFAULT | LV_STATE_PRESSED, LV_GRAD_DIR_VER);
 
-	lv_obj_set_style_bg_color(btn_center, lv_color_hex(0x808080),  LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(btn_center, lv_color_hex(0x303030), LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(btn_center, lv_color_hex(0x0A0A0A), LV_STATE_PRESSED);
-    lv_obj_set_style_bg_grad_color(btn_center, lv_color_hex(0x808080), LV_STATE_PRESSED);
-    lv_obj_set_style_bg_grad_dir(btn_center, LV_STATE_DEFAULT | LV_STATE_PRESSED, LV_GRAD_DIR_VER);
+	return btn_right;
+}
+
+static lv_obj_t* _create_lcd(void) {
+	// Set up the current screen
+	lv_obj_set_style_pad_all(lv_scr_act(), 0, LV_STATE_DEFAULT);
+	lv_obj_set_scrollbar_mode(lv_scr_act(), LV_SCROLLBAR_MODE_OFF);
+	lv_obj_clear_flag(lv_scr_act(), LV_OBJ_FLAG_SCROLLABLE);
+	lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x404040), LV_STATE_DEFAULT);
+
+	// Create and setup all the LVGL objects that we need
+	lv_obj_t* lcd_dummy = _create_lcd_dummy();
+	lv_obj_t* frame = _create_frame(lcd_dummy);
+	lv_obj_t* screen = _create_screen(frame);
+	lv_obj_t* btn_container = _create_btn_container(frame);
+	lv_obj_t* btn_left = _create_btn_left(btn_container);
+	lv_obj_t* btn_center = _create_btn_center(btn_container);
+	lv_obj_t* btn_right = _create_btn_right(btn_container);
 
 	lcd_s_t* lcd = (lcd_s_t*)malloc(sizeof(lcd_s_t));
 	lcd_dummy->user_data = lcd;
