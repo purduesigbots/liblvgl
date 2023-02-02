@@ -76,8 +76,8 @@ static void button_event_handler(lv_event_t* event) {
     }
 }
 
-const uint32_t COL_BTN_NORMAL = 0x0000A0;
-const uint32_t COL_BTN_PRESSED = 0x000040;
+const uint32_t COL_BTN_NORMAL = 0x202020;
+const uint32_t COL_BTN_PRESSED = 0x808080;
 
 static lv_obj_t* _create_lcd_dummy(void) {
 	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act());
@@ -130,6 +130,7 @@ static lv_obj_t* _create_btn_container(lv_obj_t* frame) {
 	lv_obj_set_size(btn_container, 440, 30);
 	lv_obj_align(btn_container, LV_ALIGN_BOTTOM_MID, 0, -20);
 	lv_obj_add_style(btn_container, &lv_style_transp_fit, LV_PART_MAIN);
+	lv_obj_set_style_bg_color(btn_container, lv_color_hex(0xA0A0A0), LV_STATE_DEFAULT);
 	lv_obj_set_style_border_width(btn_container, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_pad_all(btn_container, LV_STATE_DEFAULT, 0);
 	lv_obj_set_flex_flow(btn_container, LV_FLEX_FLOW_ROW);
