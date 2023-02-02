@@ -76,6 +76,27 @@ static void button_event_handler(lv_event_t* event) {
     }
 }
 
+static lv_obj_t* _create_lcd_dummy(void) {
+	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act());
+
+	lv_obj_set_size(lcd_dummy, LV_HOR_RES, LV_VER_RES);
+	lv_obj_set_style_pad_all(lcd_dummy, 0, LV_STATE_DEFAULT);
+	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
+
+	return lcd_dummy;
+}
+
+static lv_obj_t* _create_frame(lv_obj_t* lcd_dummy) {
+	lv_obj_t* frame = lv_obj_create(lcd_dummy);
+
+	lv_obj_set_size(frame, LV_HOR_RES, LV_VER_RES);
+	lv_obj_add_style(frame, &frame_style, LV_STATE_DEFAULT);
+	lv_obj_set_flex_flow(frame, LV_FLEX_FLOW_COLUMN);
+	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
+
+	return frame;
+}
+
 static lv_obj_t* _create_lcd(void) {
     static lv_style_t lv_style_transp_fit;
 
@@ -83,16 +104,8 @@ static lv_obj_t* _create_lcd(void) {
 	lv_obj_set_scrollbar_mode(lv_scr_act(), LV_SCROLLBAR_MODE_OFF);
 	lv_obj_clear_flag(lv_scr_act(), LV_OBJ_FLAG_SCROLLABLE);
 
-	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act());
-	lv_obj_set_size(lcd_dummy, LV_HOR_RES, LV_VER_RES);
-	lv_obj_set_style_pad_all(lcd_dummy, 0, LV_STATE_DEFAULT);
-	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
-
-	lv_obj_t* frame = lv_obj_create(lcd_dummy);
-	lv_obj_set_size(frame, LV_HOR_RES, LV_VER_RES);
-	lv_obj_add_style(frame, &frame_style, LV_STATE_DEFAULT);
-	lv_obj_set_flex_flow(frame, LV_FLEX_FLOW_COLUMN);
-	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
+	lv_obj_t* lcd_dummy = _create_lcd_dummy();
+	lv_obj_t* frame = _create_frame(lcd_dummy);
 
 	lv_obj_t* screen = lv_obj_create(frame);
 	lv_obj_set_size(screen, 440, 160);
@@ -128,7 +141,7 @@ static lv_obj_t* _create_lcd(void) {
 	lv_obj_add_style(btn_right, &button_style, LV_PART_MAIN);
 	lv_obj_add_event_cb(btn_right, button_event_handler, LV_EVENT_ALL, NULL);
 
-	lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x000000), LV_STATE_DEFAULT);
+	lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0xA0A0A0), LV_STATE_DEFAULT);
 
 	lv_obj_set_style_bg_color(frame, lv_color_hex(0x808080), LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_color(frame, lv_color_hex(0xC0C0C0), LV_STATE_DEFAULT);
