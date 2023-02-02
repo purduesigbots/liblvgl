@@ -245,6 +245,28 @@ LV_FONT_DECLARE(lv_font_unscii_16)
 LV_FONT_CUSTOM_DECLARE
 #endif
 
+#if USE_PROS_FONT_DEJAVU_MONO_10_LATIN_SUP
+LV_FONT_DECLARE(pros_font_dejavu_mono_10_latin_sup);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_20
+LV_FONT_DECLARE(pros_font_dejavu_mono_20);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_20_LATIN_SUP
+LV_FONT_DECLARE(pros_font_dejavu_mono_20_latin_sup);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_30
+LV_FONT_DECLARE(pros_font_dejavu_mono_30);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_30_LATIN_SUP
+LV_FONT_DECLARE(pros_font_dejavu_mono_30_latin_sup);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_40
+LV_FONT_DECLARE(pros_font_dejavu_mono_40);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_40_LATIN_SUP
+LV_FONT_DECLARE(pros_font_dejavu_mono_40_latin_sup);
+#endif
+
 /**
  * Just a wrapper around LV_FONT_DEFAULT because it might be more convenient to use a function in some cases
  * @return  pointer to LV_FONT_DEFAULT

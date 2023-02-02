@@ -136,7 +136,7 @@ static lv_obj_t* _create_lcd(void) {
 
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen, lv_color_hex(0x323D13), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen, &lv_font_unscii_16, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
+    lv_obj_set_style_text_font(screen, &pros_font_dejavu_mono_20, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
 
     //even though all 3 buttons use the same lv_style_t object, for some reason it is not possible to update one and
 	//expect all 3 buttons to reference the same lv_style_t object.
