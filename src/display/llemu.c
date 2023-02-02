@@ -97,21 +97,27 @@ static lv_obj_t* _create_frame(lv_obj_t* lcd_dummy) {
 	return frame;
 }
 
+static lv_obj_t* _create_screen(lv_obj_t* frame) {
+	lv_obj_t* screen = lv_obj_create(frame);
+
+	lv_obj_set_size(screen, 440, 160);
+	lv_obj_align(screen, LV_ALIGN_CENTER, 0, 19);
+	lv_obj_add_style(screen, &screen_style, LV_PART_MAIN);
+	lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
+
+	return screen;
+}
+
 static lv_obj_t* _create_lcd(void) {
     static lv_style_t lv_style_transp_fit;
 
-	lv_obj_set_style_pad_all(lv_scr_act(), 0, LV_STATE_DEFAULT);
+	lv_obj_set_style_pad_all(lv_scr_act(), -20, LV_STATE_DEFAULT);
 	lv_obj_set_scrollbar_mode(lv_scr_act(), LV_SCROLLBAR_MODE_OFF);
 	lv_obj_clear_flag(lv_scr_act(), LV_OBJ_FLAG_SCROLLABLE);
 
 	lv_obj_t* lcd_dummy = _create_lcd_dummy();
 	lv_obj_t* frame = _create_frame(lcd_dummy);
-
-	lv_obj_t* screen = lv_obj_create(frame);
-	lv_obj_set_size(screen, 440, 160);
-	lv_obj_align(screen, LV_ALIGN_CENTER, 0, 19);
-	lv_obj_add_style(screen, &screen_style, LV_PART_MAIN);
-	lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
+	lv_obj_t* screen = _create_screen(frame);
 
 	lv_obj_t* btn_container = lv_obj_create(frame);
 	lv_obj_set_size(btn_container, 440, 30);
