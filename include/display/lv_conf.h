@@ -442,17 +442,13 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 #define LV_FONT_SUBPX_BGR    0
 
 /* PROS adds the mono variant of DejaVu sans */
-#define USE_PROS_FONT_DEJAVU_MONO_10 4
-#define USE_PROS_FONT_DEJAVU_MONO_10_LATIN_SUP 4
+#define USE_PROS_FONT_DEJAVU_MONO_10 1
 
-#define USE_PROS_FONT_DEJAVU_MONO_20 4
-#define USE_PROS_FONT_DEJAVU_MONO_LATIN_SUP_20 4
+#define USE_PROS_FONT_DEJAVU_MONO_18 1 // llemu font
 
 #define USE_PROS_FONT_DEJAVU_MONO_30 0
-#define USE_PROS_FONT_DEJAVU_MONO_30_LATIN_SUP 0
 
 #define USE_PROS_FONT_DEJAVU_MONO_40 0
-#define USE_PROS_FONT_DEJAVU_MONO_40_LATIN_SUP 0
 
 #endif
 

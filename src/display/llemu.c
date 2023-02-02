@@ -120,7 +120,7 @@ static lv_obj_t* _create_screen(lv_obj_t* frame) {
 	lv_obj_set_style_border_color(screen, lv_color_hex(0x606060), LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(screen, lv_color_hex(0x202020), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(screen, &pros_font_dejavu_mono_20, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
+    lv_obj_set_style_text_font(screen, &pros_font_dejavu_mono_18, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
 
 	return screen;
 }
