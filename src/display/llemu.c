@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include "pros/llemu.h"
 
-#define LINE_WIDTH 33
+#define LINE_WIDTH 40
 
 static lv_style_t frame_style;
 static lv_style_t screen_style;
@@ -112,7 +112,7 @@ static lv_obj_t* _create_screen(lv_obj_t* frame) {
 	lv_obj_t* screen = lv_obj_create(frame);
 
 	lv_obj_set_size(screen, 440, 160);
-	lv_obj_align(screen, LV_ALIGN_CENTER, 0, 19);
+	lv_obj_align(screen, LV_ALIGN_CENTER, 0, 20);
 	lv_obj_set_style_pad_all(screen, 2, LV_PART_MAIN);
 	lv_obj_add_style(screen, &screen_style, LV_PART_MAIN);
 	lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
@@ -222,7 +222,7 @@ static lv_obj_t* _create_lcd(void) {
 	for (size_t i = 0; i < 8; i++) {
 		lcd->lcd_text[i] = lv_label_create(lcd->screen);
 		lv_obj_set_width(lcd->lcd_text[i], 426);
-		lv_obj_align(lcd->lcd_text[i], LV_ALIGN_TOP_LEFT, 5, 20 * i);
+		lv_obj_align(lcd->lcd_text[i], LV_ALIGN_TOP_LEFT, 5, 18 * i);
 		// lv_label_set_align(lcd->lcd_text[i], LV_TEXT_ALIGN_LEFT);
 		lv_label_set_long_mode(lcd->lcd_text[i], LV_LABEL_LONG_CLIP);
 		// lv_label_set_no_break(lcd->lcd_text[i], true); 
