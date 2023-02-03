@@ -43,7 +43,7 @@ TEMPLATE_FILES=$(INCDIR)/display $(INCDIR)/pros/llemu.*
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-TEMPLATE_KERNEL_SEMVER:=">=3.0.0"
+TEMPLATE_KERNEL_SEMVER:=">=4.0.0"
 
 template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
