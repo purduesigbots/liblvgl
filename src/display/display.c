@@ -18,17 +18,17 @@ static task_t disp_daemon_task;
 static void disp_daemon(void* ign) {
 	uint32_t time = millis();
 	while (true) {
-		printf("Before task handler");
+		printf("Before task handler\n");
 		lv_task_handler();
-		printf("Before delay");
+		printf("Before delay\n");
 		task_delay_until(&time, 2);
-		printf("Before tick");
+		printf("Before tick\n");
 		lv_tick_inc(2);
 	}
 }
 
 static void lvgl_display_flush(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_t* color) {
-    if (screen_copy_area(area->x1, area->y1, area->x2, area->y2, (uint32_t*)color, area->x2 - area->x1 + 1) != 1) {
+    if (vexDisplayCopyRect(area->x1, area->y1, area->x2, area->y2, (uint32_t*)color, area->x2 - area->x1 + 1) != 1) {
         errno = PROS_ERR;
 		printf("Not Flusehd!");
     } else {

@@ -61,10 +61,12 @@ void lv_task_init(void)
  * Call it  periodically to handle lv_tasks.
  */
 
-LV_ATTRIBUTE_TASK_HANDLER static void lv_task_handler(void)
+LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
 {
     LV_LOG_TRACE("lv_task_handler started");
     bool task_run = __atomic_load_n(&lv_task_run, __ATOMIC_ACQUIRE);
+
+    printf("In handler, after task run\n");
 
     if(task_run == false)
     {
@@ -94,23 +96,32 @@ LV_ATTRIBUTE_TASK_HANDLER static void lv_task_handler(void)
     lv_task_t * task_interrupter = NULL;
     lv_task_t * next;
     bool end_flag;
+
+    printf("In handler, before loop.\n");
+
     do {
         end_flag = true;
         task_deleted = false;
         task_created = false;
         LV_GC_ROOT(_lv_task_act) = lv_ll_get_head(&LV_GC_ROOT(_lv_task_ll));
+        printf("In handler, before while\n");
         while(LV_GC_ROOT(_lv_task_act)) {
             /* The task might be deleted if it runs only once ('once = 1')
              * So get next element until the current is surely valid*/
-            next = lv_ll_get_next(&LV_GC_ROOT(_lv_task_ll), LV_GC_ROOT(_lv_task_act));
+            //next = lv_ll_get_next(&LV_GC_ROOT(_lv_task_ll), LV_GC_ROOT(_lv_task_act));
+
+            printf("%x\n", next);
+            printf("In handler, after next\n");
 
             /*We reach priority of the turned off task. There is nothing more to do.*/
             if(((lv_task_t *)LV_GC_ROOT(_lv_task_act))->prio == LV_TASK_PRIO_OFF) {
+                printf("In handler, if1\n");
                 break;
             }
 
             /*Here is the interrupter task. Don't execute it again.*/
             if(LV_GC_ROOT(_lv_task_act) == task_interrupter) {
+                printf("In root\n");
                 task_interrupter = NULL;     /*From this point only task after the interrupter comes, so the interrupter is not interesting anymore*/
                 LV_GC_ROOT(_lv_task_act) = next;
                 continue;                   /*Load the next task*/
@@ -119,16 +130,22 @@ LV_ATTRIBUTE_TASK_HANDLER static void lv_task_handler(void)
             /*Just try to run the tasks with highest priority.*/
             if(((lv_task_t *)LV_GC_ROOT(_lv_task_act))->prio == LV_TASK_PRIO_HIGHEST) {
                 lv_task_exec(LV_GC_ROOT(_lv_task_act));
+                printf("In handler, if3\n");
             }
+
             /*Tasks with higher priority then the interrupted shall be run in every case*/
             else if(task_interrupter) {
+                printf("In else if\n");
                 if(((lv_task_t *)LV_GC_ROOT(_lv_task_act))->prio > task_interrupter->prio) {
+                    printf("In else if if\n");
                     if(lv_task_exec(LV_GC_ROOT(_lv_task_act))) {
                         task_interrupter = LV_GC_ROOT(_lv_task_act);  /*Check all tasks again from the highest priority */
                         end_flag = false;
+                        printf("In handler, if2\n");
                         break;
                     }
                 }
+                printf("In handler, elseif3\n");
             }
             /* It is no interrupter task or we already reached it earlier.
              * Just run the remaining tasks*/
@@ -136,16 +153,20 @@ LV_ATTRIBUTE_TASK_HANDLER static void lv_task_handler(void)
                 if(lv_task_exec(LV_GC_ROOT(_lv_task_act))) {
                     task_interrupter = LV_GC_ROOT(_lv_task_act);  /*Check all tasks again from the highest priority */
                     end_flag = false;
+                    printf("In handler, else in if\n");
                     break;
                 }
+                printf("In handler, else\n");
             }
 
             if(task_deleted) break;     /*If a task was deleted then this or the next item might be corrupted*/
             if(task_created) break;     /*If a task was deleted then this or the next item might be corrupted*/
 
-            LV_GC_ROOT(_lv_task_act) = next;         /*Load the next task*/
+            //LV_GC_ROOT(_lv_task_act) = next;         /*Load the next task*/
         }
     } while(!end_flag);
+
+    printf("In handler, after loop\n");
 
     busy_time += lv_tick_elaps(handler_start);
     uint32_t idle_period_time = lv_tick_elaps(idle_period_start);
@@ -162,6 +183,8 @@ LV_ATTRIBUTE_TASK_HANDLER static void lv_task_handler(void)
     __atomic_store_n(&task_handler_mutex, false, __ATOMIC_RELEASE);
 
     LV_LOG_TRACE("lv_task_handler ready");
+
+    printf("In handler, handler ready\n");
 }
 
 /**
