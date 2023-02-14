@@ -108,10 +108,11 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
         while(LV_GC_ROOT(_lv_task_act)) {
             /* The task might be deleted if it runs only once ('once = 1')
              * So get next element until the current is surely valid*/
-            //next = lv_ll_get_next(&LV_GC_ROOT(_lv_task_ll), LV_GC_ROOT(_lv_task_act));
+            next = lv_ll_get_next(&LV_GC_ROOT(_lv_task_ll), LV_GC_ROOT(_lv_task_act));
 
-            printf("%x\n", next);
+            printf("next 1: %x\n", next);
             printf("In handler, after next\n");
+            printf("lv_gc_root1: %x\n", LV_GC_ROOT(_lv_task_act));
 
             /*We reach priority of the turned off task. There is nothing more to do.*/
             if(((lv_task_t *)LV_GC_ROOT(_lv_task_act))->prio == LV_TASK_PRIO_OFF) {
@@ -127,10 +128,13 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
                 continue;                   /*Load the next task*/
             }
 
+            printf("Highest prio1: %x\n", LV_TASK_PRIO_HIGHEST);
+            printf("Task interrupter1: %x\n", task_interrupter);
+
             /*Just try to run the tasks with highest priority.*/
             if(((lv_task_t *)LV_GC_ROOT(_lv_task_act))->prio == LV_TASK_PRIO_HIGHEST) {
-                lv_task_exec(LV_GC_ROOT(_lv_task_act));
                 printf("In handler, if3\n");
+                lv_task_exec(LV_GC_ROOT(_lv_task_act));  
             }
 
             /*Tasks with higher priority then the interrupted shall be run in every case*/
@@ -147,22 +151,30 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
                 }
                 printf("In handler, elseif3\n");
             }
+
             /* It is no interrupter task or we already reached it earlier.
              * Just run the remaining tasks*/
             else {
+                printf("In handler1, else\n");
                 if(lv_task_exec(LV_GC_ROOT(_lv_task_act))) {
+                    printf("In handler, else in if\n");
                     task_interrupter = LV_GC_ROOT(_lv_task_act);  /*Check all tasks again from the highest priority */
                     end_flag = false;
-                    printf("In handler, else in if\n");
                     break;
                 }
-                printf("In handler, else\n");
+                printf("In handler2, else\n");
             }
+
+
 
             if(task_deleted) break;     /*If a task was deleted then this or the next item might be corrupted*/
             if(task_created) break;     /*If a task was deleted then this or the next item might be corrupted*/
 
-            //LV_GC_ROOT(_lv_task_act) = next;         /*Load the next task*/
+            printf("lv_gc_root2: %x\n", LV_GC_ROOT(_lv_task_act));
+            LV_GC_ROOT(_lv_task_act) = next;         /*Load the next task*/
+            printf("Highest prio2: %x\n", LV_TASK_PRIO_HIGHEST);
+            printf("Task interrupter2: %x\n", task_interrupter);
+            printf("lv_gc_root3: %x\n", LV_GC_ROOT(_lv_task_act));
         }
     } while(!end_flag);
 
@@ -342,15 +354,27 @@ uint8_t lv_task_get_idle(void)
  */
 static bool lv_task_exec(lv_task_t * lv_task_p)
 {
+    printf("In lv_task_exec\n");
+
     bool exec = false;
 
     /*Execute if at least 'period' time elapsed*/
     uint32_t elp = lv_tick_elaps(lv_task_p->last_run);
+    printf("In lv_task_exec, after elp\n");
     if(elp >= lv_task_p->period) {
+        printf("In if1\n");
         lv_task_p->last_run = lv_tick_get();
+        printf("After lv tick get\n");
         task_deleted = false;
         task_created = false;
+        printf("param: %x\n", lv_task_p->param);
+       // printf("task: %x\n", task(lv_task_p->param));
+        printf("lv_task_p: %x\n", lv_task_p);
+
         lv_task_p->task(lv_task_p->param);
+        printf("After lv task p\n");
+
+        printf("In lv_task_exec, after if1\n");
 
         /*Delete if it was a one shot lv_task*/
         if(task_deleted == false) {			/*The task might be deleted by itself as well*/
@@ -358,6 +382,7 @@ static bool lv_task_exec(lv_task_t * lv_task_p)
         	    lv_task_del(lv_task_p);
         	}
         }
+        printf("In lv_task_exec, after if2\n");
         exec = true;
     }
 
