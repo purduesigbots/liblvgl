@@ -368,7 +368,7 @@ static bool lv_task_exec(lv_task_t * lv_task_p)
         task_deleted = false;
         task_created = false;
         printf("param: %x\n", lv_task_p->param);
-       // printf("task: %x\n", task(lv_task_p->param));
+        //printf("task: %x\n", lv_task_p->task(lv_task_p->param));
         printf("lv_task_p: %x\n", lv_task_p);
 
         lv_task_p->task(lv_task_p->param);
