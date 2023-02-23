@@ -173,6 +173,8 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
  */
 lv_task_t * lv_task_create(void (*task)(void *), uint32_t period, lv_task_prio_t prio, void * param)
 {
+    printf("Creating a new lvgl task:\n    %x, %i, %i, %x", task, period, prio, param);
+
     lv_task_t * new_lv_task = NULL;
     lv_task_t * tmp;
 
@@ -326,6 +328,7 @@ static bool lv_task_exec(lv_task_t * lv_task_p)
         lv_task_p->last_run = lv_tick_get();
         task_deleted = false;
         task_created = false;
+
         lv_task_p->task(lv_task_p->param);
 
         /*Delete if it was a one shot lv_task*/
