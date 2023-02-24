@@ -174,6 +174,8 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
  */
 lv_task_t * lv_task_create(void (*task)(void *), uint32_t period, lv_task_prio_t prio, void * param)
 {
+    printf("Creating a new lvgl task:\n    %x, %i, %i, %x", task, period, prio, param);
+
     lv_task_t * new_lv_task = NULL;
     lv_task_t * tmp;
 

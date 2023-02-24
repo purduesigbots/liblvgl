@@ -13,13 +13,17 @@
 #include "display/lvgl.h"
 #include "api.h"
 
+#include <assert.h>
+
 static task_t disp_daemon_task;
 
 static void disp_daemon(void* ign) {
 	uint32_t time = millis();
 	while (true) {
 		lv_task_handler();
+		printf("    task_delay_until(%i, 2):\n", time);
 		task_delay_until(&time, 2);
+		printf("    lv_tick_inc(2)\n");
 		lv_tick_inc(2);
 	}
 }
@@ -53,9 +57,32 @@ static bool lvgl_read_touch(lv_indev_data_t* data) {
 	return false;
 }
 
+void log_function(lv_log_level_t level, const char * file, uint32_t line,  const char * dsc) {
+	char* log_level_string = "";
+	switch(level) {
+	case LV_LOG_LEVEL_TRACE: 
+		log_level_string = "LVGL Trace";
+		break;
+	case LV_LOG_LEVEL_INFO : 
+		log_level_string = "LVGL Info";
+		break;
+	case LV_LOG_LEVEL_WARN : 
+		log_level_string = "LVGL Warning";
+		break;
+	case LV_LOG_LEVEL_ERROR: 
+		log_level_string = "LVGL Error";
+		break;
+	default:
+		log_level_string = "LVGL Unkown Log Level";
+	}
+
+	printf("%s (%s:%i): %s\n", log_level_string, file, line, dsc);
+}
+
 void display_initialize(void) {
 	lv_init();
 
+	printf("    Initializing The Display Driver\n");
 	lv_disp_drv_t disp_drv;
 	lv_disp_drv_init(&disp_drv); 
 
@@ -67,7 +94,9 @@ void display_initialize(void) {
 	lv_indev_drv_init(&touch_drv);
 	touch_drv.type = LV_INDEV_TYPE_POINTER;
 	touch_drv.read = lvgl_read_touch;
-	lv_indev_drv_register(&touch_drv);
+	if(lv_indev_drv_register(&touch_drv) == NULL) {
+		printf("    Could not add touch driver!!!\n");
+	}
 
 	lv_theme_set_current(lv_theme_alien_init(40, NULL));
 	lv_obj_t* page = lv_obj_create(NULL, NULL);

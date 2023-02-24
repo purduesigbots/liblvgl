@@ -111,7 +111,7 @@
 #define LV_COMPILER_VLA_SUPPORTED 1
 #define LV_COMPILER_NON_CONST_INIT_SUPPORTED 1
 
-#define USE_LV_LOG 0
+#define USE_LV_LOG 1
 /*================
  *  THEME USAGE
  *================*/
