@@ -26,7 +26,7 @@ EXCLUDE_COLD_LIBRARIES:=
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 IS_LIBRARY:=1
 LIBNAME:=liblvgl
-VERSION:=5.3.0
+VERSION:=5.3.1
 # EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/unpublishedfile.c
 # this line excludes opcontrol.c and similar files
 EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(file).$(cext)) $(foreach cxxext,$(CXXEXTS),$(file).$(cxxext)))
@@ -52,7 +52,7 @@ template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)/firmware
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	@echo "Creating template"
-	$Dprosv5 c create-template \
-		$(TEMPLATE_DIR) $(LIBNAME) $(VERSION) \
-		$(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") \
+	$Dpros c create-template \
+		$(TEMPLATE_DIR) $(LIBNAME) $(VERSION)  \
+		$(foreach file,$(TEMPLATE_FILES) ./firmware/$(LIBNAME).a, --system "$(file)") \
 		--target v5 --kernels $(TEMPLATE_KERNEL_SEMVER)
