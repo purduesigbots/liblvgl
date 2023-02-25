@@ -26,147 +26,23 @@
 #include <cstdint>
 #include <iostream>
 
-#include "pros/colors.hpp"
+#include "pros/abstract_motor.hpp"
 #include "pros/device.hpp"
-#include "pros/colors.hpp"
 #include "pros/motors.h"
 #include "rtos.hpp"
 
 namespace pros {
 inline namespace v5 {
 
-/**
- * \enum motor_brake
- * Indicates the current 'brake mode' of a motor.
- */
-enum class Motor_Brake {
-	/// Motor coasts when stopped, traditional behavior
-	coast = 0,
-	/// Motor brakes when stopped
-	brake = 1,
-	/// Motor actively holds position when stopped
-	hold = 2,
-	/// Invalid brake mode
-	invalid = INT32_MAX
-};
+class Motor : public AbstractMotor, public Device {
+	public:
+	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
+	               const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
 
-/**
- * \enum Motor_Encoder_Units
- * Indicates the units used by the motor encoders.
- */
-enum class Motor_Encoder_Units {
-	/// Position is recorded as angle in degrees as a floating point number
-	degrees = 0,
-	/// Position is recorded as angle in degrees as a floating point number
-	deg = 0,
-	/// Position is recorded as angle in rotations as a floating point number
-	rotations = 1,
-	/// Position is recorded as raw encoder ticks as a whole number
-	counts = 2,
-	/// Invalid motor encoder units
-	invalid = INT32_MAX
-};
-
-// Alias for Motor_Encoder_Units
-using Motor_Units = Motor_Encoder_Units;
-
-enum class Motor_Gears {
-	/// 36:1, 100 RPM, Red gear set
-	ratio_36_to_1 = 0,
-	red = ratio_36_to_1,
-	rpm_100 = ratio_36_to_1,
-	/// 18:1, 200 RPM, Green gear set
-	ratio_18_to_1 = 1,
-	green = ratio_18_to_1,
-	rpm_200 = ratio_18_to_1,
-	/// 6:1, 600 RPM, Blue gear set
-	ratio_6_to_1 = 2,
-	blue = ratio_6_to_1,
-	rpm_600 = ratio_6_to_1,
-	/// Error return code
-	invalid = INT32_MAX
-};
-
-// Provide Aliases for Motor_Gears
-using Motor_Gearset = Motor_Gears;
-using Motor_Cart = Motor_Gears;
-using Motor_Cartridge = Motor_Gears;
-using Motor_Gear = Motor_Gears;
-
-/**
- * \ingroup cpp-motors
- */
-class Motor_Group {
 	/**
 	 * \addtogroup cpp-motors
 	 *  @{
 	 */
-	public:
-	/**
-	 * Creates a Motor object for the given port and specifications.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a motor
-	 *
-	 * \param port
-	 *        The V5 port number from 1-21
-	 * \param gearset
-	 *        The motor's gearset
-	 * \param reverse
-	 *        True reverses the motor, false is default
-	 * \param encoder_units
-	 *        The motor's encoder units
-	 *
-	 * \b Example
-	 * \code
-	 * void opcontrol() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
-	 *   while (true) {
-	 *     motor.move(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
-	 *     pros::delay(2);
-	 *   }
-	 * }
-	 * \endcode
-	 */
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const Motor_Gears gearset, const bool reverse,
-	                     const Motor_Units encoder_units);
-
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const pros::Color gearset_color, const bool reverse,
-	                     const Motor_Units encoder_units);
-
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const Motor_Gears gearset, const bool reverse);
-
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const pros::Color gearset_color, const bool reverse);
-
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const Motor_Gears gearset);
-
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const pros::Color gearset_color);
-
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const bool reverse);
-
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports);
-
-	explicit Motor_Group(std::vector<std::int8_t> ports, const Motor_Gears gearset, const bool reverse,
-	                     const Motor_Units encoder_units);
-
-	explicit Motor_Group(std::vector<std::int8_t> ports, const pros::Color gearset_color, const bool reverse,
-	                     const Motor_Units encoder_units);
-
-	explicit Motor_Group(std::vector<std::int8_t> ports, const Motor_Gears gearset, const bool reverse);
-
-	explicit Motor_Group(std::vector<std::int8_t> ports, const pros::Color gearset_color, const bool reverse);
-
-	explicit Motor_Group(std::vector<std::int8_t> ports, const Motor_Gears gearset);
-
-	explicit Motor_Group(std::vector<std::int8_t> ports, const pros::Color gearset_color);
-
-	explicit Motor_Group(std::vector<std::int8_t> ports, const bool reverse);
-
-	explicit Motor_Group(std::vector<std::int8_t> ports);
-
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -191,7 +67,7 @@ class Motor_Group {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 *   pros::Motor_Group motor_group ({1}, E_MOTOR_GEARSET_18);
+	 *   pros::MotorGroup MotorGroup ({1}, E_MOTOR_GEARSET_18);
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
 	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
@@ -222,7 +98,7 @@ class Motor_Group {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 *   pros::Motor_Group motor_group ({1});
+	 *   pros::MotorGroup MotorGroup ({1});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
 	 *     motor.move(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
@@ -377,57 +253,17 @@ class Motor_Group {
 	 */
 	std::int32_t move_voltage(const std::int32_t voltage) const;
 
-	/**
-	 * Stops the motor using the currently configured brake mode.
-	 *
-	 * This function sets motor velocity to zero, which will cause it to act
-	 * according to the set brake mode. If brake mode is set to MOTOR_BRAKE_HOLD,
-	 * this function may behave differently than calling move_absolute(0)
-	 * or move_relative(0).
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENODEV - The port cannot be configured as a motor
-	 *
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
-	 */
 	std::int32_t brake(void) const;
-
-	/**
-	 * Changes the output velocity for a profiled movement (motor_move_absolute()
-	 * or motor_move_relative()). This will have no effect if the motor is not
-	 * following a profiled movement.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENODEV - The port cannot be configured as a motor
-	 *
-	 * \param velocity
-	 *        The new motor velocity from +-100, +-200, or +-600 depending on the
-	 *        motor's gearset
-	 *
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
-	 *
-	 * \b Example
-	 * \code
-	 * void autonomous() {
-	 *   pros::Motor motor (1);
-	 *   motor.move_absolute(1, 100, 100);
-	 *   pros::delay(100);
-	 *   motor.modify_profiled_velocity(1, 0); // Stop the motor early
-	 * }
-	 * \endcode
-	 */
 	std::int32_t modify_profiled_velocity(const std::int32_t velocity) const;
-
 	/**
-	 * Gets the target position set for the motor by the user.
+	 * Gets the target position set for the motor by the user, with a parameter
+	 * for the motor index.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \param index The index of the motor to get the target position of.
 	 *
 	 * \return The target position in its encoder units or PROS_ERR_F if the
 	 * operation failed, setting errno.
@@ -442,10 +278,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	double get_target_position(void) const;
-	double get_target_position(std::uint8_t) const;
-
-	std::vector<double> get_every_target_position(void) const;
+	double get_target_position(const std::uint8_t index = 0) const;
+	std::vector<double> get_target_position_all(void) const;
 
 	/**
 	 * Gets the velocity commanded to the motor by the user.
@@ -471,10 +305,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_target_velocity(void) const;
-	std::int32_t get_target_velocity(std::uint8_t) const;
-
-	std::vector<std::int32_t> get_every_target_velocity(void) const;
+	std::int32_t get_target_velocity(const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> get_target_velocity_all(void) const;
 
 	///@}
 
@@ -504,10 +336,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	double get_actual_velocity(void) const;
-	double get_actual_velocity(std::uint8_t) const;
-
-	std::vector<double> get_every_actual_velocity(void) const;
+	double get_actual_velocity(const std::uint8_t index = 0) const;
+	std::vector<double> get_actual_velocity_all(void) const;
 
 	/**
 	 * Gets the current drawn by the motor in mA.
@@ -532,9 +362,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_current_draw(void) const;
-	std::int32_t get_current_draw(std::uint8_t) const;
-	std::vector<std::int32_t> get_every_current_draw(void) const;
+	std::int32_t get_current_draw(const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> get_current_draw_all(void) const;
 
 	/**
 	 * Gets the direction of movement for the motor.
@@ -559,9 +388,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_direction(void) const;
-	std::int32_t get_direction(std::uint8_t) const;
-	std::vector<std::int32_t> get_every_direction(void) const;
+	std::int32_t get_direction(const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> get_direction_all(void) const;
 
 	/**
 	 * Gets the efficiency of the motor in percent.
@@ -590,9 +418,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	double get_efficiency(void) const;
-	double get_efficiency(std::uint8_t) const;
-	std::vector<double> get_every_efficiency(void) const;
+	double get_efficiency(const std::uint8_t index = 0) const;
+	std::vector<double> get_efficiency_all(void) const;
 
 	/**
 	 * Gets the faults experienced by the motor.
@@ -620,9 +447,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::uint32_t get_faults(void) const;
-	std::uint32_t get_faults(std::uint8_t) const;
-	std::vector<std::uint32_t> get_every_faults(void) const;
+	std::uint32_t get_faults(const std::uint8_t index = 0) const;
+	std::vector<std::uint32_t> get_faults_all(void) const;
 	/**
 	 * Gets the flags set by the motor's operation.
 	 *
@@ -650,9 +476,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::uint32_t get_flags(void) const;
-	std::uint32_t get_flags(std::uint8_t) const;
-	std::vector<std::uint32_t> get_every_flags(void) const;
+	std::uint32_t get_flags(const std::uint8_t index = 0) const;
+	std::vector<std::uint32_t> get_flags_all(void) const;
 
 	/**
 	 * Gets the absolute position of the motor in its encoder units.
@@ -677,9 +502,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	double get_position(void) const;
-	double get_position(std::uint8_t) const;
-	std::vector<double> get_every_position(void) const;
+	double get_position(const std::uint8_t index = 0) const;
+	std::vector<double> get_position_all(void) const;
 
 	/**
 	 * Gets the power drawn by the motor in Watts.
@@ -704,9 +528,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	double get_power(void) const;
-	double get_power(std::uint8_t) const;
-	std::vector<double> get_every_power(void) const;
+	double get_power(const std::uint8_t index = 0) const;
+	std::vector<double> get_power_all(void) const;
 	/**
 	 * Gets the raw encoder count of the motor at a given timestamp.
 	 *
@@ -736,9 +559,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_raw_position(std::uint32_t* const timestamp) const;
-	std::int32_t get_raw_position(std::uint32_t* const timestamp, std::uint8_t) const;
-	std::vector<std::int32_t> get_every_raw_position(std::uint32_t* const timestamp) const;
+	std::int32_t get_raw_position(std::uint32_t* const timestamp, const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> get_raw_position_all(std::uint32_t* const timestamp) const;
 
 	/**
 	 * Gets the temperature of the motor in degrees Celsius.
@@ -763,9 +585,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	double get_temperature(void) const;
-	double get_temperature(std::uint8_t) const;
-	std::vector<double> get_every_temperature(void) const;
+	double get_temperature(const std::uint8_t index = 0) const;
+	std::vector<double> get_temperature_all(void) const;
 	/**
 	 * Gets the torque generated by the motor in Newton Meters (Nm).
 	 *
@@ -789,9 +610,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	double get_torque(void) const;
-	double get_torque(std::uint8_t) const;
-	std::vector<double> get_every_torque(void) const;
+	double get_torque(const std::uint8_t index = 0) const;
+	std::vector<double> get_torque_all(void) const;
 	/**
 	 * Gets the voltage delivered to the motor in millivolts.
 	 *
@@ -815,9 +635,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_voltage(void) const;
-	std::int32_t get_voltage(std::uint8_t) const;
-	std::vector<std::int32_t> get_every_voltage(void) const;
+	std::int32_t get_voltage(const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> get_voltage_all(void) const;
 
 	/**
 	 * Checks if the motor is drawing over its current limit.
@@ -843,9 +662,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t is_over_current(void) const;
-	std::int32_t is_over_current(std::uint8_t) const;
-	std::vector<std::int32_t> every_is_over_current(void) const;
+	std::int32_t is_over_current(const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> is_over_current_all(void) const;
 
 	/**
 	 * Gets the temperature limit flag for the motor.
@@ -870,9 +688,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t is_over_temp(void) const;
-	std::int32_t is_over_temp(std::uint8_t) const;
-	std::vector<std::int32_t> every_is_over_temp(void) const;
+	std::int32_t is_over_temp(const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> is_over_temp_all(void) const;
 
 	///@}
 
@@ -899,9 +716,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	Motor_Brake get_brake_mode(void) const;
-	Motor_Brake get_brake_mode(std::uint8_t) const;
-	std::vector<Motor_Brake> get_every_brake_mode(void) const;
+	Motor_Brake get_brake_mode(const std::uint8_t index = 0) const;
+	std::vector<Motor_Brake> get_brake_mode_all(void) const;
 
 	/**
 	 * Gets the current limit for the motor in mA.
@@ -926,9 +742,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_current_limit(void) const;
-	std::int32_t get_current_limit(std::uint8_t) const;
-	std::vector<std::int32_t> get_every_current_limit(void) const;
+	std::int32_t get_current_limit(const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> get_current_limit_all(void) const;
 
 	/**
 	 * Gets the encoder units that were set for the motor.
@@ -948,9 +763,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	Motor_Units get_encoder_units(void) const;
-	Motor_Units get_encoder_units(std::uint8_t) const;
-	std::vector<Motor_Units> get_every_encoder_units(void) const;
+	Motor_Units get_encoder_units(const std::uint8_t index = 0) const;
+	std::vector<Motor_Units> get_encoder_units_all(void) const;
 
 	/**
 	 * Gets the gearset that was set for the motor.
@@ -970,18 +784,15 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	Motor_Gears get_gearing(void) const;
-	Motor_Gears get_gearing(std::uint8_t) const;
-	std::vector<Motor_Gears> get_every_gearing(void) const;
+	Motor_Gears get_gearing(const std::uint8_t index = 0) const;
+	std::vector<Motor_Gears> get_gearing_all(void) const;
 
 	/**
 	 * @brief Gets returns a vector with all the port numbers in the motor group.
-	 * (ALL THE PORTS WILL BE POSITIVE)
-	 * Use get_ports if you want to get the information on reversal.
 	 *
 	 * @return std::vector<std::uint8_t>
 	 */
-	std::vector<std::uint8_t> get_every_port(void) const;
+	std::vector<std::int8_t> get_port_all(void) const;
 
 	/**
 	 * Gets the voltage limit set by the user.
@@ -1004,9 +815,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_voltage_limit(void) const;
-	std::int32_t get_voltage_limit(std::uint8_t) const;
-	std::vector<std::int32_t> get_every_voltage_limit(void) const;
+	std::int32_t get_voltage_limit(const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> get_voltage_limit_all(void) const;
 
 	/**
 	 * Gets the operation direction of the motor as set by the user.
@@ -1027,9 +837,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t is_reversed(void) const;
-	std::int32_t is_reversed(std::uint8_t) const;
-	std::vector<std::int32_t> every_is_reversed(void) const;
+	std::int32_t is_reversed(const std::uint8_t index = 0) const;
+	std::vector<std::int32_t> is_reversed_all(void) const;
 
 	/**
 	 * Sets one of Motor_Brake to the motor. Works with the C enum
@@ -1054,9 +863,10 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_brake_mode(const Motor_Brake mode) const;
-	std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode) const;
-
+	std::int32_t set_brake_mode(const Motor_Brake mode, const std::uint8_t index = 0) const;
+	std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode, const std::uint8_t index = 0) const;
+	std::int32_t set_brake_mode_all(const Motor_Brake mode) const;
+	std::int32_t set_brake_mode_all(const pros::motor_brake_mode_e_t mode) const;
 	/**
 	 * Sets the current limit for the motor in mA.
 	 *
@@ -1085,8 +895,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_current_limit(const std::int32_t limit) const;
-
+	std::int32_t set_current_limit(const std::int32_t limit, const std::uint8_t index = 0) const;
+	std::int32_t set_current_limit_all(const std::int32_t limit) const;
 	/**
 	 * Sets one of Motor_Units for the motor encoder. Works with the C
 	 * enum and the C++ enum class.
@@ -1110,9 +920,10 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_encoder_units(const Motor_Units units);
-	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units);
-
+	std::int32_t set_encoder_units(const Motor_Units units, const std::uint8_t index = 0) const;
+	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units, const std::uint8_t index = 0) const;
+	std::int32_t set_encoder_units_all(const Motor_Units units) const;
+	std::int32_t set_encoder_units_all(const pros::motor_encoder_units_e_t units) const;
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for the motor. Usable with
 	 * the C++ enum class and the C enum.
@@ -1136,32 +947,11 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_gearing(const Motor_Gears gearset);
-	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset);
+	std::int32_t set_gearing(const Motor_Gears gearset, const std::uint8_t index = 0) const;
+	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset, const std::uint8_t index = 0) const;
+	std::int32_t set_gearing_all(const Motor_Gears gearset) const;
+	std::int32_t set_gearing_all(const pros::motor_gearset_e_t gearset) const;
 
-	/**
-	 * Sets one of the gear cartridge (red, green, blue) for the motor.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENODEV - The port cannot be configured as a motor
-	 *
-	 * \param gearset
-	 *        The new motor gearset
-	 *
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
-	 *
-	 * \b Example
-	 * \code
-	 * void initialize() {
-	 *   pros::Motor motor (1);
-	 *   motor.set_gearing(pros::Color::red);
-	 *   std::cout << "Gearset: " << motor.get_gearing();
-	 * }
-	 * \endcode
-	 */
-	std::int32_t set_gearing(const pros::Color gearset_color);
 
 	/**
 	 * Sets the reverse flag for the motor.
@@ -1187,7 +977,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_reversed(const bool reverse);
+	std::int32_t set_reversed(const bool reverse, const std::uint8_t index = 0);
+	std::int32_t set_reversed_all(const bool reverse);
 
 	/**
 	 * Sets the voltage limit for the motor in Volts.
@@ -1217,7 +1008,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_voltage_limit(const std::int32_t limit) const;
+	std::int32_t set_voltage_limit(const std::int32_t limit, const std::uint8_t index = 0) const;
+	std::int32_t set_voltage_limit_all(const std::int32_t limit) const;
 
 	/**
 	 * Sets the position for the motor in its encoder units.
@@ -1248,7 +1040,8 @@ class Motor_Group {
 	 * \endcode
 	 *
 	 */
-	std::int32_t set_zero_position(const double position) const;
+	std::int32_t set_zero_position(const double position, const std::uint8_t index = 0) const;
+	std::int32_t set_zero_position_all(const double position) const;
 
 	/**
 	 * Sets the "absolute" zero position of the motor to its current position.
@@ -1272,7 +1065,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t tare_position(void) const;
+	std::int32_t tare_position(const std::uint8_t index = 0) const;
+	std::int32_t tare_position_all(void) const;
 
 	/**
 	 * @brief Returns the number of objects
@@ -1281,105 +1075,12 @@ class Motor_Group {
 	 */
 	std::int8_t size(void) const;
 
-	/**
-	 * @brief Get the ports object
-	 *
-	 * @return std::vector<std::int8_t>
-	 */
-	std::vector<std::int8_t> get_ports(void) const;
-
-	/**
-	 * @brief Appends the other motor group reference to this motor group
-	 *
-	 */
-	void operator+=(Motor_Group&);
-
-	/**
-	 * @brief Appends the other motor group reference to this motor group
-	 *
-	 */
-	void append(Motor_Group&);
-
-	/**
-	 * @brief Removes the port (and it's reversed )
-	 *
-	 * @param port
-	 */
-	void erase_port(std::int8_t port);
-
-	/**
-	 * This is the overload for the << operator for printing to streams
-	 *
-	 * Prints in format:
-	 * Motor [port: (motor port), brake mode: (brake mode), current draw: (current draw),
-	 * current limit: (current limit), direction: (direction), efficiency: (efficiency),
-	 * encoder units: (encoder units), gearing: (gearing), is over temp: (over temp),
-	 * position: (position), reversed: (reversed boolean), temperature: (temperature),
-	 * torque: (torque), voltage: (voltage)]
-	 */
-	friend std::ostream& operator<<(std::ostream& os, pros::Motor_Group& motor);
-	///@}
-	private:
-	std::vector<std::int8_t> _ports;
-	bool _reverse;
-	mutable pros::Mutex _motor_group_mutex;
-	pros::v5::Motor_Gear _gearset;
-	pros::v5::Motor_Units _encoder_units;
-	void push_motor_configuration(void) const;
-};
-
-///@}
-class Motor : public Motor_Group, public Device {
-	public:
-	explicit Motor(const std::int8_t port);
-
-	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
-	               const pros::v5::Motor_Units encoder_units);
-
-	explicit Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse,
-	               const pros::v5::Motor_Units encoder_units);
-
-	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse);
-
-	explicit Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse);
-
-	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset);
-
-	explicit Motor(const std::int8_t port, const pros::Color gearset_color);
-
-	explicit Motor(const std::int8_t port, const bool reverse);
+	std::int8_t get_port(const std::uint8_t index = 0) const;
 
 	DeviceType get_type() const;
 
-	using Motor_Group::operator=;
-
 	private:
-	using Motor_Group::operator+=;
-	using Motor_Group::append;
-	using Motor_Group::every_is_over_current;
-	using Motor_Group::every_is_over_temp;
-	using Motor_Group::every_is_reversed;
-	using Motor_Group::get_every_actual_velocity;
-	using Motor_Group::get_every_brake_mode;
-	using Motor_Group::get_every_current_draw;
-	using Motor_Group::get_every_current_limit;
-	using Motor_Group::get_every_direction;
-	using Motor_Group::get_every_efficiency;
-	using Motor_Group::get_every_encoder_units;
-	using Motor_Group::get_every_faults;
-	using Motor_Group::get_every_flags;
-	using Motor_Group::get_every_gearing;
-	using Motor_Group::get_every_port;
-	using Motor_Group::get_every_position;
-	using Motor_Group::get_every_power;
-	using Motor_Group::get_every_raw_position;
-	using Motor_Group::get_every_target_position;
-	using Motor_Group::get_every_target_velocity;
-	using Motor_Group::get_every_temperature;
-	using Motor_Group::get_every_torque;
-	using Motor_Group::get_every_voltage;
-	using Motor_Group::get_every_voltage_limit;
-	using Motor_Group::get_ports;
+	std::int8_t _port;
 };
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m);
