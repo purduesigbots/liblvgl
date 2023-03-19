@@ -25,23 +25,23 @@
 #include <iostream>
 
 #include "pros/rotation.h"
+#include "pros/device.hpp"
 
 namespace pros {
 inline namespace v5 {
 /**
  * \addtogroup cpp-rotation
  */
-class Rotation {
+class Rotation : public Device {
 	/**
 	 * \ingroup cpp-rotation
 	 *  @{
 	 */
-	const std::uint8_t _port;
 
 	public:
-	Rotation(const std::uint8_t port) : _port(port){};
+	explicit Rotation(const std::uint8_t port) : Device(port, DeviceType::rotation) {};
 
-	Rotation(const std::uint8_t port, const bool reverse_flag);
+	explicit Rotation(const std::uint8_t port, const bool reverse_flag);
 
 	/**
 	 * Reset the Rotation Sensor
@@ -206,6 +206,7 @@ class Rotation {
 	 * angle: (rotation angle), reversed: (reversed boolean)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation);
+
 };
 
 namespace literals {
