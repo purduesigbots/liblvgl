@@ -24,13 +24,14 @@
 
 #include <cstdint>
 #include "pros/serial.h"
+#include "pros/device.hpp"
 
 namespace pros {
 /**
  * \ingroup cpp-serial
  *  @{
  */
-class Serial {
+class Serial : public Device {
 	/**
 	 * \addtogroup cpp-serial
 	 *  @{
@@ -131,13 +132,6 @@ class Serial {
 	virtual std::int32_t get_write_free() const;
 
 	/**
-	 * Gets the port number of the serial port.
-	 *
-	 * \return The serial port's port number.
-	 */
-	std::uint8_t get_port() const;
-
-	/**
 	 * Reads the next byte avaliable in the port's input buffer without removing it.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -227,9 +221,8 @@ class Serial {
 	 * setting errno.
 	 */
 	virtual std::int32_t write(std::uint8_t* buffer, std::int32_t length) const;
-
+  
 	private:
-	const std::uint8_t _port;
 	///@}
 };
 

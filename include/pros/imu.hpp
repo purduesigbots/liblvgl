@@ -24,6 +24,7 @@
 #include <cstdint>
 
 #include "pros/imu.h"
+#include "pros/device.hpp"
 #include <iostream>
 
 namespace pros {
@@ -53,15 +54,15 @@ inline namespace v5 {
 /**
  * \ingroup cpp-imu
  */
-class Imu {
+class Imu : public Device {
 	/**
 	 * \addtogroup cpp-imu
 	 * ///@{
 	 */
-	const std::uint8_t _port;
+	
 
 	public:
-	Imu(const std::uint8_t port) : _port(port){};
+	explicit Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
 
 	/**
 	 * Calibrate IMU

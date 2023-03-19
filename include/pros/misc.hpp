@@ -49,7 +49,7 @@ class Controller {
 	 * 			  The ID of the controller (e.g. the master or partner controller).
 	 * 			  Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
 	 */
-	Controller(controller_id_e_t id);
+	explicit Controller(controller_id_e_t id);
 
 	/**
 	 * Checks if the controller is connected.
@@ -346,6 +346,7 @@ namespace usd {
  */
 std::int32_t is_installed(void);
 }  // namespace usd
+
 }  // namespace pros
 
 #endif  // _PROS_MISC_HPP_
