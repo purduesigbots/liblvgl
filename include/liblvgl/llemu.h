@@ -20,8 +20,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#ifndef _PROS_LLEMU_H_
-#define _PROS_LLEMU_H_
+#ifndef _LIBLVGL_LLEMU_H_
+#define _LIBLVGL_LLEMU_H_
 
 #include <errno.h>
 #include <stdbool.h>
@@ -248,4 +248,4 @@ void lcd_set_text_align(text_align_e_t alignment);
 }  // namespace pros
 }  // extern "C"
 #endif
-#endif  // _PROS_LLEMU_H_
+#endif  // _LIBLVGL_LLEMU_H_

@@ -20,8 +20,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#ifndef _PROS_LLEMU_HPP_
-#define _PROS_LLEMU_HPP_
+#ifndef _LIBLVGL_LLEMU_HPP_
+#define _LIBLVGL_LLEMU_HPP_
 
 #include <cstdint>
 #include <string>
@@ -182,4 +182,4 @@ std::uint8_t read_buttons(void);
 }  // namespace lcd
 }  // namespace pros
 
-#endif  // _PROS_LLEMU_HPP_
+#endif  // _LIBLVGL_LLEMU_HPP_
