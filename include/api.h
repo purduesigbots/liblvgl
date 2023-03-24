@@ -39,10 +39,10 @@
 #include <unistd.h>
 #endif /* __cplusplus */
 
-#define PROS_VERSION_MAJOR 4
-#define PROS_VERSION_MINOR 0
+#define PROS_VERSION_MAJOR 3
+#define PROS_VERSION_MINOR 7
 #define PROS_VERSION_PATCH 2
-#define PROS_VERSION_STRING "4.0.2"
+#define PROS_VERSION_STRING "3.7.2-dirty.127.1c0d925"
 
 #include "pros/adi.h"
 #include "pros/colors.h"
@@ -53,6 +53,7 @@
 #include "pros/gps.h"
 #include "pros/imu.h"
 #include "pros/link.h"
+#include "pros/llemu.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/optical.h"
@@ -69,6 +70,7 @@
 #include "pros/gps.hpp"
 #include "pros/imu.hpp"
 #include "pros/link.hpp"
+#include "pros/llemu.hpp"
 #include "pros/misc.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/motors.hpp"

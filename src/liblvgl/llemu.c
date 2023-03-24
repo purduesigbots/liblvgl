@@ -20,7 +20,7 @@
 #undef _GNU_SOURCE
 #include <stdarg.h>
 #include <string.h>
-#include "pros/llemu.h"
+#include "liblvgl/llemu.h"
 
 #define LCD_WIDTH	480 
 #define LCD_HEIGHT 	240
