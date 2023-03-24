@@ -6,6 +6,9 @@
 *.bin
 *.elf
 
+# Template
+template/
+
 # PROS
 bin/
 .vscode/
