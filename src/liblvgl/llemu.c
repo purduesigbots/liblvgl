@@ -27,7 +27,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
-#include "pros/llemu.h"
+#include "liblvgl/llemu.h"
 
 #define LINE_WIDTH 40
 
