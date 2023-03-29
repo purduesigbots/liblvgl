@@ -1,23 +1,25 @@
-/*
- * \file pros/llemu.h
- *
+/**
+ * \file liblvgl/llemu.h
+ * \ingroup c-llemu
+ * 
  * Legacy LCD Emulator
  *
  * This file defines a high-level API for emulating the three-button, UART-based
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/llemu.html to learn
- * more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/adi.html to learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-llemu LLEMU C API
  */
 
 #ifndef _LIBLVGL_LLEMU_H_

@@ -1,23 +1,35 @@
-/*
- * \file pros/llemu.hpp
- *
+/**
+ * \file liblvgl/llemu.hpp
+ * \ingroup cpp-llemu
+ * 
  * Legacy LCD Emulator
  *
- * This file defines a high-level API for emulating the three-button, UART-based
+ * \details This file defines a high-level API for emulating the three-button, UART-based
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/llemu.html to learn
- * more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/adi.html to learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-llemu LLEMU C++ API
+ * @{
+ * LLEMU - Legacy Lcd EMUlator
+ * \image html llemu/llemu-3.8.png
+ * 
+ * LLEMU provides a virtual 40x8 LCD screen with 3 buttons. The user can set the
+ * text of the screen and set create functions that are run when the buttons are
+ * pressed. 
+ * 
+ * LLEMU mimicks the behavior of the LCD devices for the cortex systems. 
+ * @}
  */
 
 #ifndef _LIBLVGL_LLEMU_HPP_
@@ -28,21 +40,49 @@
 
 #include "liblvgl/llemu.h"
 
+/**
+ * \ingroup cpp-llemu 
+ */
 namespace pros {
 namespace lcd {
+
 /**
- * @brief enum class to set text alignment
+ * \ingroup cpp-llemu 
+ */
+
+/**
+ * \addtogroup cpp-llemu
+ *  @{
+ */
+
+/**
+ * \enum Text_Align
  * 
+ * @brief Represents how to align the text in the LCD
  */
 enum class Text_Align {
+	/// Align the text to the left side of LCD
 	LEFT = 0,
+	/// Align the text to the center of the LCD
 	CENTER = 1,
+	/// Align the text to the right side of the LCD
 	RIGHT = 2
 };
+
 /**
  * Checks whether the emulated three-button LCD has already been initialized.
- *
+ * 
  * \return True if the LCD has been initialized or false if not.
+ * 
+ * \b Example
+ * \code
+ * 	if (pros::lcd::is_initialized()) {
+ * 		pros::lcd::print("LLEMU!");
+ * 	}
+ * 	else {
+ * 		printf("Error: LLEMU is not initialized\n");
+ * 	}
+ * \endcode
  */
 bool is_initialized(void);
 
@@ -51,6 +91,20 @@ bool is_initialized(void);
  *
  * \return True if the LCD was successfully initialized, or false if it has
  * already been initialized.
+ * 
+ * \b Example
+ * \code
+ *	#include "pros/llemu.hpp"
+ * 
+ *	void initialize() {
+ * 		if (pros::lcd::initialize()) {
+ * 			pros::lcd::print("LLEMU!");	
+ * 		}
+ * 		else {
+ * 			printf("Error: LLEMU could not initailize\n");
+ * 		}
+ * 	}
+ * \endcode
  */
 bool initialize(void);
 
@@ -66,6 +120,15 @@ bool initialize(void);
  *
  * \return True if the operation was successful, or false otherwise, setting
  * errno values as specified above.
+ * 
+ * \b Example
+ * \code
+ * 	#include "pros/llemu.hpp"
+ * 
+ *	void disabled() {
+		pros::lcd::shutdown();
+ * 	}
+ * \endcode
  */
 bool shutdown(void);
 
@@ -179,7 +242,11 @@ void set_text_align(Text_Align alignment);
  * \return The buttons pressed as a bit mask
  */
 std::uint8_t read_buttons(void);
+
+///@}
+
 }  // namespace lcd
 }  // namespace pros
+
 
 #endif  // _LIBLVGL_LLEMU_HPP_
