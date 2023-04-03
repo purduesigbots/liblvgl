@@ -1,5 +1,6 @@
 /**
  * \file liblvgl/llemu.hpp
+ * 
  * \ingroup cpp-llemu
  * 
  * Legacy LCD Emulator
@@ -351,10 +352,10 @@ void set_text_align(Text_Align alignment);
  *   while(true) {
  *     std::uint8_t state = pros::lcd::read_buttons();
  *     pros::lcd::print(0, "%d %d %d", 
- *       state & 0b0100 != 0,           // Left button Pressed
- *       state & 0b0010 != 0,           // Center Button Pressed
- *       state & 0b0001 != 0,           // Right Button Pressed
- *     )
+ *       (state & LCD_BTN_LEFT) >> 2
+ *       (state & LCD_BTN_CENTER) >> 1,
+ *       (state & LCD_BTN_RIGHT) >> 0
+ *     );
  *     
  *     pros::delay(10);
  *   }
