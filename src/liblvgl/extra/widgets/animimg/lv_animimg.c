@@ -14,13 +14,13 @@
     #error "lv_animimg: lv_img is required. Enable it in lv_conf.h (LV_USE_IMG  1) "
 #endif
 
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/draw/lv_img_decoder.h"
-#include "liblvgl/misc/lv_fs.h"
-#include "liblvgl/misc/lv_txt.h"
-#include "liblvgl/misc/lv_math.h"
-#include "liblvgl/misc/lv_log.h"
-#include "liblvgl/misc/lv_anim.h"
+#include "../../../misc/lv_assert.h"
+#include "../../../draw/lv_img_decoder.h"
+#include "../../../misc/lv_fs.h"
+#include "../../../misc/lv_txt.h"
+#include "../../../misc/lv_math.h"
+#include "../../../misc/lv_log.h"
+#include "../../../misc/lv_anim.h"
 
 /*********************
  *      DEFINES
@@ -64,7 +64,7 @@ lv_obj_t * lv_animimg_create(lv_obj_t * parent)
     return obj;
 }
 
-void lv_animimg_set_src(lv_obj_t * obj,  lv_img_dsc_t * dsc[], uint8_t num)
+void lv_animimg_set_src(lv_obj_t * obj, const void * dsc[], uint8_t num)
 {
     LV_ASSERT_OBJ(obj, MY_CLASS);
     lv_animimg_t * animimg = (lv_animimg_t *)obj;

@@ -7,8 +7,8 @@
  *      INCLUDES
  *********************/
 #include <stdbool.h>
-#include "liblvgl/core/lv_refr.h"
-#include "liblvgl/misc/lv_math.h"
+#include "../core/lv_refr.h"
+#include "../misc/lv_math.h"
 
 /*********************
  *      DEFINES

@@ -8,10 +8,10 @@
  *********************/
 #include "lv_draw.h"
 #if LV_DRAW_COMPLEX
-#include "liblvgl/misc/lv_math.h"
-#include "liblvgl/misc/lv_log.h"
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/misc/lv_gc.h"
+#include "../misc/lv_math.h"
+#include "../misc/lv_log.h"
+#include "../misc/lv_assert.h"
+#include "../misc/lv_gc.h"
 
 /*********************
  *      DEFINES

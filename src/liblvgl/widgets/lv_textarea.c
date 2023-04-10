@@ -10,14 +10,14 @@
 #if LV_USE_TEXTAREA != 0
 
 #include <string.h>
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/core/lv_group.h"
-#include "liblvgl/core/lv_refr.h"
-#include "liblvgl/core/lv_indev.h"
-#include "liblvgl/draw/lv_draw.h"
-#include "liblvgl/misc/lv_anim.h"
-#include "liblvgl/misc/lv_txt.h"
-#include "liblvgl/misc/lv_math.h"
+#include "../misc/lv_assert.h"
+#include "../core/lv_group.h"
+#include "../core/lv_refr.h"
+#include "../core/lv_indev.h"
+#include "../draw/lv_draw.h"
+#include "../misc/lv_anim.h"
+#include "../misc/lv_txt.h"
+#include "../misc/lv_math.h"
 
 /*********************
  *      DEFINES

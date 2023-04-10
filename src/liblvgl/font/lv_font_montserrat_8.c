@@ -5,9 +5,9 @@
  ******************************************************************************/
 
 #ifdef LV_LVGL_H_INCLUDE_SIMPLE
-    #include "liblvgl/lvgl.h"
+    #include "lvgl.h"
 #else
-    #include "liblvgl/lvgl.h"
+    #include "../../lvgl.h"
 #endif
 
 #ifndef LV_FONT_MONTSERRAT_8

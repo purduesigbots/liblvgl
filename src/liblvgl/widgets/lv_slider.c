@@ -9,12 +9,12 @@
 #include "lv_slider.h"
 #if LV_USE_SLIDER != 0
 
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/core/lv_group.h"
-#include "liblvgl/core/lv_indev.h"
-#include "liblvgl/draw/lv_draw.h"
-#include "liblvgl/misc/lv_math.h"
-#include "liblvgl/core/lv_disp.h"
+#include "../misc/lv_assert.h"
+#include "../core/lv_group.h"
+#include "../core/lv_indev.h"
+#include "../draw/lv_draw.h"
+#include "../misc/lv_math.h"
+#include "../core/lv_disp.h"
 #include "lv_img.h"
 
 /*********************
@@ -239,8 +239,12 @@ static void lv_slider_event(const lv_obj_class_t * class_p, lv_event_t * e)
 
         new_value = LV_CLAMP(real_min_value, new_value, real_max_value);
         if(*slider->value_to_set != new_value) {
-            *slider->value_to_set = new_value;
-            lv_obj_invalidate(obj);
+            if(slider->value_to_set == &slider->bar.start_value) {
+                lv_bar_set_start_value(obj, new_value, LV_ANIM_ON);
+            }
+            else {
+                lv_bar_set_value(obj, new_value, LV_ANIM_ON);
+            }
             res = lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
             if(res != LV_RES_OK) return;
         }

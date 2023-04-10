@@ -6,7 +6,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "liblvgl/lvgl.h"
+#include "../lvgl.h"
 
 /*********************
  *      DEFINES

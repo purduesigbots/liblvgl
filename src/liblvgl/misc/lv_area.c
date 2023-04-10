@@ -6,7 +6,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "liblvgl/lv_conf_internal.h"
+#include "../lv_conf_internal.h"
 
 #include "lv_area.h"
 #include "lv_math.h"

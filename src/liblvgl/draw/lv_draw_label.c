@@ -8,11 +8,11 @@
  *********************/
 #include "lv_draw.h"
 #include "lv_draw_label.h"
-#include "liblvgl/misc/lv_math.h"
-#include "liblvgl/hal/lv_hal_disp.h"
-#include "liblvgl/core/lv_refr.h"
-#include "liblvgl/misc/lv_bidi.h"
-#include "liblvgl/misc/lv_assert.h"
+#include "../misc/lv_math.h"
+#include "../hal/lv_hal_disp.h"
+#include "../core/lv_refr.h"
+#include "../misc/lv_bidi.h"
+#include "../misc/lv_assert.h"
 
 /*********************
  *      DEFINES

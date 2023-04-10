@@ -12,30 +12,30 @@
 #include "lv_group.h"
 #include "lv_disp.h"
 #include "lv_theme.h"
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/draw/lv_draw.h"
-#include "liblvgl/misc/lv_anim.h"
-#include "liblvgl/misc/lv_timer.h"
-#include "liblvgl/misc/lv_async.h"
-#include "liblvgl/misc/lv_fs.h"
-#include "liblvgl/misc/lv_gc.h"
-#include "liblvgl/misc/lv_math.h"
-#include "liblvgl/misc/lv_log.h"
-#include "liblvgl/hal/lv_hal.h"
-#include "liblvgl/extra/lv_extra.h"
+#include "../misc/lv_assert.h"
+#include "../draw/lv_draw.h"
+#include "../misc/lv_anim.h"
+#include "../misc/lv_timer.h"
+#include "../misc/lv_async.h"
+#include "../misc/lv_fs.h"
+#include "../misc/lv_gc.h"
+#include "../misc/lv_math.h"
+#include "../misc/lv_log.h"
+#include "../hal/lv_hal.h"
+#include "../extra/lv_extra.h"
 #include <stdint.h>
 #include <string.h>
 
 #if LV_USE_GPU_STM32_DMA2D
-    #include "liblvgl/draw/stm32_dma2d/lv_gpu_stm32_dma2d.h"
+    #include "../draw/stm32_dma2d/lv_gpu_stm32_dma2d.h"
 #endif
 
 #if LV_USE_GPU_SWM341_DMA2D
-    #include "liblvgl/draw/swm341_dma2d/lv_gpu_swm341_dma2d.h"
+    #include "../draw/swm341_dma2d/lv_gpu_swm341_dma2d.h"
 #endif
 
 #if LV_USE_GPU_NXP_PXP && LV_USE_GPU_NXP_PXP_AUTO_INIT
-    #include "liblvgl/draw/nxp/pxp/lv_gpu_nxp_pxp.h"
+    #include "../draw/nxp/pxp/lv_gpu_nxp_pxp.h"
 #endif
 
 /*********************

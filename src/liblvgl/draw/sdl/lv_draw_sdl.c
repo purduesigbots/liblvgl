@@ -8,7 +8,7 @@
  *********************/
 
 
-#include "liblvgl/lv_conf_internal.h"
+#include "../../lv_conf_internal.h"
 
 #if LV_USE_GPU_SDL
 

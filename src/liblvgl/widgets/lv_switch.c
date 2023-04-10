@@ -10,11 +10,11 @@
 
 #if LV_USE_SWITCH != 0
 
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/misc/lv_math.h"
-#include "liblvgl/misc/lv_anim.h"
-#include "liblvgl/core/lv_indev.h"
-#include "liblvgl/core/lv_disp.h"
+#include "../misc/lv_assert.h"
+#include "../misc/lv_math.h"
+#include "../misc/lv_anim.h"
+#include "../core/lv_indev.h"
+#include "../core/lv_disp.h"
 #include "lv_img.h"
 
 /*********************

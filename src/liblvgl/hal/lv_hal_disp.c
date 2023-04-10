@@ -11,24 +11,23 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "lv_hal.h"
-#include "liblvgl/misc/lv_mem.h"
-#include "liblvgl/misc/lv_gc.h"
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/core/lv_obj.h"
-#include "liblvgl/core/lv_refr.h"
-#include "liblvgl/core/lv_theme.h"
-#include "liblvgl/draw/sdl/lv_draw_sdl.h"
-#include "liblvgl/draw/sw/lv_draw_sw.h"
-#include "liblvgl/draw/sdl/lv_draw_sdl.h"
-#include "liblvgl/draw/stm32_dma2d/lv_gpu_stm32_dma2d.h"
-#include "liblvgl/draw/swm341_dma2d/lv_gpu_swm341_dma2d.h"
-#include "liblvgl/draw/arm2d/lv_gpu_arm2d.h"
-#if LV_USE_GPU_NXP_PXP || LV_USE_GPU_NXP_VG_LITE
-    #include "liblvgl/draw/nxp/lv_gpu_nxp.h"
-#endif
+#include "../misc/lv_mem.h"
+#include "../misc/lv_gc.h"
+#include "../misc/lv_assert.h"
+#include "../core/lv_obj.h"
+#include "../core/lv_refr.h"
+#include "../core/lv_theme.h"
+#include "../draw/sdl/lv_draw_sdl.h"
+#include "../draw/sw/lv_draw_sw.h"
+#include "../draw/sdl/lv_draw_sdl.h"
+#include "../draw/stm32_dma2d/lv_gpu_stm32_dma2d.h"
+#include "../draw/swm341_dma2d/lv_gpu_swm341_dma2d.h"
+#include "../draw/arm2d/lv_gpu_arm2d.h"
+#include "../draw/nxp/vglite/lv_draw_vglite.h"
+#include "../draw/nxp/pxp/lv_draw_pxp.h"
 
 #if LV_USE_THEME_DEFAULT
-    #include "liblvgl/extra/themes/default/lv_theme_default.h"
+    #include "../extra/themes/default/lv_theme_default.h"
 #endif
 
 /*********************
@@ -85,8 +84,8 @@ void lv_disp_drv_init(lv_disp_drv_t * driver)
 {
     lv_memset_00(driver, sizeof(lv_disp_drv_t));
 
-    driver->hor_res          = LV_HOR_RES_MAX;
-    driver->ver_res          = LV_VER_RES_MAX;
+    driver->hor_res          = 320;
+    driver->ver_res          = 240;
     driver->physical_hor_res = -1;
     driver->physical_ver_res = -1;
     driver->offset_x         = 0;
@@ -105,10 +104,14 @@ void lv_disp_drv_init(lv_disp_drv_t * driver)
     driver->draw_ctx_init = lv_draw_swm341_dma2d_ctx_init;
     driver->draw_ctx_deinit = lv_draw_swm341_dma2d_ctx_init;
     driver->draw_ctx_size = sizeof(lv_draw_swm341_dma2d_ctx_t);
-#elif LV_USE_GPU_NXP_PXP || LV_USE_GPU_NXP_VG_LITE
-    driver->draw_ctx_init = lv_draw_nxp_ctx_init;
-    driver->draw_ctx_deinit = lv_draw_nxp_ctx_deinit;
-    driver->draw_ctx_size = sizeof(lv_draw_nxp_ctx_t);
+#elif LV_USE_GPU_NXP_VG_LITE
+    driver->draw_ctx_init = lv_draw_vglite_ctx_init;
+    driver->draw_ctx_deinit = lv_draw_vglite_ctx_deinit;
+    driver->draw_ctx_size = sizeof(lv_draw_vglite_ctx_t);
+#elif LV_USE_GPU_NXP_PXP
+    driver->draw_ctx_init = lv_draw_pxp_ctx_init;
+    driver->draw_ctx_deinit = lv_draw_pxp_ctx_deinit;
+    driver->draw_ctx_size = sizeof(lv_draw_pxp_ctx_t);
 #elif LV_USE_GPU_SDL
     driver->draw_ctx_init = lv_draw_sdl_init_ctx;
     driver->draw_ctx_deinit = lv_draw_sdl_deinit_ctx;

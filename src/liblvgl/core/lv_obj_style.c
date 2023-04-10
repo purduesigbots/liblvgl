@@ -8,7 +8,7 @@
  *********************/
 #include "lv_obj.h"
 #include "lv_disp.h"
-#include "liblvgl/misc/lv_gc.h"
+#include "../misc/lv_gc.h"
 
 /*********************
  *      DEFINES

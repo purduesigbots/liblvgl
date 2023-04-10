@@ -8,7 +8,7 @@
  *********************/
 #include "lv_draw.h"
 #include "lv_draw_rect.h"
-#include "liblvgl/misc/lv_assert.h"
+#include "../misc/lv_assert.h"
 
 /*********************
  *      DEFINES

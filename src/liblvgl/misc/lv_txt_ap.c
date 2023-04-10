@@ -11,7 +11,7 @@
 #include "lv_txt.h"
 #include "lv_txt_ap.h"
 #include "lv_mem.h"
-#include "liblvgl/draw/lv_draw.h"
+#include "../draw/lv_draw.h"
 
 /*********************
  *      DEFINES

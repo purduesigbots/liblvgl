@@ -7,13 +7,13 @@
  *      INCLUDES
  *********************/
 #include "lv_draw_sw.h"
-#include "liblvgl/hal/lv_hal_disp.h"
-#include "liblvgl/misc/lv_math.h"
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/misc/lv_area.h"
-#include "liblvgl/misc/lv_style.h"
-#include "liblvgl/font/lv_font.h"
-#include "liblvgl/core/lv_refr.h"
+#include "../../hal/lv_hal_disp.h"
+#include "../../misc/lv_math.h"
+#include "../../misc/lv_assert.h"
+#include "../../misc/lv_area.h"
+#include "../../misc/lv_style.h"
+#include "../../font/lv_font.h"
+#include "../../core/lv_refr.h"
 
 /*********************
  *      DEFINES

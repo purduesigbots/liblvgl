@@ -9,13 +9,13 @@
 #include "lv_btnmatrix.h"
 #if LV_USE_BTNMATRIX != 0
 
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/core/lv_indev.h"
-#include "liblvgl/core/lv_group.h"
-#include "liblvgl/draw/lv_draw.h"
-#include "liblvgl/core/lv_refr.h"
-#include "liblvgl/misc/lv_txt.h"
-#include "liblvgl/misc/lv_txt_ap.h"
+#include "../misc/lv_assert.h"
+#include "../core/lv_indev.h"
+#include "../core/lv_group.h"
+#include "../draw/lv_draw.h"
+#include "../core/lv_refr.h"
+#include "../misc/lv_txt.h"
+#include "../misc/lv_txt_ap.h"
 
 /*********************
  *      DEFINES

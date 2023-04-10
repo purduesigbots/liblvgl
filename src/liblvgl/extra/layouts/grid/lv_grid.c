@@ -6,7 +6,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "liblvgl/extra/layouts/lv_layouts.h"
+#include "../lv_layouts.h"
 
 #if LV_USE_GRID
 

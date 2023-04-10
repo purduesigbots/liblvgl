@@ -8,11 +8,11 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/hal/lv_hal_indev.h"
-#include "liblvgl/core/lv_indev.h"
-#include "liblvgl/misc/lv_mem.h"
-#include "liblvgl/misc/lv_gc.h"
+#include "../misc/lv_assert.h"
+#include "../hal/lv_hal_indev.h"
+#include "../core/lv_indev.h"
+#include "../misc/lv_mem.h"
+#include "../misc/lv_gc.h"
 #include "lv_hal_disp.h"
 
 /*********************

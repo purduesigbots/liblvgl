@@ -9,9 +9,9 @@
 #include <stddef.h>
 
 #include "lv_group.h"
-#include "liblvgl/misc/lv_gc.h"
-#include "liblvgl/core/lv_obj.h"
-#include "liblvgl/core/lv_indev.h"
+#include "../misc/lv_gc.h"
+#include "../core/lv_obj.h"
+#include "../core/lv_indev.h"
 
 /*********************
  *      DEFINES
@@ -92,6 +92,7 @@ void lv_group_del(lv_group_t * group)
         indev = lv_indev_get_next(indev);
     }
 
+    if(default_group == group) default_group = NULL;
     _lv_ll_clear(&(group->obj_ll));
     _lv_ll_remove(&LV_GC_ROOT(_lv_group_ll), group);
     lv_mem_free(group);

@@ -45,12 +45,12 @@
  *      INCLUDES
  *********************/
 
-#include "liblvgl/lvgl.h"
+#include "../../../lvgl.h"
 #if LV_USE_SJPG
 
 #include "tjpgd.h"
 #include "lv_sjpg.h"
-#include "liblvgl/misc/lv_fs.h"
+#include "../../../misc/lv_fs.h"
 
 /*********************
  *      DEFINES
