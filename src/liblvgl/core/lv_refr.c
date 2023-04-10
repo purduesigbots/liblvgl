@@ -9,18 +9,18 @@
 #include <stddef.h>
 #include "lv_refr.h"
 #include "lv_disp.h"
-#include "../hal/lv_hal_tick.h"
-#include "../hal/lv_hal_disp.h"
-#include "../misc/lv_timer.h"
-#include "../misc/lv_mem.h"
-#include "../misc/lv_math.h"
-#include "../misc/lv_gc.h"
-#include "../draw/lv_draw.h"
-#include "../font/lv_font_fmt_txt.h"
-#include "../extra/others/snapshot/lv_snapshot.h"
+#include "liblvgl/hal/lv_hal_tick.h"
+#include "liblvgl/hal/lv_hal_disp.h"
+#include "liblvgl/misc/lv_timer.h"
+#include "liblvgl/misc/lv_mem.h"
+#include "liblvgl/misc/lv_math.h"
+#include "liblvgl/misc/lv_gc.h"
+#include "liblvgl/draw/lv_draw.h"
+#include "liblvgl/font/lv_font_fmt_txt.h"
+#include "liblvgl/extra/others/snapshot/lv_snapshot.h"
 
 #if LV_USE_PERF_MONITOR || LV_USE_MEM_MONITOR
-    #include "../widgets/lv_label.h"
+    #include "liblvgl/widgets/lv_label.h"
 #endif
 
 /*********************

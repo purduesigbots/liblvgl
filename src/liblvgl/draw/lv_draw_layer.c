@@ -8,7 +8,7 @@
  *********************/
 #include "lv_draw.h"
 #include "lv_draw_arc.h"
-#include "../core/lv_refr.h"
+#include "liblvgl/core/lv_refr.h"
 
 /*********************
  *      DEFINES

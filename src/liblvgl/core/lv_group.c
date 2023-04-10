@@ -9,9 +9,9 @@
 #include <stddef.h>
 
 #include "lv_group.h"
-#include "../misc/lv_gc.h"
-#include "../core/lv_obj.h"
-#include "../core/lv_indev.h"
+#include "liblvgl/misc/lv_gc.h"
+#include "liblvgl/core/lv_obj.h"
+#include "liblvgl/core/lv_indev.h"
 
 /*********************
  *      DEFINES

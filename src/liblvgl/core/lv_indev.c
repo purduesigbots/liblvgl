@@ -13,9 +13,9 @@
 #include "lv_group.h"
 #include "lv_refr.h"
 
-#include "../hal/lv_hal_tick.h"
-#include "../misc/lv_timer.h"
-#include "../misc/lv_math.h"
+#include "liblvgl/hal/lv_hal_tick.h"
+#include "liblvgl/misc/lv_timer.h"
+#include "liblvgl/misc/lv_math.h"
 
 /*********************
  *      DEFINES

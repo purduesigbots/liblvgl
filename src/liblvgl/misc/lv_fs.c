@@ -8,7 +8,7 @@
  *********************/
 #include "lv_fs.h"
 
-#include "../misc/lv_assert.h"
+#include "liblvgl/misc/lv_assert.h"
 #include "lv_ll.h"
 #include <string.h>
 #include "lv_gc.h"

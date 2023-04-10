@@ -8,8 +8,8 @@
  *********************/
 #include "lv_draw.h"
 #include "lv_draw_triangle.h"
-#include "../misc/lv_math.h"
-#include "../misc/lv_mem.h"
+#include "liblvgl/misc/lv_math.h"
+#include "liblvgl/misc/lv_mem.h"
 
 /*********************
  *      DEFINES

@@ -9,9 +9,9 @@
 #include "lv_line.h"
 
 #if LV_USE_LINE != 0
-#include "../misc/lv_assert.h"
-#include "../draw/lv_draw.h"
-#include "../misc/lv_math.h"
+#include "liblvgl/misc/lv_assert.h"
+#include "liblvgl/draw/lv_draw.h"
+#include "liblvgl/misc/lv_math.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>

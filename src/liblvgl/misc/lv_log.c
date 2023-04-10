@@ -12,7 +12,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include "lv_printf.h"
-#include "../hal/lv_hal_tick.h"
+#include "liblvgl/hal/lv_hal_tick.h"
 
 #if LV_LOG_PRINTF
     #include <stdio.h>

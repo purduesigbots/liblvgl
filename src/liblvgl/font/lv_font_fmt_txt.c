@@ -8,12 +8,12 @@
  *********************/
 #include "lv_font.h"
 #include "lv_font_fmt_txt.h"
-#include "../misc/lv_assert.h"
-#include "../misc/lv_types.h"
-#include "../misc/lv_gc.h"
-#include "../misc/lv_log.h"
-#include "../misc/lv_utils.h"
-#include "../misc/lv_mem.h"
+#include "liblvgl/misc/lv_assert.h"
+#include "liblvgl/misc/lv_types.h"
+#include "liblvgl/misc/lv_gc.h"
+#include "liblvgl/misc/lv_log.h"
+#include "liblvgl/misc/lv_utils.h"
+#include "liblvgl/misc/lv_mem.h"
 
 /*********************
  *      DEFINES

@@ -9,10 +9,10 @@
 #include "lv_checkbox.h"
 #if LV_USE_CHECKBOX != 0
 
-#include "../misc/lv_assert.h"
-#include "../misc/lv_txt_ap.h"
-#include "../core/lv_group.h"
-#include "../draw/lv_draw.h"
+#include "liblvgl/misc/lv_assert.h"
+#include "liblvgl/misc/lv_txt_ap.h"
+#include "liblvgl/core/lv_group.h"
+#include "liblvgl/draw/lv_draw.h"
 
 /*********************
  *      DEFINES

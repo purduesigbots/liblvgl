@@ -10,8 +10,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../lvgl.h"
-#include "../misc/lv_fs.h"
+#include "liblvgl/lvgl.h"
+#include "liblvgl/misc/lv_fs.h"
 #include "lv_font_loader.h"
 
 /**********************
