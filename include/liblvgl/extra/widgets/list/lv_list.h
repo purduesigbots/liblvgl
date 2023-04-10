@@ -13,8 +13,8 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "liblvgl/core/lv_obj.h"
-#include "liblvgl/extra/layouts/flex/lv_flex.h"
+#include "../../../core/lv_obj.h"
+#include "../../layouts/flex/lv_flex.h"
 
 #if LV_USE_LIST
 
