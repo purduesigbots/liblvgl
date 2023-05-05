@@ -22,9 +22,9 @@ static void disp_daemon(void* ign) {
 	uint32_t time = millis();
 
 	while (true) {
-		lv_task_handler();
 		task_delay_until(&time, 2);
 		lv_tick_inc(2);
+		lv_task_handler();
 	}
 }
 
