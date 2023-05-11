@@ -117,12 +117,6 @@ void display_initialize(void) {
 		printf("Error initializing input driver\n");
 	}
 
-	lv_theme_t *th = lv_theme_default_init(lv_disp_get_default(),
-									lv_palette_main(LV_PALETTE_BLUE),
-									lv_palette_main(LV_PALETTE_CYAN),
-									true,
-									LV_FONT_DEFAULT);
-	lv_disp_set_theme(lv_disp_get_default(), th);
 	lv_obj_t* page = lv_obj_create(NULL);
 	lv_obj_set_size(page, LV_HOR_RES_MAX, LV_VER_RES_MAX);
 	lv_scr_load(page);
