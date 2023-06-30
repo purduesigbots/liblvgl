@@ -27,7 +27,7 @@ static void disp_daemon(void* ign) {
 }
 
 static void vex_display_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t* color) {
-	vexDisplayCopyRect(x1, y1, x2, y2, (uint32_t*)color, x2 - x1 + 1);
+	screen_copy_area(x1, y1, x2, y2, (uint32_t*)color, x2 - x1 + 1);
 	lv_flush_ready();
 }
 
