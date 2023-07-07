@@ -20,9 +20,9 @@ static task_t disp_daemon_task;
 static void disp_daemon(void* ign) {
 	uint32_t time = millis();
 	while (true) {
-		lv_task_handler();
 		task_delay_until(&time, 2);
 		lv_tick_inc(2);
+		lv_task_handler();
 	}
 }
 
@@ -84,7 +84,6 @@ void log_function(lv_log_level_t level, const char * file, uint32_t line,  const
 
 void display_initialize(void) {
 	lv_init();
-
 	lv_disp_drv_t disp_drv;
 	lv_disp_drv_init(&disp_drv); 
 	disp_drv.disp_flush = lvgl_display_flush;

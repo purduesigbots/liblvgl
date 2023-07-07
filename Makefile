@@ -43,7 +43,7 @@ TEMPLATE_FILES=$(INCDIR)/liblvgl/**
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-TEMPLATE_KERNEL_SEMVER:=">=3.0.0"
+TEMPLATE_KERNEL_SEMVER:=">=4.0.0"
 
 template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
@@ -52,7 +52,8 @@ template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)/firmware
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	@echo "Creating template"
-	$Dprosv5 c create-template \
-		$(TEMPLATE_DIR) $(LIBNAME) $(VERSION) \
-		$(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") \
+	$Dpros c create-template \
+		$(TEMPLATE_DIR) $(LIBNAME) $(VERSION)  \
+		$(foreach file,$(TEMPLATE_FILES) ./firmware/$(LIBNAME).a, --system "$(file)") \
 		--target v5 --kernels $(TEMPLATE_KERNEL_SEMVER)
+		
