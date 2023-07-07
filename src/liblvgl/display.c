@@ -33,7 +33,6 @@ static void lvgl_display_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, c
 	else {
 		errno = PROS_ERR;
 	}
-	
 }
 
 static bool lvgl_read_touch(lv_indev_data_t* data) {
