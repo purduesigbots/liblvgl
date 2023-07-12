@@ -34,7 +34,7 @@ EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(f
 # files that get distributed to every user (beyond your source archive) - add
 # whatever files you want here. This line is configured to add all header files
 # that are in the the include directory get exported
-TEMPLATE_FILES=$(INCDIR)/liblvgl/** $(INCDIR)/pros/llemu.*
+TEMPLATE_FILES=$(INCDIR)/liblvgl/**
 
 .DEFAULT_GOAL=quick
 
@@ -43,7 +43,7 @@ TEMPLATE_FILES=$(INCDIR)/liblvgl/** $(INCDIR)/pros/llemu.*
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-TEMPLATE_KERNEL_SEMVER:=">=3.0.0"
+TEMPLATE_KERNEL_SEMVER:=">=4.0.0"
 
 template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
@@ -52,7 +52,8 @@ template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)/firmware
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	@echo "Creating template"
-	$Dprosv5 c create-template \
-		$(TEMPLATE_DIR) $(LIBNAME) $(VERSION) \
-		$(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") \
+	$Dpros c create-template \
+		$(TEMPLATE_DIR) $(LIBNAME) $(VERSION)  \
+		$(foreach file,$(TEMPLATE_FILES) ./firmware/$(LIBNAME).a, --system "$(file)") \
 		--target v5 --kernels $(TEMPLATE_KERNEL_SEMVER)
+		

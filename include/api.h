@@ -41,8 +41,8 @@
 
 #define PROS_VERSION_MAJOR 4
 #define PROS_VERSION_MINOR 0
-#define PROS_VERSION_PATCH 2
-#define PROS_VERSION_STRING "4.0.2"
+#define PROS_VERSION_PATCH 4
+#define PROS_VERSION_STRING "4.0.4"
 
 #include "pros/adi.h"
 #include "pros/colors.h"
@@ -53,6 +53,7 @@
 #include "pros/gps.h"
 #include "pros/imu.h"
 #include "pros/link.h"
+#include "pros/llemu.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/optical.h"
@@ -69,6 +70,7 @@
 #include "pros/gps.hpp"
 #include "pros/imu.hpp"
 #include "pros/link.hpp"
+#include "pros/llemu.hpp"
 #include "pros/misc.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/motors.hpp"
