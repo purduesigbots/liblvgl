@@ -495,6 +495,8 @@ typedef void * lv_font_user_data_t;
 #define LV_THEME_DEFAULT_FONT_SUBTITLE      &lv_font_montserrat_10
 #define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_montserrat_30
 
+#define CONFIG_LV_THEME_DEFAULT_DARK 1
+
 /*=================
  *  Text settings
  *=================*/
