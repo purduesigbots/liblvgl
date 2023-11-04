@@ -10,7 +10,7 @@
 
 #if LV_USE_SPAN != 0
 
-#include "liblvgl/misc/lv_assert.h"
+#include "../../../misc/lv_assert.h"
 
 /*********************
  *      DEFINES

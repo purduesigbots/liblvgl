@@ -7,10 +7,10 @@
  *      INCLUDES
  *********************/
 #include "lv_draw_sw.h"
-#include "liblvgl/misc/lv_math.h"
-#include "liblvgl/misc/lv_txt_ap.h"
-#include "liblvgl/core/lv_refr.h"
-#include "liblvgl/misc/lv_assert.h"
+#include "../../misc/lv_math.h"
+#include "../../misc/lv_txt_ap.h"
+#include "../../core/lv_refr.h"
+#include "../../misc/lv_assert.h"
 #include "lv_draw_sw_dither.h"
 
 /*********************

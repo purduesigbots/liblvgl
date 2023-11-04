@@ -9,7 +9,7 @@
 #include "lv_tabview.h"
 #if LV_USE_TABVIEW
 
-#include "liblvgl/misc/lv_assert.h"
+#include "../../../misc/lv_assert.h"
 
 /*********************
  *      DEFINES

@@ -7,7 +7,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "liblvgl/lvgl.h"
+#include "../../../lvgl.h"
 #if LV_USE_FS_STDIO != '\0'
 
 #include <stdio.h>

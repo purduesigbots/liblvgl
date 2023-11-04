@@ -7,14 +7,14 @@
  *      INCLUDES
  *********************/
 
-#include "liblvgl/lv_conf_internal.h"
+#include "../../lv_conf_internal.h"
 
 #if LV_USE_GPU_SDL
 
 #include LV_GPU_SDL_INCLUDE_PATH
 
-#include "liblvgl/lv_draw_label.h"
-#include "liblvgl/misc/lv_utils.h"
+#include "../lv_draw_label.h"
+#include "../../misc/lv_utils.h"
 
 #include "lv_draw_sdl_utils.h"
 #include "lv_draw_sdl_texture_cache.h"

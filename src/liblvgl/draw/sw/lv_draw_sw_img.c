@@ -7,12 +7,12 @@
  *      INCLUDES
  *********************/
 #include "lv_draw_sw.h"
-#include "liblvgl/draw/lv_img_cache.h"
-#include "liblvgl/hal/lv_hal_disp.h"
-#include "liblvgl/misc/lv_log.h"
-#include "liblvgl/core/lv_refr.h"
-#include "liblvgl/misc/lv_mem.h"
-#include "liblvgl/misc/lv_math.h"
+#include "../lv_img_cache.h"
+#include "../../hal/lv_hal_disp.h"
+#include "../../misc/lv_log.h"
+#include "../../core/lv_refr.h"
+#include "../../misc/lv_mem.h"
+#include "../../misc/lv_math.h"
 
 /*********************
  *      DEFINES

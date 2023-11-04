@@ -10,8 +10,8 @@
 #if LV_USE_SNAPSHOT
 
 #include <stdbool.h>
-#include "liblvgl/core/lv_disp.h"
-#include "liblvgl/core/lv_refr.h"
+#include "../../../core/lv_disp.h"
+#include "../../../core/lv_refr.h"
 /*********************
  *      DEFINES
  *********************/

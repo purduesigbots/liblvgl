@@ -9,9 +9,9 @@
 #include "lv_gridnav.h"
 #if LV_USE_GRIDNAV
 
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/misc/lv_math.h"
-#include "liblvgl/core/lv_indev.h"
+#include "../../../misc/lv_assert.h"
+#include "../../../misc/lv_math.h"
+#include "../../../core/lv_indev.h"
 
 /*********************
  *      DEFINES
@@ -217,6 +217,7 @@ static void gridnav_event_cb(lv_event_t * e)
         if(dsc->focused_obj == NULL)  dsc->focused_obj = find_first_focusable(obj);
         if(dsc->focused_obj) {
             lv_obj_add_state(dsc->focused_obj, LV_STATE_FOCUSED | LV_STATE_FOCUS_KEY);
+            lv_obj_clear_state(dsc->focused_obj, LV_STATE_PRESSED); /*Be sure the focuses obj is not stuck in pressed state*/
             lv_obj_scroll_to_view(dsc->focused_obj, LV_ANIM_OFF);
         }
     }

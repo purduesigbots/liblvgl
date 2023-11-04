@@ -6,12 +6,12 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "liblvgl/lvgl.h" /*To see all the widgets*/
+#include "../../../lvgl.h" /*To see all the widgets*/
 
 #if LV_USE_THEME_DEFAULT
 
 #include "lv_theme_default.h"
-#include "liblvgl/misc/lv_gc.h"
+#include "../../../misc/lv_gc.h"
 
 /*********************
  *      DEFINES
