@@ -1,4 +1,5 @@
 #include "main.h"
+#include "liblvgl/lvgl.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -23,10 +24,19 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+	/*
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
+	*/
+/*
+	lv_obj_t * img= lv_img_create(lv_scr_act());
+  	lv_img_set_src(img, "S:cat.jpg");
+	printf("image printed");
+	*/
+	lv_obj_t * gif = lv_gif_create(lv_scr_act());
+	lv_gif_set_src(gif, "S:pbj.gif");
 }
 
 /**
