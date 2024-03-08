@@ -408,3 +408,15 @@ uint8_t lcd_read_buttons(void) {
 	}
 	return _lcd_read_buttons(_llemu_lcd);
 }
+
+void lcd_set_background_color(lv_color_t color) {
+	// Check if the LCD is initialized
+	if (!lcd_is_initialized()) {
+		errno = ENXIO;
+		return;
+	}
+	printf("Color changed to: %d\n", color.full);
+	lv_style_set_bg_color(&screen_style, color);
+	lv_style_set_bg_grad_color(&screen_style, color);
+	lv_obj_report_style_change(&screen_style);
+}
