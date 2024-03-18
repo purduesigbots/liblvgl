@@ -20,6 +20,7 @@
 
 // Add function prototypes
 static void errno_alert();
+static bool prev_errno = false;
 
 static void disp_daemon(void* ign) {
 	uint32_t time = millis();
@@ -47,17 +48,19 @@ static void disp_daemon(void* ign) {
 // Currently testing by just printing to console
 static void errno_alert() {
 	// Check if errno is set
-	if (errno != 0) {
+	if (errno != 0 && prev_errno == false) {
 		// Change the background color of the screen to red
-		lcd_set_background_color(lv_color_hex(0xFF0000));
+		lcd_set_errno_background_color();
 		// Print to line 3 of lcd, the error message
 		lcd_print(3, "Errno Set: %s", strerror(errno));
+		prev_errno = true;
 	}
-	else {
+	else if (errno == 0 && prev_errno == true) {
 		// Make sure background color of screen is green
-		lcd_set_background_color(lv_color_hex(0x5ABC03));
+		lcd_set_errno_background_color();
 		// Clear line 3 of lcd
 		lcd_clear_line(3);
+		prev_errno = false;
 
 	}
 }

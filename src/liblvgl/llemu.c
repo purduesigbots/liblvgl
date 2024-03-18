@@ -108,8 +108,11 @@ static lv_obj_t* _create_frame(lv_obj_t* lcd_dummy) {
 	return frame;
 }
 
+static lv_obj_t* screen_obj;
 static lv_obj_t* _create_screen(lv_obj_t* frame) {
 	lv_obj_t* screen = lv_obj_create(frame);
+	screen_obj = screen;
+	lv_style_init(&screen_style);
 
 	lv_obj_set_size(screen, 440, 160);
 	lv_obj_align(screen, LV_ALIGN_CENTER, 0, 20);
@@ -119,6 +122,8 @@ static lv_obj_t* _create_screen(lv_obj_t* frame) {
 
 	lv_obj_set_style_border_color(screen, lv_color_hex(0x606060), LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
+	// When the screen object experiences errno, change the background color to red, set style to pressed
+	lv_obj_set_style_bg_color(screen, lv_color_hex(0xFF0000), LV_STATE_PRESSED);
     lv_obj_set_style_text_color(screen, lv_color_hex(0x202020), LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(screen, &pros_font_dejavu_mono_18, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
 
@@ -409,14 +414,24 @@ uint8_t lcd_read_buttons(void) {
 	return _lcd_read_buttons(_llemu_lcd);
 }
 
-void lcd_set_background_color(lv_color_t color) {
+void lcd_set_errno_background_color(void) {
 	// Check if the LCD is initialized
 	if (!lcd_is_initialized()) {
 		errno = ENXIO;
 		return;
 	}
-	printf("Color changed to: %d\n", color.full);
+	/*
 	lv_style_set_bg_color(&screen_style, color);
 	lv_style_set_bg_grad_color(&screen_style, color);
-	lv_obj_report_style_change(&screen_style);
+
+	lv_style_set_bg_color(&screen_style, color);
+	lv_obj_refresh_style(screen_obj, LV_PART_MAIN, LV_STYLE_BG_COLOR);
+	*/
+	// Check if errno is set
+	if (errno != 0) {
+		lv_event_send(screen_obj, LV_EVENT_PRESSED, NULL);
+	}
+	else {
+		lv_event_send(screen_obj, LV_EVENT_RELEASED, NULL);
+	}
 }
