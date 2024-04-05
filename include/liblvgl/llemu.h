@@ -251,7 +251,17 @@ void lcd_set_text_align(text_align_e_t alignment);
  * 
  * \return void
  */
-void lcd_set_errno_background_color(void);
+void lcd_errno_background_color(void);
+
+/**
+ * Changes the background color of the LCD
+ * 
+ * \param color
+ * 		The color to change the background to
+ * 
+ * \return void
+ */
+void lcd_set_background_color(lv_color_t color);
 
 #ifdef __cplusplus
 }  // namespace c
