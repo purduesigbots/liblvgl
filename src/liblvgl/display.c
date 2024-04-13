@@ -18,10 +18,6 @@
 #include <stdint.h>
 #include <assert.h>
 
-// Add function prototypes
-static void errno_alert();
-static bool prev_errno = false;
-
 static void disp_daemon(void* ign) {
 	uint32_t time = millis();
 
@@ -29,39 +25,6 @@ static void disp_daemon(void* ign) {
 		lv_task_handler();
 		task_delay_until(&time, 2);
 		lv_tick_inc(2);
-
-		// Set errno manually to test
-		// When time is between milliseconds 1000 and 5000, set errno to 1
-		if (time >= 1000 && time <= 5000) {
-			errno = 1;
-		}
-		else {
-			errno = 0;
-		}
-
-		// Do error checking
-		errno_alert();
-	}
-}
-
-// Create function that changes background color to red if errno is set
-// Currently testing by just printing to console
-static void errno_alert() {
-	// Check if errno is set
-	if (errno != 0 && prev_errno == false) {
-		// Change the background color of the screen to red
-		lcd_errno_background_color();
-		// Print to line 1 of lcd, the error message
-		lcd_print(1, "Errno Set: %s", strerror(errno));
-		prev_errno = true;
-	}
-	else if (errno == 0 && prev_errno == true) {
-		// Make sure background color of screen is green
-		lcd_errno_background_color();
-		// Clear line 1 of lcd
-		lcd_clear_line(1);
-		prev_errno = false;
-
 	}
 }
 

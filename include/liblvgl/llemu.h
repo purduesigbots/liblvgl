@@ -244,16 +244,6 @@ uint8_t lcd_read_buttons(void);
 void lcd_set_text_align(text_align_e_t alignment);
 
 /**
- * Changes the background color of the LCD depending on errno
- * 
- * \param color
- * 		The color to change the background to
- * 
- * \return void
- */
-void lcd_errno_background_color(void);
-
-/**
  * Changes the background color of the LCD
  * 
  * \param color

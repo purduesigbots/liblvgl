@@ -122,8 +122,6 @@ static lv_obj_t* _create_screen(lv_obj_t* frame) {
 
 	lv_obj_set_style_border_color(screen, lv_color_hex(0x606060), LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
-	// When the screen object experiences errno, change the background color to red, set state to LV_STATE_USER_4
-	lv_obj_set_style_bg_color(screen, lv_color_hex(0xFF0000), LV_STATE_USER_4);
     lv_obj_set_style_text_color(screen, lv_color_hex(0x202020), LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(screen, &pros_font_dejavu_mono_18, LV_STATE_DEFAULT); // TODO: does this need to be 20px?
 
@@ -414,33 +412,6 @@ uint8_t lcd_read_buttons(void) {
 	return _lcd_read_buttons(_llemu_lcd);
 }
 
-void lcd_errno_background_color(void) {
-	// Check if the LCD is initialized
-	if (!lcd_is_initialized()) {
-		errno = ENXIO;
-		return;
-	}
-	/*
-	lv_style_set_bg_color(&screen_style, color);
-	lv_style_set_bg_grad_color(&screen_style, color);
-
-	lv_style_set_bg_color(&screen_style, color);
-	lv_obj_refresh_style(screen_obj, LV_PART_MAIN, LV_STYLE_BG_COLOR);
-	*/
-	// Check if errno is set
-	if (errno != 0) {
-		// Get state to LV_STATE_USER_4
-		lv_obj_add_state(screen_obj, LV_STATE_USER_4);
-	}
-	else {
-		// Check if the screen object has the state LV_STATE_USER_4
-		if (lv_obj_has_state(screen_obj, LV_STATE_USER_4)) {
-			// Remove the state LV_STATE_USER_4
-			lv_obj_clear_state(screen_obj, LV_STATE_USER_4);
-		}
-	}
-}
-
 void lcd_set_background_color(lv_color_t color) {
 	// Check if the LCD is initialized
 	if (!lcd_is_initialized()) {
@@ -450,7 +421,7 @@ void lcd_set_background_color(lv_color_t color) {
 	
 	// Set the background color of the screen object
 	// Set LV_STATE_USER_1 to the color
-	lv_obj_set_style_text_color(screen_obj, color, LV_STATE_USER_1);
+	lv_obj_set_style_bg_color(screen_obj, color, LV_STATE_USER_1);
 
 	// Now add the state LV_STATE_USER_1 to the screen object
 	lv_obj_add_state(screen_obj, LV_STATE_USER_1);
