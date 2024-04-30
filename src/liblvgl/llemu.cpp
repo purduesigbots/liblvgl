@@ -55,6 +55,10 @@ std::uint8_t read_buttons(void) {
 	return lcd_read_buttons();
 }
 
+void set_background_color(lv_color_t color) {
+	lcd_set_background_color(color);
+}
+
 }  // namespace lcd
 
 }  // namespace pros

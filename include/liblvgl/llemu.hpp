@@ -179,6 +179,17 @@ void set_text_align(Text_Align alignment);
  * \return The buttons pressed as a bit mask
  */
 std::uint8_t read_buttons(void);
+
+/**
+ * Function to change background color of the LCD screen.
+ * 
+ * \param color
+ * 		The color to set the background to
+ * 
+ * \return void
+ */
+void set_background_color(lv_color_t color);
+
 }  // namespace lcd
 }  // namespace pros
 

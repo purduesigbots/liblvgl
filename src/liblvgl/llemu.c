@@ -108,8 +108,11 @@ static lv_obj_t* _create_frame(lv_obj_t* lcd_dummy) {
 	return frame;
 }
 
+static lv_obj_t* screen_obj;
 static lv_obj_t* _create_screen(lv_obj_t* frame) {
 	lv_obj_t* screen = lv_obj_create(frame);
+	screen_obj = screen;
+	lv_style_init(&screen_style);
 
 	lv_obj_set_size(screen, 440, 160);
 	lv_obj_align(screen, LV_ALIGN_CENTER, 0, 20);
@@ -407,4 +410,19 @@ uint8_t lcd_read_buttons(void) {
 		return 0;
 	}
 	return _lcd_read_buttons(_llemu_lcd);
+}
+
+void lcd_set_background_color(lv_color_t color) {
+	// Check if the LCD is initialized
+	if (!lcd_is_initialized()) {
+		errno = ENXIO;
+		return;
+	}
+	
+	// Set the background color of the screen object
+	// Set LV_STATE_USER_1 to the color
+	lv_obj_set_style_bg_color(screen_obj, color, LV_STATE_USER_1);
+
+	// Now add the state LV_STATE_USER_1 to the screen object
+	lv_obj_add_state(screen_obj, LV_STATE_USER_1);
 }
