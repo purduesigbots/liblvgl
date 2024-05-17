@@ -230,6 +230,7 @@ bool lcd_register_btn2_cb(lcd_btn_cb_fn_t cb);
  * \return The buttons pressed as a bit mask
  */
 uint8_t lcd_read_buttons(void);
+
 /**
  * Changes the alignment of text on the LCD background
  * 
@@ -246,10 +247,24 @@ void lcd_set_text_align(text_align_e_t alignment);
 /**
  * Changes the background color of the LCD
  * 
+ * \note If lcd is not initialized, this function will set errno to ENXIO
+ * 
  * \param color
- * 		The color to change the background to
+ * 		The color to change the background to, argument is formatted as lv_color_t
  * 
  * \return void
+ * 
+ * \b Example:
+ * \code
+ * void opcontrol() {
+ * 		// Set the background color to red
+ * 		lcd_set_background_color(lv_color_make(255, 0, 0));
+ * 
+ * 		while (true) {
+ * 			// Do stuff
+ * 		}
+ * }
+ * \endcode
  */
 void lcd_set_background_color(lv_color_t color);
 
