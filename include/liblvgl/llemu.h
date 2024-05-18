@@ -247,7 +247,9 @@ void lcd_set_text_align(text_align_e_t alignment);
 /**
  * Changes the background color of the LCD
  * 
- * \note If lcd is not initialized, this function will set errno to ENXIO
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO  - The LCD has not been initialized. Call lcd_initialize() first.
  * 
  * \param color
  * 		The color to change the background to, argument is formatted as lv_color_t
