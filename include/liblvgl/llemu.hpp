@@ -183,10 +183,26 @@ std::uint8_t read_buttons(void);
 /**
  * Function to change background color of the LCD screen.
  * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO  - The LCD has not been initialized. Call lcd_initialize() first.
+ * 
  * \param color
- * 		The color to set the background to
+ * 		The color to set the background to, argument is formatted as lv_color_t
  * 
  * \return void
+ * 
+ * \b Example:
+ * \code
+ * void opcontrol() {
+ * 		// Set the background color to red
+ * 		pros::lcd::set_background_color(lv_color_make(255, 0, 0));
+ * 
+ * 		while (true) {
+ * 			// Do stuff
+ * 		}
+ * }
+ * \endcode
  */
 void set_background_color(lv_color_t color);
 
