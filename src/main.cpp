@@ -1,4 +1,5 @@
 #include "main.h"
+#include "liblvgl/lvgl.h"
 
 /**
  * A callback function for LLEMU's center button.
