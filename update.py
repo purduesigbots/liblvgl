@@ -16,6 +16,10 @@ keep_files = [
 	"src/liblvgl/display.c",
 	"src/liblvgl/llemu.c",
 	"src/liblvgl/llemu.cpp",
+	"src/liblvgl/lv_fonts/pros_font_dejavu_mono_10.c",
+	"src/liblvgl/lv_fonts/pros_font_dejavu_mono_18.c",
+	"src/liblvgl/lv_fonts/pros_font_dejavu_mono_30.c",
+	"src/liblvgl/lv_fonts/pros_font_dejavu_mono_40.c",
 ]
 
 # TODO: Version checker
