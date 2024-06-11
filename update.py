@@ -45,6 +45,8 @@ def clean_template_dir():
 	for file in keep_files:
 		os.makedirs(os.path.dirname(file), exist_ok=True)
 		shutil.copy(f"temp/{file}", file)
+	
+	shutil.rmtree("temp")
 
 if __name__ == "__main__":
 	clean_template_dir()
