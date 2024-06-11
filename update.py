@@ -69,13 +69,16 @@ def copy_lvgl_files():
 		shutil.move(f"lvgl/src/{file}", f"src/liblvgl/{file}")
 		fix_includes(Path(f"src/liblvgl/{file}").resolve())
 	
+	os.remove("include/liblvgl/lvgl.h")
+	shutil.move("lvgl/lvgl.h", "include/liblvgl/lvgl.h")
+	fix_includes("include/liblvgl/lvgl.h")
+
 	shutil.rmtree("lvgl/")
 
 def fix_includes(file_path):
 	with open(file_path) as file:
 		data = file.read()
-		data.replace("#include \"lvgl/", "#include \"liblvgl/")
-		data = re.sub(r"#include \"(\.\./)+", "#include \"liblvgl/", data)
+		data = re.sub(r"#include \"(src/|lvgl/|(\.\./)+)", "#include \"liblvgl/", data)
 	
 	with open(file_path, "w") as file:
 		file.write(data)
