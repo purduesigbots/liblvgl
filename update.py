@@ -76,9 +76,14 @@ def copy_lvgl_files():
 	shutil.rmtree("lvgl/")
 
 def fix_includes(file_path):
+	# FIXME: This callback brokey
+	def resolve_include_path(match):
+		return str(Path(os.path.dirname(file_path)).joinpath(match).resolve())
+
 	with open(file_path) as file:
 		data = file.read()
-		data = re.sub(r"#include \"(src/|lvgl/|(\.\./)+)", "#include \"liblvgl/", data)
+		data = re.sub(r"#include \"((?:\.\./)+.*\.h)", resolve_include_path, data)
+		data = re.sub(r"#include \"(src/|lvgl/)", "#include \"liblvgl/", data)
 	
 	with open(file_path, "w") as file:
 		file.write(data)
