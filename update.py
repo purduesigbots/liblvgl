@@ -58,8 +58,10 @@ def copy_lvgl_files():
 	for file in source_files:
 		os.makedirs(os.path.dirname(f"src/liblvgl/{file}"), exist_ok=True)
 		shutil.move(f"lvgl/src/{file}", f"src/liblvgl/{file}")
+	
+	shutil.rmtree("lvgl/")
 
 if __name__ == "__main__":
 	clone("master")
+	clean_template_dir()
 	copy_lvgl_files()
-	#clone("https://github.com/lvgl/lvgl.git", sys.argv[1])
