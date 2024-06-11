@@ -5,6 +5,7 @@ import subprocess
 import os
 from pathlib import Path
 import shutil
+import re
 
 # Files that should persist in the template directory
 keep_files = [
@@ -61,14 +62,25 @@ def copy_lvgl_files():
 	for file in header_files:
 		os.makedirs(os.path.dirname(f"include/liblvgl/{file}"), exist_ok=True)
 		shutil.move(f"lvgl/src/{file}", f"include/liblvgl/{file}")
+		fix_includes(Path(f"include/liblvgl/{file}").resolve())
 
 	for file in source_files:
 		os.makedirs(os.path.dirname(f"src/liblvgl/{file}"), exist_ok=True)
 		shutil.move(f"lvgl/src/{file}", f"src/liblvgl/{file}")
+		fix_includes(Path(f"src/liblvgl/{file}").resolve())
 	
 	shutil.rmtree("lvgl/")
 
+def fix_includes(file_path):
+	with open(file_path) as file:
+		data = file.read()
+		data.replace("#include \"lvgl/", "#include \"liblvgl/")
+		data = re.sub(r"#include \"(\.\./)+", "#include \"liblvgl/", data)
+	
+	with open(file_path, "w") as file:
+		file.write(data)
+
 if __name__ == "__main__":
-	clone("master")
+	clone("release/v8.4")
 	clean_template_dir()
 	copy_lvgl_files()
