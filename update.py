@@ -18,16 +18,15 @@ keep_files = [
 	"src/liblvgl/llemu.cpp",
 ]
 
-def clone(repo, branch):
-	if type(repo) != str:
-		raise Exception("Parameter 'repo' should be a string!")
+def clone(branch):
 	if type(branch) != str:
 		raise Exception("Parameter 'branch' should be a string!")
 	
-	sub_proc = subprocess.Popen(f"git clone -b {branch} {repo} --recursive", 
+	sub_proc = subprocess.Popen(f"git clone -b {branch} https://github.com/lvgl/lvgl.git --recursive", 
 							 	stdout=subprocess.PIPE, 
 							 	stderr=subprocess.PIPE, 
 							 	shell=True)
+	sub_proc.wait()
 
 def clean_template_dir():
 	if not os.path.exists("temp"): 
@@ -61,6 +60,6 @@ def copy_lvgl_files():
 		shutil.move(f"lvgl/src/{file}", f"src/liblvgl/{file}")
 
 if __name__ == "__main__":
-	#clone("https://github.com/lvgl/lvgl.git", "master")
+	clone("master")
 	copy_lvgl_files()
 	#clone("https://github.com/lvgl/lvgl.git", sys.argv[1])
