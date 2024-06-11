@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import glob
-import sys
 import subprocess
 import os
 from pathlib import Path
