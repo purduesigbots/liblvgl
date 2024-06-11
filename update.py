@@ -18,6 +18,10 @@ keep_files = [
 	"src/liblvgl/llemu.cpp",
 ]
 
+# TODO: Version checker
+# TODO: Includes fixer
+# TODO: Better output
+
 def clone(branch):
 	if type(branch) != str:
 		raise Exception("Parameter 'branch' should be a string!")
