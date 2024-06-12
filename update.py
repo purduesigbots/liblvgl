@@ -56,23 +56,22 @@ def clean_template_dir():
 
 def copy_lvgl_files():
     lvgl_src = Path("lvgl/src").resolve()
-    header_files = lvgl_src.rglob("**/*.h")
-    source_files = lvgl_src.rglob("**/*.c")
+    header_files = list(lvgl_src.rglob("**/*.h"))
+    source_files = list(lvgl_src.rglob("**/*.c"))
+    files = header_files + source_files
 
-    for file in header_files:
-        new_loc = Path(f"include/liblvgl/{file.relative_to(lvgl_src)}")
-        new_loc.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(file, new_loc)
-        fix_includes(new_loc)
+    for file in files:
+        if file in header_files:
+            new_loc = Path(f"include/liblvgl/{file.relative_to(lvgl_src)}")
+        elif file in source_files:
+            new_loc = Path(f"src/liblvgl/{file.relative_to(lvgl_src)}")
 
-    for file in source_files:
-        new_loc = Path(f"src/liblvgl/{file.relative_to(lvgl_src)}")
         new_loc.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(file, new_loc)
+        shutil.copy(file, new_loc)
         fix_includes(new_loc)
 
     Path("include/liblvgl/lvgl.h").unlink(missing_ok=True)
-    shutil.move("lvgl/lvgl.h", "include/liblvgl/lvgl.h")
+    shutil.copy("lvgl/lvgl.h", "include/liblvgl/lvgl.h")
     fix_includes("include/liblvgl/lvgl.h")
 
     shutil.rmtree("lvgl/")
