@@ -80,20 +80,24 @@ def copy_lvgl_files():
 
 def fix_includes(file_path):
     def resolve_include_path(match):
-        file_dir = Path(file_path).parent
+        file = Path(file_path)
         include_path = match.group(1)
-        resolved_path = file_dir.joinpath(include_path).resolve()
+        resolved_path = file.parent.joinpath(include_path).resolve()
 
         source_dir = Path.cwd().joinpath("src/")
         include_dir = Path.cwd().joinpath("include/")
 
-        # FIXME: Some files break this, aren't relative to either path. How to handle this?
         if resolved_path.is_relative_to(source_dir):
             relative_path = resolved_path.relative_to(source_dir)
         elif resolved_path.is_relative_to(include_dir):
             relative_path = resolved_path.relative_to(include_dir)
         else:
-            relative_path = f"WEIRD PATH: {include_path}"
+            print(
+                f'[Warning]: File "{file}" includes file "{include_path}",'
+                + "which is outside of the src or include directory."
+                + "Manual editing may be required."
+            )
+            relative_path = include_path
 
         return f'#include "{relative_path}"'
 
