@@ -23,7 +23,6 @@ keep_files = [
 ]
 
 # TODO: Version checker
-# TODO: Includes fixer
 # TODO: Better output
 
 def clone(branch):
