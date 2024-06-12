@@ -13,6 +13,7 @@ keep_files = [
 	"include/liblvgl/lv_conf.old.h", 
 	"include/liblvgl/llemu.h",
 	"include/liblvgl/llemu.hpp",
+	"include/liblvgl/font/lv_font.h",
 	"src/liblvgl/display.c",
 	"src/liblvgl/llemu.c",
 	"src/liblvgl/llemu.cpp",
@@ -85,17 +86,20 @@ def fix_includes(file_path):
 
 		# FIXME: Some files break this, aren't relative to either path. How to handle this?
 		if resolved_path.is_relative_to(source_dir):
-			relative_path = resolved_path.relative_to()
+			relative_path = resolved_path.relative_to(source_dir)
 		elif resolved_path.is_relative_to(include_dir):
 			relative_path = resolved_path.relative_to(include_dir)
+		else:
+			relative_path = f"WEIRD PATH: {include_path}"
 
 		return f'#include "{relative_path}"'
 	
 
 	with open(file_path) as file:
 		data = file.read()
-		data = re.sub(r"#include \"((?:\.\./)+.*\.h)", resolve_include_path, data)
+		data = re.sub(r"#include \"((?:\.\./)+.*\.h)\"", resolve_include_path, data)
 		data = re.sub(r"#include \"(src/|lvgl/)", "#include \"liblvgl/", data)
+		data = re.sub(r"(?<!LV_LVGL_H_INCLUDE_SIMPLE\n)(?:^[ \t]*(#include \"lvgl.h\")$)", "#include \"liblvgl/lvgl.h\"", data, flags=re.M)
 	
 	with open(file_path, "w") as file:
 		file.write(data)
