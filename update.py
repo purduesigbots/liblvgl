@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-import glob
 import subprocess
-import os
 from pathlib import Path
 import shutil
 import re
@@ -38,19 +36,19 @@ def clone(branch):
 
 
 def clean_template_dir():
-    if not os.path.exists("temp"):
-        os.mkdir("temp")
+    Path("temp").mkdir(exist_ok=True)
 
     for file in keep_files:
-        output = f"temp/{file}"
-        os.makedirs(os.path.dirname(output), exist_ok=True)
+        output = Path(f"temp/{file}")
+        output.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(file, output)
 
     shutil.rmtree("include/liblvgl")
     shutil.rmtree("src/liblvgl")
 
     for file in keep_files:
-        os.makedirs(os.path.dirname(file), exist_ok=True)
+        output = Path(file)
+        output.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(f"temp/{file}", file)
 
     shutil.rmtree("temp")
@@ -58,20 +56,22 @@ def clean_template_dir():
 
 def copy_lvgl_files():
     lvgl_src = Path("lvgl/src").resolve()
-    header_files = glob.glob("**/*.h", recursive=True, root_dir=lvgl_src)
-    source_files = glob.glob("**/*.c", recursive=True, root_dir=lvgl_src)
+    header_files = lvgl_src.rglob("**/*.h")
+    source_files = lvgl_src.rglob("**/*.c")
 
     for file in header_files:
-        os.makedirs(os.path.dirname(f"include/liblvgl/{file}"), exist_ok=True)
-        shutil.move(f"lvgl/src/{file}", f"include/liblvgl/{file}")
-        fix_includes(Path(f"include/liblvgl/{file}").resolve())
+        new_loc = Path(f"include/liblvgl/{file.relative_to(lvgl_src)}")
+        new_loc.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(file, new_loc)
+        fix_includes(new_loc)
 
     for file in source_files:
-        os.makedirs(os.path.dirname(f"src/liblvgl/{file}"), exist_ok=True)
-        shutil.move(f"lvgl/src/{file}", f"src/liblvgl/{file}")
-        fix_includes(Path(f"src/liblvgl/{file}").resolve())
+        new_loc = Path(f"src/liblvgl/{file.relative_to(lvgl_src)}")
+        new_loc.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(file, new_loc)
+        fix_includes(new_loc)
 
-    os.remove("include/liblvgl/lvgl.h")
+    Path("include/liblvgl/lvgl.h").unlink(missing_ok=True)
     shutil.move("lvgl/lvgl.h", "include/liblvgl/lvgl.h")
     fix_includes("include/liblvgl/lvgl.h")
 
