@@ -76,9 +76,22 @@ def copy_lvgl_files():
 	shutil.rmtree("lvgl/")
 
 def fix_includes(file_path):
-	# FIXME: This callback brokey
 	def resolve_include_path(match):
-		return str(Path(os.path.dirname(file_path)).joinpath(match).resolve())
+		file_dir = Path(file_path).parent
+		include_path = match.group(1)
+		resolved_path = file_dir.joinpath(include_path).resolve()
+
+		source_dir = Path.cwd().joinpath("src/")
+		include_dir = Path.cwd().joinpath("include/")
+
+		# FIXME: Some files break this, aren't relative to either path. How to handle this?
+		if resolved_path.is_relative_to(source_dir):
+			relative_path = resolved_path.relative_to()
+		elif resolved_path.is_relative_to(include_dir):
+			relative_path = resolved_path.relative_to(include_dir)
+
+		return f'#include "{relative_path}"'
+	
 
 	with open(file_path) as file:
 		data = file.read()
