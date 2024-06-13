@@ -2,6 +2,8 @@
 
 import subprocess
 from pathlib import Path
+from time import sleep
+from argparse import ArgumentParser
 import shutil
 import re
 
@@ -23,13 +25,10 @@ keep_files = [
 
 
 def clone(branch):
-    if type(branch) != str:
-        raise Exception("Parameter 'branch' should be a string!")
-
     sub_proc = subprocess.Popen(
         f"git clone -b {branch} https://github.com/lvgl/lvgl.git --recursive",
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        stdout=subprocess.STDOUT,
+        stderr=subprocess.STDOUT,
         shell=True,
     )
     sub_proc.wait()
@@ -115,7 +114,53 @@ def fix_includes(file_path):
         file.write(data)
 
 
-if __name__ == "__main__":
-    clone("release/v8.4")
+def main():
+    parser = ArgumentParser(
+        prog="./update.py",
+        description="A script to automatically update liblvgl from lvgl",
+    )
+    parser.add_argument(
+        "branch",
+        type=str,
+        help="branch to clone from lvgl's git repository",
+    )
+    parser.add_argument(
+        "-y",
+        "--yes",
+        action="store_true",
+        help="ignore initial warning",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="show extra information",
+    )
+    args = parser.parse_args()
+
+    if not args.yes:
+        print(
+            "Local changes may be deleted by this script."
+            + " If you have made any changes, you should exit this script to"
+            + " stash or commit them now."
+        )
+
+        print(
+            "The following liblvgl files will not be modified:\n  "
+            + "\n  ".join(keep_files)
+        )
+
+        input("Press any key to continue...")
+
+    print("Cloning LVGL...")
+    clone(args.branch)
+
+    print("Removing old liblvgl files...")
     clean_template_dir()
+
+    print("Copying updated files from LVGL...")
     copy_lvgl_files()
+
+
+if __name__ == "__main__":
+    main()
