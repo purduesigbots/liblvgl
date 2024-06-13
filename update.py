@@ -93,8 +93,8 @@ def fix_includes(file_path):
         else:
             print(
                 f'[Warning]: File "{file}" includes file "{include_path}",'
-                + "which is outside of the src or include directory."
-                + "Manual editing may be required."
+                + " which is outside of the src or include directory."
+                + " Manual editing may be required."
             )
             relative_path = include_path
 
