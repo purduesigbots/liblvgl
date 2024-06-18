@@ -30,7 +30,9 @@ def clone(branch):
         f"git clone -b {branch} https://github.com/lvgl/lvgl.git --recursive",
         shell=True,
     )
-    sub_proc.wait()
+    if sub_proc.wait() != 0:
+        print("[Error]: Clone failed, exiting...")
+        exit(1)
 
 
 def clean_template_dir():
