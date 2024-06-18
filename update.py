@@ -23,6 +23,8 @@ keep_files = [
     "src/liblvgl/lv_fonts/pros_font_dejavu_mono_40.c",
 ]
 
+# FIXME: rmtree-ing the lvgl git repository throws a permission error on windows
+
 
 def clone(branch):
     sub_proc = subprocess.Popen(
