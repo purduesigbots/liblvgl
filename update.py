@@ -73,7 +73,7 @@ def copy_lvgl_files():
     shutil.copy("lvgl/lvgl.h", "include/liblvgl/lvgl.h")
     fix_includes("include/liblvgl/lvgl.h")
 
-    shutil.rmtree("lvgl/")
+    shutil.rmtree("lvgl/", ignore_errors=True)
 
 
 def fix_includes(file_path):
