@@ -27,8 +27,6 @@ keep_files = [
 def clone(branch):
     sub_proc = subprocess.Popen(
         f"git clone -b {branch} https://github.com/lvgl/lvgl.git --recursive",
-        stdout=subprocess.STDOUT,
-        stderr=subprocess.STDOUT,
         shell=True,
     )
     sub_proc.wait()
@@ -99,7 +97,7 @@ def fix_includes(file_path):
 
         return f'#include "{relative_path}"'
 
-    with open(file_path) as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         data = file.read()
         data = re.sub(r"#include \"((?:\.\./)+.*\.h)\"", resolve_include_path, data)
         data = re.sub(r"#include \"(src/|lvgl/)", '#include "liblvgl/', data)
@@ -110,7 +108,7 @@ def fix_includes(file_path):
             flags=re.M,
         )
 
-    with open(file_path, "w") as file:
+    with open(file_path, "w", encoding="utf-8") as file:
         file.write(data)
 
 
