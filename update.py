@@ -3,6 +3,8 @@
 import subprocess
 from pathlib import Path
 from argparse import ArgumentParser
+from os import chmod
+import stat
 import shutil
 import re
 
@@ -22,10 +24,20 @@ keep_files = [
     "src/liblvgl/lv_fonts/pros_font_dejavu_mono_40.c",
 ]
 
-# FIXME: rmtree-ing the lvgl git repository throws a permission error on windows
+
+def onexc_chmod(retry, path, err):
+    chmod(path, stat.S_IWUSR)
+    try:
+        retry(path)
+    except Exception as err:
+        print(f"[Error]: Failed to rmtree with exception: {err}")
 
 
 def clone(branch):
+    if Path("lvgl/").exists():
+        print("lvgl directory exists, attempting to remove before cloning...")
+        shutil.rmtree("lvgl/", onexc=onexc_chmod)
+
     sub_proc = subprocess.Popen(
         f"git clone -b {branch} https://github.com/lvgl/lvgl.git --recursive",
         shell=True,
@@ -87,7 +99,7 @@ def copy_lvgl_files():
     fix_includes("include/liblvgl/lvgl.h")
 
     print("Attempting to remove lvgl source...")
-    shutil.rmtree("lvgl/", ignore_errors=True)
+    shutil.rmtree("lvgl/", onexc=onexc_chmod)
 
 
 def fix_includes(file_path):
