@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 
-import subprocess
-from pathlib import Path
-from argparse import ArgumentParser
-from os import chmod
-import stat
-import shutil
-import re
+################################ CONFIGURATION ################################
 
 # Files that should persist in the template directory
 keep_files = [
@@ -23,6 +17,16 @@ keep_files = [
     "src/liblvgl/lv_fonts/pros_font_dejavu_mono_30.c",
     "src/liblvgl/lv_fonts/pros_font_dejavu_mono_40.c",
 ]
+
+############################# END OF CONFIGURATION #############################
+
+import subprocess
+from pathlib import Path
+from argparse import ArgumentParser
+from os import chmod
+import stat
+import shutil
+import re
 
 
 def onexc_chmod(retry, path, err):
