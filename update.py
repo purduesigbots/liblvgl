@@ -2,7 +2,6 @@
 
 import subprocess
 from pathlib import Path
-from time import sleep
 from argparse import ArgumentParser
 import shutil
 import re
