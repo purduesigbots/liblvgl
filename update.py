@@ -34,30 +34,37 @@ def clone(branch):
 
 
 def clean_template_dir():
+    print("Creating temp directory...")
     Path("temp").mkdir(exist_ok=True)
 
+    print("Copying whitelisted files to temp directory...")
     for file in keep_files:
         output = Path(f"temp/{file}")
         output.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(file, output)
 
+    print("Removing template files...")
     shutil.rmtree("include/liblvgl")
     shutil.rmtree("src/liblvgl")
 
+    print("Copying whitelisted files back to template directories...")
     for file in keep_files:
         output = Path(file)
         output.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(f"temp/{file}", file)
 
+    print("Removing temp directory...")
     shutil.rmtree("temp")
 
 
 def copy_lvgl_files():
+    print("Getting lvgl files...")
     lvgl_src = Path("lvgl/src").resolve()
     header_files = list(lvgl_src.rglob("**/*.h"))
     source_files = list(lvgl_src.rglob("**/*.c"))
     files = header_files + source_files
 
+    print("Copying header and source files to respective directories...")
     for file in files:
         if file in header_files:
             new_loc = Path(f"include/liblvgl/{file.relative_to(lvgl_src)}")
@@ -68,10 +75,12 @@ def copy_lvgl_files():
         shutil.copy(file, new_loc)
         fix_includes(new_loc)
 
+    print("Swapping the proxy lvgl.h file with the full file...")
     Path("include/liblvgl/lvgl.h").unlink(missing_ok=True)
     shutil.copy("lvgl/lvgl.h", "include/liblvgl/lvgl.h")
     fix_includes("include/liblvgl/lvgl.h")
 
+    print("Attempting to remove lvgl source...")
     shutil.rmtree("lvgl/", ignore_errors=True)
 
 
@@ -151,13 +160,13 @@ def main():
 
         input("Press any key to continue...")
 
-    print("Cloning LVGL...")
+    print("--- Clone LVGL ---")
     clone(args.branch)
 
-    print("Removing old liblvgl files...")
+    print("--- Remove old liblvgl files ---")
     clean_template_dir()
 
-    print("Copying updated files from LVGL...")
+    print("--- Copy updated files ---")
     copy_lvgl_files()
 
 
