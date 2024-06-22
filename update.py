@@ -18,6 +18,9 @@ keep_files = [
     "src/liblvgl/lv_fonts/pros_font_dejavu_mono_40.c",
 ]
 
+# URI to LVGL's source
+lvgl_repo = "https://github.com/lvgl/lvgl.git"
+
 ############################# END OF CONFIGURATION #############################
 
 import subprocess
@@ -61,7 +64,7 @@ def clone(branch):
         shutil.rmtree("lvgl/", onexc=onexc_chmod)
 
     sub_proc = subprocess.Popen(
-        f"git clone -b {branch} https://github.com/lvgl/lvgl.git --recursive",
+        f"git clone -b {branch} {lvgl_repo} --recursive",
         shell=True,
     )
     if sub_proc.wait() != 0:
