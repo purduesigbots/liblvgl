@@ -23,13 +23,13 @@ lvgl_repo = "https://github.com/lvgl/lvgl.git"
 
 ############################# END OF CONFIGURATION #############################
 
-import subprocess
-from pathlib import Path
 from argparse import ArgumentParser
 from os import chmod
-import stat
-import shutil
+from pathlib import Path
 import re
+import shutil
+import stat
+import subprocess
 
 WARN_COLOR = "\033[1;33m"
 ERR_COLOR = "\033[0;31m"
