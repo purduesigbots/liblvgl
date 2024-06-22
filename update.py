@@ -79,7 +79,7 @@ def clean_template_dir():
     print("Copying whitelisted files to temp directory...")
     for file in keep_files:
         if not Path(file).exists():
-            print(f'[Warning]: Whitelisted file "{file}" does not exist')
+            warn(f'Whitelisted file "{file}" does not exist')
             keep_files.remove(file)
             continue
         output = Path(f"temp/{file}")
