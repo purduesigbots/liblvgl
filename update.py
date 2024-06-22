@@ -114,6 +114,10 @@ def copy_lvgl_files():
         elif file in source_files:
             new_loc = Path(f"src/liblvgl/{file.relative_to(lvgl_src)}")
 
+        if new_loc.as_posix() in keep_files:
+            print(f"Skipped overwriting whitelisted file at {new_loc}")
+            continue
+
         new_loc.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(file, new_loc)
         fix_includes(new_loc)
