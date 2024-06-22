@@ -2,7 +2,7 @@
 
 ################################ CONFIGURATION ################################
 
-# Files that should persist in the template directory
+# Files that should persist in the template directory (as POSIX-formatted paths)
 keep_files = [
     "include/liblvgl/lv_conf.h",
     "include/liblvgl/lv_conf.old.h",
