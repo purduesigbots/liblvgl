@@ -178,12 +178,6 @@ def main():
         action="store_true",
         help="ignore initial warning",
     )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="show extra information",
-    )
     args = parser.parse_args()
 
     if not args.yes:
