@@ -28,13 +28,31 @@ import stat
 import shutil
 import re
 
+WARN_COLOR = "\033[1;33m"
+ERR_COLOR = "\033[0;31m"
+STEP_COLOR = "\033[1;37m"
+MSG_COLOR = "\033[0;37m"
+NO_COLOR = "\033[0m"
+
+
+def warn(message):
+    print(f"{WARN_COLOR}WARNING: {MSG_COLOR}{message}{NO_COLOR}")
+
+
+def error(message):
+    print(f"{ERR_COLOR}ERROR:{MSG_COLOR}{message}{NO_COLOR}")
+
+
+def step(message):
+    print(f"{STEP_COLOR}- {message} -{NO_COLOR}")
+
 
 def onexc_chmod(retry, path, err):
     chmod(path, stat.S_IWUSR)
     try:
         retry(path)
     except Exception as err:
-        print(f"[Error]: Failed to rmtree with exception: {err}")
+        error(f"Failed to rmtree with exception: {err}")
 
 
 def clone(branch):
@@ -47,7 +65,7 @@ def clone(branch):
         shell=True,
     )
     if sub_proc.wait() != 0:
-        print("[Error]: Clone failed, exiting...")
+        error("Clone failed, exiting...")
         exit(1)
 
 
@@ -120,8 +138,8 @@ def fix_includes(file_path):
         elif resolved_path.is_relative_to(include_dir):
             relative_path = resolved_path.relative_to(include_dir)
         else:
-            print(
-                f'[Warning]: File "{file}" includes file "{include_path}",'
+            warn(
+                f'File "{file}" includes file "{include_path}",'
                 + " which is outside of the src or include directory."
                 + " Manual editing may be required."
             )
@@ -169,7 +187,7 @@ def main():
     args = parser.parse_args()
 
     if not args.yes:
-        print(
+        warn(
             "Local changes may be deleted by this script."
             + " If you have made any changes, you should exit this script to"
             + " stash or commit them now."
@@ -182,13 +200,13 @@ def main():
 
         input("Press any key to continue...")
 
-    print("--- Clone LVGL ---")
+    step("Clone LVGL")
     clone(args.branch)
 
-    print("--- Remove old liblvgl files ---")
+    step("Remove old liblvgl files")
     clean_template_dir()
 
-    print("--- Copy updated files ---")
+    step("Copy updated files")
     copy_lvgl_files()
 
 
