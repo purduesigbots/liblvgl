@@ -43,7 +43,7 @@ def warn(message):
 
 
 def error(message):
-    print(f"{ERR_COLOR}ERROR:{MSG_COLOR}{message}{NO_COLOR}")
+    print(f"{ERR_COLOR}ERROR: {MSG_COLOR}{message}{NO_COLOR}")
 
 
 def step(message):
