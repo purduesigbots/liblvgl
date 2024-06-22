@@ -210,6 +210,8 @@ def main():
     step("Copy updated files")
     copy_lvgl_files()
 
+    step("Successfully updated")
+
 
 if __name__ == "__main__":
     main()
