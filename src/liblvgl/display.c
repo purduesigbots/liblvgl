@@ -18,34 +18,38 @@
 #include <stdint.h>
 #include <assert.h>
 
+#define BYTES_PER_PIXEL (LV_COLOR_FORMAT_GET_SIZE(LV_COLOR_FORMAT_ARGB8888)) /*will be 2 for RGB565 */
+#define PROS_LVGL_DISPLAY_BUGGER_SIZE (LV_HOR_RES_MAX * 10 * BYTES_PER_PIXEL)
+
+
 static void disp_daemon(void* ign) {
 	uint32_t time = millis();
 
 	while (true) {
 		task_delay_until(&time, 2);
 		lv_tick_inc(2);
-		lv_task_handler();
+		lv_timer_handler();
 	}
 }
 
-static void lvgl_display_flush(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_t* color) {
+static void lvgl_display_flush(lv_display_t* display, const lv_area_t* area, uint8_t* color) {
 	if (screen_copy_area(area->x1, area->y1, area->x2, area->y2, (uint32_t*)color, area->x2 - area->x1 + 1) != 1) {
 		errno = PROS_ERR;
 	} else {
-		lv_disp_flush_ready(disp_drv);
+		lv_display_flush_ready(display);
 	}
 }
 
-static void lvgl_read_touch(lv_indev_drv_t* _, lv_indev_data_t* data) {
+static void lvgl_read_touch(lv_indev_t* _, lv_indev_data_t* data) {
 	screen_touch_status_s_t status = screen_touch_status();
 
 	switch (status.touch_status) {
 		case E_TOUCH_PRESSED:
 		case E_TOUCH_HELD:
-			data->state = LV_INDEV_STATE_PR;
+			data->state = LV_INDEV_STATE_PRESSED;
 			break;
 		case E_TOUCH_RELEASED:
-			data->state = LV_INDEV_STATE_REL;
+			data->state = LV_INDEV_STATE_RELEASED;
 			break;
 		case E_TOUCH_ERROR:
 			errno = PROS_ERR;
@@ -60,12 +64,13 @@ static void lvgl_read_touch(lv_indev_drv_t* _, lv_indev_data_t* data) {
 
 static task_t disp_daemon_task;
 
-static lv_disp_draw_buf_t disp_buf;
-static lv_color_t buf1[LV_HOR_RES_MAX * 10];
-static lv_color_t buf2[LV_HOR_RES_MAX * 10];
+LV_ATTRIBUTE_MEM_ALIGN
+static lv_color_t display_buffer_1[PROS_LVGL_DISPLAY_BUGGER_SIZE];
+LV_ATTRIBUTE_MEM_ALIGN
+static lv_color_t display_buffer_2[PROS_LVGL_DISPLAY_BUGGER_SIZE];
 
-static lv_disp_drv_t disp_drv;
-static lv_indev_drv_t touch_drv;
+static lv_display_t * display_device;
+static lv_indev_t * touch_device;
 
 /*
 So this is what this function is supposed to do, and why it's important.
@@ -91,36 +96,38 @@ touch_cb, and other callbacks aren't triggering after boot-up.
 */
 
 void display_initialize(void) {
-	// 1. Call lv_init().
 	lv_init();
 
-	// 2. Initialize your drivers.
-    lv_disp_draw_buf_init(&disp_buf, buf1, buf2, LV_HOR_RES_MAX * 10);
+	// register display
 
-	// 3. Register the display and input devices drivers in LVGL.
-	lv_disp_drv_init(&disp_drv);
-    disp_drv.draw_buf = &disp_buf;
-	disp_drv.flush_cb = lvgl_display_flush;
-	disp_drv.hor_res = LV_HOR_RES_MAX;
-	disp_drv.ver_res = LV_VER_RES_MAX;
-    lv_disp_t* disp = lv_disp_drv_register(&disp_drv);
-	if (disp == NULL) {
-		printf("Error initializing display driver\n");
-	}
+	// create a display
+	display_device = lv_display_create(LV_HOR_RES_MAX, LV_VER_RES_MAX);
+	// configure buffers
+	// partial render mode will render only diffs and not static backgrounds, e.g.
+	lv_display_set_buffers(
+		display_device,
+		display_buffer_1,
+		display_buffer_2,
+		sizeof(display_buffer_1),
+		LV_DISPLAY_RENDER_MODE_PARTIAL);
 	
-	lv_indev_drv_init(&touch_drv);
-	touch_drv.type = LV_INDEV_TYPE_POINTER;
-	touch_drv.read_cb = lvgl_read_touch;
-	touch_drv.disp = disp;
-	assert(touch_drv.read_cb !=  NULL);
-	if (lv_indev_drv_register(&touch_drv) == NULL) {
-		printf("Error initializing input driver\n");
-	}
+	// the "flush callback" is what copies pixels from buffer to screen
+	lv_display_set_flush_cb(display_device, lvgl_display_flush);
 
-	// lv_theme_set_current(lv_theme_alien_init(40, NULL));
+	// register input
+
+	// create input
+
+	// internally the function uses the default display, which doesn't exist until the
+	// first display is created, which then becomes the default.
+	touch_device = lv_indev_create();
+	lv_indev_set_type(touch_device, LV_INDEV_TYPE_POINTER);
+	lv_indev_set_read_cb(touch_device, lvgl_read_touch);
+
+
 	lv_obj_t* page = lv_obj_create(NULL);
 	lv_obj_set_size(page, LV_HOR_RES_MAX, LV_VER_RES_MAX);
-	lv_scr_load(page);
+	lv_screen_load(page);
 
 	disp_daemon_task = task_create(
 		disp_daemon,

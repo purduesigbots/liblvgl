@@ -217,7 +217,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h" */
 typedef void * lv_fs_drv_user_data_t;
 #endif
 
-#define LV_USE_FS_STDIO 1
+#define LV_USE_FS_STDIO '\0'
 #define LV_FS_STDIO_LETTER 'S'
 #define LV_FS_STDIO_PATH "/usd/"
 #define LV_FS_STDIO_CACHE_SIZE 0
