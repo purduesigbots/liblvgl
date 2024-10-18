@@ -11,7 +11,7 @@
 
 #if LV_USE_THEME_MONO
 
-#include "lv_theme_mono.h"
+#include "liblvgl/themes/mono/lv_theme_mono.h"
 #include "liblvgl/core/lv_global.h"
 
 /*********************

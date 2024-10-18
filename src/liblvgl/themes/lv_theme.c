@@ -6,7 +6,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_theme_private.h"
+#include "liblvgl/themes/lv_theme_private.h"
 #include "liblvgl/core/lv_obj_private.h"
 #include "liblvgl/core/lv_obj_class_private.h"
 #include "liblvgl/lvgl.h"

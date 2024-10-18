@@ -5,9 +5,9 @@
  ******************************************************************************/
 
 #ifdef LV_LVGL_H_INCLUDE_SIMPLE
-    #include "lvgl.h"
+    #include "liblvgl/lvgl.h"
 #else
-#include "liblvgl/lvgl.h"
+    #include "liblvgl/lvgl.h"
 #endif
 
 #ifndef LV_FONT_DEJAVU_16_PERSIAN_HEBREW

@@ -8,11 +8,11 @@
  *********************/
 
 #include "lv_font.h"
-#include "liblvgl/misc/lv_text_private.h"
-#include "liblvgl/misc/lv_utils.h"
-#include "liblvgl/misc/lv_log.h"
-#include "liblvgl/misc/lv_assert.h"
-#include "liblvgl/stdlib/lv_string.h"
+#include "../misc/lv_text_private.h"
+#include "../misc/lv_utils.h"
+#include "../misc/lv_log.h"
+#include "../misc/lv_assert.h"
+#include "../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

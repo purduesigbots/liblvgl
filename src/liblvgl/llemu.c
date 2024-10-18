@@ -80,11 +80,11 @@ const uint32_t COL_BTN_NORMAL = 0x202020;
 const uint32_t COL_BTN_PRESSED = 0x808080;
 
 static lv_obj_t* _create_lcd_dummy(void) {
-	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act());
+	lv_obj_t* lcd_dummy = lv_obj_create(lv_screen_active());
 
 	lv_obj_set_size(lcd_dummy, LV_HOR_RES, LV_VER_RES);
 	lv_obj_set_style_pad_all(lcd_dummy, 0, LV_STATE_DEFAULT);
-	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
+	lv_obj_remove_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
 
 	lv_obj_set_style_bg_color(lcd_dummy, lv_color_hex(0x808080), LV_STATE_DEFAULT);
 	lv_obj_set_style_border_color(lcd_dummy, lv_color_hex(0x808080), LV_STATE_DEFAULT);
@@ -97,7 +97,7 @@ static lv_obj_t* _create_frame(lv_obj_t* lcd_dummy) {
 	lv_obj_set_size(frame, LV_HOR_RES, LV_VER_RES);
 	lv_obj_add_style(frame, &frame_style, LV_STATE_DEFAULT);
 	lv_obj_set_flex_flow(frame, LV_FLEX_FLOW_COLUMN);
-	lv_obj_clear_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
+	lv_obj_remove_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
 
 	// set the frame's border color
 	lv_obj_set_style_border_color(frame, lv_color_hex(0x808080), LV_STATE_DEFAULT);
@@ -115,7 +115,7 @@ static lv_obj_t* _create_screen(lv_obj_t* frame) {
 	lv_obj_align(screen, LV_ALIGN_CENTER, 0, 20);
 	lv_obj_set_style_pad_all(screen, 2, LV_PART_MAIN);
 	lv_obj_add_style(screen, &screen_style, LV_PART_MAIN);
-	lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
+	lv_obj_remove_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
 
 	lv_obj_set_style_border_color(screen, lv_color_hex(0x606060), LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x5ABC03), LV_STATE_DEFAULT);
@@ -139,7 +139,7 @@ static lv_obj_t* _create_btn_container(lv_obj_t* frame) {
     lv_obj_set_style_pad_all(btn_container, LV_STATE_DEFAULT, 0);
 	lv_obj_set_flex_flow(btn_container, LV_FLEX_FLOW_ROW);
 	lv_obj_set_flex_align(btn_container, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_AROUND);
-	lv_obj_clear_flag(btn_container, LV_OBJ_FLAG_SCROLLABLE);
+	lv_obj_remove_flag(btn_container, LV_OBJ_FLAG_SCROLLABLE);
 
 	return btn_container;
 }
@@ -148,7 +148,7 @@ static lv_obj_t* _create_btn_container(lv_obj_t* frame) {
 // is not possible to update one and expect all 3 buttons to reference the same 
 // lv_style_t object.
 static lv_obj_t* _create_btn_left(lv_obj_t* btn_container) {
-	lv_obj_t* btn_left = lv_btn_create(btn_container);
+	lv_obj_t* btn_left = lv_button_create(btn_container);
 	lv_obj_set_width(btn_left, 80);
 	lv_obj_align(btn_left, LV_ALIGN_LEFT_MID, 0, 0);
 	lv_obj_add_style(btn_left, &button_style, LV_PART_MAIN);
@@ -162,7 +162,7 @@ static lv_obj_t* _create_btn_left(lv_obj_t* btn_container) {
 }
 
 static lv_obj_t* _create_btn_center(lv_obj_t* btn_container) {
-	lv_obj_t* btn_center = lv_btn_create(btn_container);
+	lv_obj_t* btn_center = lv_button_create(btn_container);
 
 	lv_obj_set_width(btn_center, 80);
 	lv_obj_align(btn_center, LV_ALIGN_CENTER, 0, 0);
@@ -177,7 +177,7 @@ static lv_obj_t* _create_btn_center(lv_obj_t* btn_container) {
 }
 
 static lv_obj_t* _create_btn_right(lv_obj_t* btn_container) {
-	lv_obj_t* btn_right = lv_btn_create(btn_container);
+	lv_obj_t* btn_right = lv_button_create(btn_container);
 	lv_obj_set_width(btn_right, 80);
 	lv_obj_align(btn_right, LV_ALIGN_RIGHT_MID, 0, 0);
 	lv_obj_add_style(btn_right, &button_style, LV_PART_MAIN);
@@ -192,10 +192,10 @@ static lv_obj_t* _create_btn_right(lv_obj_t* btn_container) {
 
 static lv_obj_t* _create_lcd(void) {
 	// Set up the current screen
-	lv_obj_set_style_pad_all(lv_scr_act(), 0, LV_STATE_DEFAULT);
-	lv_obj_set_scrollbar_mode(lv_scr_act(), LV_SCROLLBAR_MODE_OFF);
-	lv_obj_clear_flag(lv_scr_act(), LV_OBJ_FLAG_SCROLLABLE);
-	lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x404040), LV_STATE_DEFAULT);
+	lv_obj_set_style_pad_all(lv_screen_active(), 0, LV_STATE_DEFAULT);
+	lv_obj_set_scrollbar_mode(lv_screen_active(), LV_SCROLLBAR_MODE_OFF);
+	lv_obj_remove_flag(lv_screen_active(), LV_OBJ_FLAG_SCROLLABLE);
+	lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x404040), LV_STATE_DEFAULT);
 
 	// Create and setup all the LVGL objects that we need
 	lv_obj_t* lcd_dummy = _create_lcd_dummy();
@@ -332,7 +332,7 @@ bool lcd_shutdown(void) {
 		errno = ENXIO;
 		return false;
 	}
-	lv_obj_del(_llemu_lcd);
+	lv_obj_delete(_llemu_lcd);
 	_lcd_is_initialized = false;
 	return true;
 }

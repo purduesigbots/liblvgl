@@ -7,11 +7,11 @@
  *      INCLUDES
  *********************/
 #include "liblvgl/themes/lv_theme_private.h"
-#include "lvgl.h" /*To see all the widgets*/
+#include "liblvgl/lvgl.h" /*To see all the widgets*/
 
 #if LV_USE_THEME_SIMPLE
 
-#include "lv_theme_simple.h"
+#include "liblvgl/themes/simple/lv_theme_simple.h"
 #include "liblvgl/core/lv_global.h"
 
 /*********************
