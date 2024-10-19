@@ -83,7 +83,8 @@ static lv_obj_t* _create_lcd_dummy(void) {
 	lv_obj_t* lcd_dummy = lv_obj_create(lv_screen_active());
 
 	lv_obj_set_size(lcd_dummy, LV_HOR_RES, LV_VER_RES);
-	lv_obj_set_style_pad_all(lcd_dummy, 0, LV_STATE_DEFAULT);
+	lv_obj_set_style_pad_all(lcd_dummy, 0, 0);
+	lv_obj_set_style_radius(lcd_dummy, 0, 0);
 	lv_obj_remove_flag(lcd_dummy, LV_OBJ_FLAG_SCROLLABLE);
 
 	lv_obj_set_style_bg_color(lcd_dummy, lv_color_hex(0x808080), LV_STATE_DEFAULT);
