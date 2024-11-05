@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #ifndef WIN32
-    #include <dirent.h>
+    // #include <dirent.h>
     #include <unistd.h>
 #else
     #include <windows.h>
@@ -44,7 +44,7 @@ typedef struct {
     HANDLE dir_p;
     char next_fn[MAX_PATH_LEN];
 #else
-    DIR * dir_p;
+    // DIR * dir_p;
 #endif
 } dir_handle_t;
 
@@ -96,9 +96,9 @@ void lv_fs_stdio_init(void)
     fs_drv_p->seek_cb = fs_seek;
     fs_drv_p->tell_cb = fs_tell;
 
-    fs_drv_p->dir_close_cb = fs_dir_close;
-    fs_drv_p->dir_open_cb = fs_dir_open;
-    fs_drv_p->dir_read_cb = fs_dir_read;
+    fs_drv_p->dir_close_cb = NULL; //fs_dir_close;
+    fs_drv_p->dir_open_cb = NULL; //fs_dir_open;
+    fs_drv_p->dir_read_cb = NULL; //fs_dir_read;
 
     lv_fs_drv_register(fs_drv_p);
 }
@@ -223,7 +223,7 @@ static lv_fs_res_t fs_tell(lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p)
     *pos_p = ftell(file_p);
     return LV_FS_RES_OK;
 }
-
+#if 0
 /**
  * Initialize a 'DIR' or 'HANDLE' variable for directory reading
  * @param drv   pointer to a driver where this function belongs
@@ -349,7 +349,7 @@ static lv_fs_res_t fs_dir_close(lv_fs_drv_t * drv, void * dir_p)
     lv_free(handle);
     return LV_FS_RES_OK;
 }
-
+#endif
 #else /*LV_USE_FS_STDIO == 0*/
 
 #if defined(LV_FS_STDIO_LETTER) && LV_FS_STDIO_LETTER != '\0'

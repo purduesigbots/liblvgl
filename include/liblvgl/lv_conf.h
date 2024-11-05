@@ -217,14 +217,14 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h" */
 typedef void * lv_fs_drv_user_data_t;
 #endif
 
-#define LV_USE_FS_STDIO '\0'
+#define LV_USE_FS_STDIO 1
 #define LV_FS_STDIO_LETTER 'S'
 #define LV_FS_STDIO_PATH "/usd/"
 #define LV_FS_STDIO_CACHE_SIZE 0
 
-#define LV_USE_PNG 1
+#define LV_USE_LODEPNG 1
 #define LV_USE_GIF 1
-#define LV_USE_SJPG 1
+#define LV_USE_TJPGD 1
 
 /*1: Add a `user_data` to drivers and objects*/
 #define LV_USE_USER_DATA        1
@@ -440,6 +440,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  * glyphs cannot be processed by the library and won't be rendered.
  */
 #define LV_USE_FONT_COMPRESSED 1
+#define LV_USE_QRCODE 0
 
 /* Enable subpixel rendering */
 #define LV_USE_FONT_SUBPX 1
@@ -588,6 +589,9 @@ typedef void * lv_obj_user_data_t;
  * LV_EXT_CLICK_AREA_FULL: The extra area can be adjusted in all 4 directions (-32k..+32k px)
  */
 #define LV_USE_EXT_CLICK_AREA  LV_EXT_CLICK_AREA_TINY
+
+#define LV_USE_FLEX 1
+#define LV_USE_GRID 1
 
 /*==================
  *  LV OBJ X USAGE
