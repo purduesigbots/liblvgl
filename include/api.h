@@ -8,7 +8,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -40,9 +40,11 @@
 #endif /* __cplusplus */
 
 #define PROS_VERSION_MAJOR 4
-#define PROS_VERSION_MINOR 0
-#define PROS_VERSION_PATCH 1
-#define PROS_VERSION_STRING "4.0.1"
+#define PROS_VERSION_MINOR 1
+
+#define PROS_VERSION_PATCH 0
+#define PROS_VERSION_STRING "4.1.0"
+
 
 #include "pros/adi.h"
 #include "pros/colors.h"
