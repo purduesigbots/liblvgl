@@ -4,8 +4,6 @@
  *
  * Contains prototypes for interfacing with the ADI.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/adi.html to learn more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -103,7 +101,7 @@ class Port {
 	 * #define EXT_ADI_SMART_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::adi::Port sensor ({{ EXT_ADI_SMART_PORT , ANALOG_SENSOR_PORT }}, E_ADI_ANALOG_IN);
+	 *   pros::adi::Port sensor ({ EXT_ADI_SMART_PORT , ANALOG_SENSOR_PORT }, E_ADI_ANALOG_IN);
 	 *   // Displays the value of E_ADI_ANALOG_IN
 	 *   std::cout << "Port Type: " << sensor.get_config();
 	 * }
@@ -192,6 +190,33 @@ class Port {
 	 */
 	std::int32_t set_value(std::int32_t value) const;
 
+	/**
+	 * Gets the port of the sensor.
+	 *
+	 * \return returns a tuple of integer ports.
+	 * 
+	 * \note The parts of the tuple are {smart port, adi port, second adi port (when applicable)}. 
+	 * 
+	 * 
+	 * \b Example
+	 * \code
+	 * #define DIGITAL_SENSOR_PORT 1 // 'A'
+	 * 
+	 * void initialize() {
+	 *   pros::adi::AnalogIn sensor (DIGITAL_SENSOR_PORT);
+	 *   
+	 * 	 // Getting values from the tuple using std::get<index> 
+	 * 	 int sensorSmartPort = std::get<0>(sensor.get_port()); // First value
+	 *   int sensorAdiPort = std::get<1>(sensor.get_port()); // Second value
+	 * 
+	 * 	 // Prints the first and second value from the port tuple (The Adi Port. The first value is the Smart Port)
+	 *   printf("Sensor Smart Port: %d\n", sensorSmartPort);
+	 *   printf("Sensor Adi Port: %d\n", sensorAdiPort);	
+	 * }
+	 * \endcode
+	 */
+	virtual ext_adi_port_tuple_t get_port() const;
+
 	protected:
 	std::uint8_t _smart_port;
 	std::uint8_t _adi_port;
@@ -278,9 +303,7 @@ class AnalogIn : protected Port {
 	 * rotation, accelerometer movement).
 	 * 
 	 * \note The ADI currently returns data at 10ms intervals, in contrast to the
-	 * calibrate function’s 1ms sample rate. This sample rate was kept for the sake
-	 * of being similar to PROS 2, and increasing the sample rate would not have a
-	 * tangible difference in the function’s performance.
+	 * calibrate function’s 1ms sample rate. 
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -349,7 +372,7 @@ class AnalogIn : protected Port {
 	 * ENODEV - The port is not configured as an analog input
 	 *
 	 * \return The difference of the sensor value from its calibrated default from
-	 * -16384 to 
+	 * -16384 to 16384
 	 * 
 	 * \b Example
 	 * \code
@@ -400,6 +423,8 @@ class AnalogIn : protected Port {
 	 * value calibrated HR: (16 bit calibrated value), value: (12 bit value)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::AnalogIn& analog_in);
+
+	using Port::get_port;
 };
 
 ///@}
@@ -488,6 +513,8 @@ class AnalogOut : private Port {
 	 * \endcode
 	 */
 	using Port::set_value;
+	
+	using Port::get_port;
 
 	/**
 	 * This is the overload for the << operator for printing to streams
@@ -498,7 +525,6 @@ class AnalogOut : private Port {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::AnalogOut& analog_out);
 };
-
 ///@}
 
 class DigitalOut : private Port {
@@ -599,6 +625,8 @@ class DigitalOut : private Port {
 	 * \endcode
 	 */
 	using Port::set_value;
+
+	using Port::get_port;
 
 	/**
 	 * This is the overload for the << operator for printing to streams
@@ -736,6 +764,8 @@ class DigitalIn : private Port {
 	 * value: (value)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::DigitalIn& digital_in);
+
+	using Port::get_port;
 };
 
 ///@}
@@ -880,6 +910,8 @@ class Motor : private Port {
 	 * \endcode
 	 */
 	using Port::get_value;
+
+	using Port::get_port;
 };
 
 ///@}
@@ -1009,6 +1041,11 @@ class Encoder : private Port {
 	 * value: (value)]
 	 */ 
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::Encoder& encoder);
+	ext_adi_port_tuple_t get_port() const override;
+
+	private:
+	ext_adi_port_pair_t _port_pair;
+
 };
 
 ///@}
@@ -1113,6 +1150,8 @@ class Ultrasonic : private Port {
 	 * \endcode
 	 */
 	std::int32_t get_value() const;
+
+	using Port::get_port;
 };
 
 ///@}
@@ -1264,6 +1303,8 @@ class Gyro : private Port {
 	 * \endcode
 	 */
 	std::int32_t reset() const;
+
+	using Port::get_port;
 };
 
 ///@}
@@ -1424,11 +1465,18 @@ class Potentiometer : public AnalogIn {
 	 * Prints in format(this below is all in one line with no new line):
 	 */ 
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer);
+
+	using Port::get_port;
+	
 };
 
 ///@}
 
 class Led : protected Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * @brief Configures an ADI port to act as a LED.
@@ -1711,31 +1759,228 @@ class Led : protected Port {
 	*/
 	std::int32_t length();
 
+	using Port::get_port;
+
 	protected:
 	std::vector<uint32_t> _buffer;
 };
+///@}
 
-// Alias for ADILed
+/// @brief Alias for ADILed
 using LED = Led;
 
-
 class Pneumatics : public DigitalOut {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
+
 	/**
 	 * Creates a Pneumatics object for the given port.
-	 *
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports
-	 *
+	 * 
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param start_extended
-	 * 		  If true, the pneumatic will start the match extended
-	 * \param active_low
-	 *        If set to true, a value of false corresponds to the pneumatic's
-	 * 		  wire being set to high.
+	 * 		  If true, the pneumatic will start extended when the program starts.
+	 *		  By default, the piston starts retracted when the program starts.
+	 * \param extended_is_low
+	 * 		  A flag to set whether the the pneumatic is extended when the ADI 
+	 * 		  it receives a high or a low value. When true, the extended state
+	 * 		  corresponds to a output low on the ADI port. This allows the user 
+	 * 		  to reverse the behavior of the pneumatics if needed.
+	 * 
+	 * /b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics left_piston('a', false);			// Starts retracted, extends when the ADI port is high
+	 *   pros::adi::Pneumatics right_piston('b', false, true);	// Starts retracted, extends when the ADI port is low 
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_2)) {
+	 *       left_piston.retract();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * 
+	 * \endcode
+	 */
+	explicit Pneumatics(std::uint8_t adi_port, 
+		bool start_extended, 
+		bool extended_is_low = false
+	);
+
+	/**
+	 * Creates a Pneumatics object for the given port pair.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of ADI Ports
+	 * 
+	 * \param port_pair
+	 *        The pair of the smart port number (from 1-22) and the
+	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param start_extended
+	 * 		  If true, the pneumatic will start extended when the program starts.
+	 *		  By default, the piston starts retracted when the program starts.
+	 * \param extended_is_low
+	 * 		  A flag to set whether the the pneumatic is extended when the ADI 
+	 * 		  it receives a high or a low value. When true, the extended state
+	 * 		  corresponds to a output low on the ADI port. This allows the user 
+	 * 		  to reverse the behavior of the pneumatics if needed.
+	 * 
+	 * /b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics left_piston({1, 'a'}, false);			// Starts retracted, extends when the ADI port is high
+	 *   pros::adi::Pneumatics right_piston({1, 'b'}, false, true);	    // Starts retracted, extends when the ADI port is low 
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+	 *       left_piston.retract();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	explicit Pneumatics(ext_adi_port_pair_t port_pair, 
+		bool start_extended, 
+		bool extended_is_low = false
+	);
+
+	/**
+	 * Extends the piston, if not already extended.
+	 * 
+	 * \return 1 if the piston newly extended, 0 if the piston was already
+	 *         extended, or PROS_ERR is the operation failed, setting errno. 
+	 * 
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics piston({1, 'a'}, false);            // Starts retracted, extends when the ADI port is high
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     if(mastetr.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *       left_piston.toggle();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::int32_t extend();
+
+	/**
+	 * Retracts the piston, if not already retracted.
 	 *
+	 * \return 1 if the piston newly retracted, 0 if the piston was already
+	 *         retracted, or PROS_ERR is the operation failed, setting errno. 
+	 *
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics piston({1, 'a'}, false);            // Starts retracted, extends when the ADI port is high
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     if(mastetr.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *       left_piston.toggle();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::int32_t retract();
+
+	/**
+	 * Puts the piston into the opposite state of its current state.
+	 * If it is retracted, it will extend. If it is extended, it will retract.
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 * 
+	 * \return 1 if the piston successfully toggled, or PROS_ERR if the 
+	 *         operation failed, setting errno.
+	 *
+	 *\b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics piston({1, 'a'}, false);            // Starts retracted, extends when the ADI port is high
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     if(mastetr.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *       left_piston.toggle();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::int32_t toggle();
+
+	/**
+	 * Returns whether the piston is extended or not. 
+	 * 
+	 * \return true if the piston is extended, false if it is retracted.
+	 * 
 	 * \b Example
 	 * \code
 	 * #define ADI_PNEUMATICS_PORT 'a'
@@ -1743,142 +1988,29 @@ class Pneumatics : public DigitalOut {
 	 * void opcontrol() {
 	 *   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
 	 *   while (true) {
-	 *     // Set the pneumatic solenoid to true
-	 *     pneumatics.set_value(true);
+	 *     // Check if the piston is extended
+	 *     if (pneumatics.is_extended()) {
+	 *       printf("The pneumatic is extended\n");
+	 *     }
+	 *     else {
+	 *       printf("The pneumatic is not extended\n");
+	 *     }
+	 * 
 	 *     pros::delay(10);
 	 *   }
 	 * }
 	 * \endcode
 	 */
-	explicit Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low = false);
-
-	/**
-	 * Creates a Pneumatics object for the given port.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of ADI Ports
-	 *
-	 * \param port_pair
-	 *        The pair of the smart port number (from 1-22) and the
-	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
-	 * \param start_extended
-	 * 		  If true, the pneumatic will start the match extended
-	 * \param active_low
-	 *        If set to true, a value of false corresponds to the pneumatic's
-	 * 		  wire being set to high.
-	 *
-	 * \b Example
-	 * \code
-	 * #define ADI_PNEUMATICS_PORT 'a'
-	 * #define SMART_PORT 1
-	 *
-	 * void opcontrol() {
-	 *   pros::adi::Pneumatics pneumatics ({{ SMART_PORT , ADI_PNEUMATICS_PORT }});
-	 *   while (true) {
-	 *     // Set the pneumatic solenoid to true
-	 *     pneumatics.set_value(true);
-	 *     pros::delay(10);
-	 *   }
-	 * }
-	 * \endcode
-	 */
-	explicit Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low = false);
-
-	/* 
-	* Extends the piston, if not already extended.
-	* 
-	* \return 1 if the operation was successful or PROS_ERR if the operation
-	* failed, setting errno.
-	*
-	* \b Example
-	* \code
-	* #define ADI_PNEUMATICS_PORT 'a'
-	*
-	* void opcontrol() {
-	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
-	*   while (true) {
-	*     // Extend the piston
-	*     pneumatics.extend();
-	*     pros::delay(10);
-	*   }
-	* }
-	* \endcode
-	*/
-	std::int32_t extend();
-
-	/*
-	* Retracts the piston, if not already retracted.
-	*
-	* \return 1 if the operation was successful or PROS_ERR if the operation
-	* failed, setting errno.
-	*
-	* \b Example
-	* \code
-	* #define ADI_PNEUMATICS_PORT 'a'
-	*
-	* void opcontrol() {
-	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
-	*   while (true) {
-	*     // Retract the piston
-	*     pneumatics.retract();
-	*     pros::delay(10);
-	*   }
-	* }
-	* \endcode
-	*/
-	std::int32_t retract();
-
-	/*
-	* Puts the piston into the opposite state of its current state.
-	* If it is retracted, it will extend. If it is extended, it will retract.
-	*
-	* \return 1 if the operation was successful or PROS_ERR if the operation
-	* failed, setting errno.
-	*
-	* \b Example
-	* \code
-	* #define ADI_PNEUMATICS_PORT 'a'
-	*
-	* void opcontrol() {
-	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
-	*   while (true) {
-	*     // Toggle the piston
-	*     pneumatics.toggle();
-	*     pros::delay(10);
-	*   }
-	* }
-	* \endcode
-	*/
-	std::int32_t toggle();
-
-	/*
-	* Returns the current state of the piston.
-	*
-	* \return true if the piston is extended, false if it is retracted.
-	*
-	* \b Example
-	* \code
-	* #define ADI_PNEUMATICS_PORT 'a'
-	*
-	* void opcontrol() {
-	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
-	*   while (true) {
-	*     // Check if the piston is extended
-	*     if (pneumatics.get_state()) {
-	*       // Do something
-	*     }
-	*     pros::delay(10);
-	*   }
-	* }
-	* \endcode
-	*/
-	bool get_state() const;
+	bool is_extended() const; 
 
 private: 
-	bool active_low;
-	bool state;
+	bool state; 			// Holds the physical state of the ADI port
+	bool extended_is_low;	// A flag that sets whether extended corresponds to
+							// a low signal
+
+	
 };
+///@}
 
 }  // namespace adi
 
@@ -1905,10 +2037,9 @@ LEGACY_TYPEDEF(ADILineSensor,pros::adi::LineSensor);
 LEGACY_TYPEDEF(ADILightSensor,pros::adi::LightSensor);
 LEGACY_TYPEDEF(ADIAccelerometer,pros::adi::Accelerometer);
 LEGACY_TYPEDEF(ADIButton,pros::adi::Button);
-
-///@}
-
-///@}
+LEGACY_TYPEDEF(ADIPneumatics,pros::adi::Pneumatics);
+LEGACY_TYPEDEF(ADILED, pros::adi::Led);
+LEGACY_TYPEDEF(ADILed, pros::adi::Led);
 
 }  // namespace pros
 
