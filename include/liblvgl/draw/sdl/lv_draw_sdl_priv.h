@@ -6,7 +6,6 @@
 #ifndef LV_DRAW_SDL_PRIV_H
 #define LV_DRAW_SDL_PRIV_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,8 +19,8 @@ extern "C" {
 
 #include LV_GPU_SDL_INCLUDE_PATH
 
-#include "../lv_draw.h"
 #include "../../misc/lv_lru.h"
+#include "../lv_draw.h"
 
 /*********************
  *      DEFINES
@@ -32,11 +31,11 @@ extern "C" {
  **********************/
 
 typedef struct lv_draw_sdl_context_internals_t {
-    lv_lru_t * texture_cache;
-    SDL_Texture * mask;
-    SDL_Texture * composition;
-    SDL_Texture * target_backup;
-    uint8_t transform_count;
+  lv_lru_t *texture_cache;
+  SDL_Texture *mask;
+  SDL_Texture *composition;
+  SDL_Texture *target_backup;
+  uint8_t transform_count;
 } lv_draw_sdl_context_internals_t;
 
 /**********************

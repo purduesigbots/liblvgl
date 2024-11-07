@@ -13,9 +13,9 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "liblvgl/misc/lv_color.h"
-#include "liblvgl/hal/lv_hal_disp.h"
 #include "liblvgl/draw/sw/lv_draw_sw.h"
+#include "liblvgl/hal/lv_hal_disp.h"
+#include "liblvgl/misc/lv_color.h"
 
 #if LV_USE_GPU_SWM341_DMA2D
 
@@ -39,23 +39,27 @@ struct _lv_disp_drv_t;
  **********************/
 
 /**
- * Turn on the peripheral and set output color mode, this only needs to be done once
+ * Turn on the peripheral and set output color mode, this only needs to be done
+ * once
  */
 void lv_draw_swm341_dma2d_init(void);
 
-void lv_draw_swm341_dma2d_ctx_init(struct _lv_disp_drv_t * drv, lv_draw_ctx_t * draw_ctx);
+void lv_draw_swm341_dma2d_ctx_init(struct _lv_disp_drv_t *drv,
+                                   lv_draw_ctx_t *draw_ctx);
 
-void lv_draw_swm341_dma2d_ctx_deinit(struct _lv_disp_drv_t * drv, lv_draw_ctx_t * draw_ctx);
+void lv_draw_swm341_dma2d_ctx_deinit(struct _lv_disp_drv_t *drv,
+                                     lv_draw_ctx_t *draw_ctx);
 
-void lv_draw_swm341_dma2d_blend(lv_draw_ctx_t * draw_ctx, const lv_draw_sw_blend_dsc_t * dsc);
+void lv_draw_swm341_dma2d_blend(lv_draw_ctx_t *draw_ctx,
+                                const lv_draw_sw_blend_dsc_t *dsc);
 
-void lv_gpu_swm341_dma2d_wait_cb(lv_draw_ctx_t * draw_ctx);
+void lv_gpu_swm341_dma2d_wait_cb(lv_draw_ctx_t *draw_ctx);
 
 /**********************
  *      MACROS
  **********************/
 
-#endif  /*LV_USE_GPU_SWM341_DMA2D*/
+#endif /*LV_USE_GPU_SWM341_DMA2D*/
 
 #ifdef __cplusplus
 } /*extern "C"*/
