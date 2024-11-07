@@ -17,7 +17,9 @@ jobs:
         -   name: format code
             uses: DoozyX/clang-format-lint-action@v0.18.1
             with:
-              style: file
+              source: './src/liblvgl ./include/liblvgl'
+              clangFormatVersion: 16
+              inplace: True
         -   name: Commit changes
             uses: stefanzweifel/git-auto-commit-action@v5
             with:
