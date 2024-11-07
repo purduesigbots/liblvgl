@@ -253,8 +253,9 @@ void lv_point_transform(lv_point_t *p, int32_t angle, int32_t zoom,
 #endif
 
 #define _LV_COORD_TYPE_MASK (3 << _LV_COORD_TYPE_SHIFT)
-#define _LV_COORD_TYPE(x) ((x)&_LV_COORD_TYPE_MASK) /*Extract type             \
-                                                       specifiers*/
+#define _LV_COORD_TYPE(x)                                                      \
+  ((x)&_LV_COORD_TYPE_MASK) /*Extract type                                     \
+                               specifiers*/
 #define _LV_COORD_PLAIN(x)                                                     \
   ((x) & ~_LV_COORD_TYPE_MASK) /*Remove type specifiers*/
 

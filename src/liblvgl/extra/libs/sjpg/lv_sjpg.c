@@ -102,7 +102,7 @@ typedef struct {
   int sjpeg_cache_frame_index;
   uint8_t **frame_base_array; // to save base address of each split frames upto
                               // sjpeg_total_frames.
-  int *frame_base_offset; // to save base offset for fseek
+  int *frame_base_offset;     // to save base offset for fseek
   uint8_t *frame_cache;
   uint8_t *workb; // JPG work buffer for jpeg library
   JDEC *tjpeg_jd;

@@ -57,8 +57,9 @@
 #define LV_MEM_CUSTOM_REALLOC your_realloc /*Wrapper to realloc*/
 #endif
 #ifndef LV_MEM_CUSTOM_GET_SIZE
-#define LV_MEM_CUSTOM_GET_SIZE your_mem_get_size /*Wrapper to                  \
-                                                    lv_mem_get_size*/
+#define LV_MEM_CUSTOM_GET_SIZE                                                 \
+  your_mem_get_size /*Wrapper to                                               \
+                       lv_mem_get_size*/
 #endif
 #ifndef LV_GC_INCLUDE
 #define LV_GC_INCLUDE "gc.h" /*Include Garbage Collector related things*/
@@ -689,8 +690,9 @@
 #endif
 #if USE_LV_ROLLER != 0
 #ifndef LV_ROLLER_ANIM_TIME
-#define LV_ROLLER_ANIM_TIME 200 /*Focus animation time [ms] (0: no             \
-                                   animation)*/
+#define LV_ROLLER_ANIM_TIME                                                    \
+  200 /*Focus animation time [ms] (0: no                                       \
+         animation)*/
 #endif
 #endif
 
