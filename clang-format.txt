@@ -1,5 +1,5 @@
 BasedOnStyle: Google
-TabWidth: 2
+TabWidth: 4
 Language: Cpp
 UseTab: ForIndentation
 ColumnLimit: 120
