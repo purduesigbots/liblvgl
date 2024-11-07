@@ -7,23 +7,21 @@ on:
       - master
 
 jobs:
-  format:
-    runs-on: ubuntu-latest
-    steps:
-      # check out HEAD on the branch
-      - name: checkout code
-        uses: actions/checkout@3
-        with:
-          ref: ${{ github.head_ref }}
-      # format the latest commit
-      - name: format code
-        uses: purduesigbots/clang-format-action@1
-        # use one of clang-format's supported styles or leave this out to use the style in your .clang-format file
-        with:
-          style: file
-      # commit the changes
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4.1.2
-        with:
-          commit_message: 🎨 apply clang-format changes
-          branch: ${{ github.head_ref }}
+    format:
+        runs-on: ubuntu-latest
+        steps:
+        -   name: checkout code
+            uses: actions/checkout@v4
+            with:
+              ref: ${{ github.head_ref }}
+        -   name: format code
+            uses: DoozyX/clang-format-lint-action@v0.18.1
+            with:
+              source: './src/liblvgl ./include/liblvgl'
+              clangFormatVersion: 16
+              inplace: True
+        -   name: Commit changes
+            uses: stefanzweifel/git-auto-commit-action@v5
+            with:
+                commit_message: 🎨 apply clang-format changes
+                branch: ${{ github.head_ref }}

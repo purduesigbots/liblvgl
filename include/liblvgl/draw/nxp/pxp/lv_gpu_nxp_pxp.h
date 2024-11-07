@@ -10,20 +10,22 @@
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice (including the next paragraph)
- * shall be included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  */
 
@@ -75,14 +77,14 @@ extern "C" {
  * interrupt init/wait/deinit.
  */
 typedef struct {
-    /** Callback for PXP interrupt initialization*/
-    lv_res_t (*pxp_interrupt_init)(void);
+  /** Callback for PXP interrupt initialization*/
+  lv_res_t (*pxp_interrupt_init)(void);
 
-    /** Callback for PXP interrupt de-initialization*/
-    void (*pxp_interrupt_deinit)(void);
+  /** Callback for PXP interrupt de-initialization*/
+  void (*pxp_interrupt_deinit)(void);
 
-    /** Callback that should start PXP and wait for operation complete*/
-    void (*pxp_run)(void);
+  /** Callback that should start PXP and wait for operation complete*/
+  void (*pxp_run)(void);
 } lv_nxp_pxp_cfg_t;
 
 /**********************
@@ -112,36 +114,37 @@ void lv_gpu_nxp_pxp_run(void);
  *      MACROS
  **********************/
 
-#define PXP_COND_STOP(cond, txt)              \
-    do {                                      \
-        if (cond) {                           \
-            LV_LOG_ERROR("%s. STOP!", txt);   \
-            for ( ; ; );                      \
-        }                                     \
-    } while(0)
+#define PXP_COND_STOP(cond, txt)                                               \
+  do {                                                                         \
+    if (cond) {                                                                \
+      LV_LOG_ERROR("%s. STOP!", txt);                                          \
+      for (;;)                                                                 \
+        ;                                                                      \
+    }                                                                          \
+  } while (0)
 
 #if LV_GPU_NXP_PXP_LOG_ERRORS
-#define PXP_RETURN_INV(fmt, ...)              \
-    do {                                      \
-        LV_LOG_ERROR(fmt, ##__VA_ARGS__);     \
-        return LV_RES_INV;                    \
-    } while (0)
+#define PXP_RETURN_INV(fmt, ...)                                               \
+  do {                                                                         \
+    LV_LOG_ERROR(fmt, ##__VA_ARGS__);                                          \
+    return LV_RES_INV;                                                         \
+  } while (0)
 #else
-#define PXP_RETURN_INV(fmt, ...)              \
-    do {                                      \
-        return LV_RES_INV;                    \
-    }while(0)
+#define PXP_RETURN_INV(fmt, ...)                                               \
+  do {                                                                         \
+    return LV_RES_INV;                                                         \
+  } while (0)
 #endif /*LV_GPU_NXP_PXP_LOG_ERRORS*/
 
 #if LV_GPU_NXP_PXP_LOG_TRACES
-#define PXP_LOG_TRACE(fmt, ...)               \
-    do {                                      \
-        LV_LOG_ERROR(fmt, ##__VA_ARGS__);     \
-    } while (0)
+#define PXP_LOG_TRACE(fmt, ...)                                                \
+  do {                                                                         \
+    LV_LOG_ERROR(fmt, ##__VA_ARGS__);                                          \
+  } while (0)
 #else
-#define PXP_LOG_TRACE(fmt, ...)               \
-    do {                                      \
-    } while (0)
+#define PXP_LOG_TRACE(fmt, ...)                                                \
+  do {                                                                         \
+  } while (0)
 #endif /*LV_GPU_NXP_PXP_LOG_TRACES*/
 
 #endif /*LV_USE_GPU_NXP_PXP*/

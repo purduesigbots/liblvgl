@@ -19,7 +19,8 @@ extern "C" {
  *      DEFINES
  *********************/
 
-// If __UINTPTR_MAX__ or UINTPTR_MAX are available, use them to determine arch size
+// If __UINTPTR_MAX__ or UINTPTR_MAX are available, use them to determine arch
+// size
 #if defined(__UINTPTR_MAX__) && __UINTPTR_MAX__ > 0xFFFFFFFF
 #define LV_ARCH_64
 
@@ -27,7 +28,8 @@ extern "C" {
 #define LV_ARCH_64
 
 // Otherwise use compiler-dependent means to determine arch size
-#elif defined(_WIN64) || defined(__x86_64__) || defined(__ppc64__) || defined (__aarch64__)
+#elif defined(_WIN64) || defined(__x86_64__) || defined(__ppc64__) ||          \
+    defined(__aarch64__)
 #define LV_ARCH_64
 
 #endif
@@ -40,9 +42,9 @@ extern "C" {
  * LVGL error codes.
  */
 enum {
-    LV_RES_INV = 0, /*Typically indicates that the object is deleted (become invalid) in the action
-                      function or an operation was failed*/
-    LV_RES_OK,      /*The object is valid (no deleted) after the action*/
+  LV_RES_INV = 0, /*Typically indicates that the object is deleted (become
+                    invalid) in the action function or an operation was failed*/
+  LV_RES_OK,      /*The object is valid (no deleted) after the action*/
 };
 typedef uint8_t lv_res_t;
 
@@ -71,18 +73,21 @@ typedef uint32_t lv_uintptr_t;
 
 #define LV_UNUSED(x) ((void)x)
 
-#define _LV_CONCAT(x, y) x ## y
+#define _LV_CONCAT(x, y) x##y
 #define LV_CONCAT(x, y) _LV_CONCAT(x, y)
 
-#define _LV_CONCAT3(x, y, z) x ## y ## z
+#define _LV_CONCAT3(x, y, z) x##y##z
 #define LV_CONCAT3(x, y, z) _LV_CONCAT3(x, y, z)
 
 #if defined(PYCPARSER) || defined(__CC_ARM)
 #define LV_FORMAT_ATTRIBUTE(fmtstr, vararg)
-#elif defined(__GNUC__) && ((__GNUC__ == 4 && __GNUC_MINOR__ >= 4) || __GNUC__ > 4)
-#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg) __attribute__((format(gnu_printf, fmtstr, vararg)))
+#elif defined(__GNUC__) &&                                                     \
+    ((__GNUC__ == 4 && __GNUC_MINOR__ >= 4) || __GNUC__ > 4)
+#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg)                                    \
+  __attribute__((format(gnu_printf, fmtstr, vararg)))
 #elif (defined(__clang__) || defined(__GNUC__) || defined(__GNUG__))
-#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg) __attribute__((format(printf, fmtstr, vararg)))
+#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg)                                    \
+  __attribute__((format(printf, fmtstr, vararg)))
 #else
 #define LV_FORMAT_ATTRIBUTE(fmtstr, vararg)
 #endif

@@ -46,32 +46,30 @@
  * @param base   Pointer to first element to search
  * @param n      Number of elements
  * @param size   Size of each element
- * @param cmp    Pointer to comparison function (see #unicode_list_compare as a comparison function
- * example)
+ * @param cmp    Pointer to comparison function (see #unicode_list_compare as a
+ * comparison function example)
  *
  * @return a pointer to a matching item, or NULL if none exists.
  */
-void * _lv_utils_bsearch(const void * key, const void * base, uint32_t n, uint32_t size,
-                         int32_t (*cmp)(const void * pRef, const void * pElement))
-{
-    const char * middle;
-    int32_t c;
+void *
+_lv_utils_bsearch(const void *key, const void *base, uint32_t n, uint32_t size,
+                  int32_t (*cmp)(const void *pRef, const void *pElement)) {
+  const char *middle;
+  int32_t c;
 
-    for(middle = base; n != 0;) {
-        middle += (n / 2) * size;
-        if((c = (*cmp)(key, middle)) > 0) {
-            n    = (n / 2) - ((n & 1) == 0);
-            base = (middle += size);
-        }
-        else if(c < 0) {
-            n /= 2;
-            middle = base;
-        }
-        else {
-            return (char *)middle;
-        }
+  for (middle = base; n != 0;) {
+    middle += (n / 2) * size;
+    if ((c = (*cmp)(key, middle)) > 0) {
+      n = (n / 2) - ((n & 1) == 0);
+      base = (middle += size);
+    } else if (c < 0) {
+      n /= 2;
+      middle = base;
+    } else {
+      return (char *)middle;
     }
-    return NULL;
+  }
+  return NULL;
 }
 
 /**********************

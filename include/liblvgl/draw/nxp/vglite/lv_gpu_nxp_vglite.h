@@ -10,20 +10,22 @@
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice (including the next paragraph)
- * shall be included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  */
 
@@ -40,17 +42,18 @@ extern "C" {
 #include "liblvgl/lv_conf_internal.h"
 
 #if LV_USE_GPU_NXP_VG_LITE
-#include "vg_lite.h"
-#include "../../sw/lv_draw_sw.h"
 #include "../../../misc/lv_log.h"
+#include "../../sw/lv_draw_sw.h"
 #include "fsl_debug_console.h"
+#include "vg_lite.h"
 
 /*********************
  *      DEFINES
  *********************/
 
-/** Use this symbol as limit to disable feature (value has to be larger than supported resolution) */
-#define LV_GPU_NXP_VG_LITE_FEATURE_DISABLED (1920*1080+1)
+/** Use this symbol as limit to disable feature (value has to be larger than
+ * supported resolution) */
+#define LV_GPU_NXP_VG_LITE_FEATURE_DISABLED (1920 * 1080 + 1)
 
 /** Stride in px required by VG-Lite HW. Don't change this. */
 #define LV_GPU_NXP_VG_LITE_STRIDE_ALIGN_PX 16U
@@ -66,7 +69,7 @@ extern "C" {
 #endif
 
 /* Draw rectangles around BLIT tiles */
-#define BLIT_DBG_AREAS   0
+#define BLIT_DBG_AREAS 0
 
 /* Print detailed info to SDK console (NOT to LVGL log system) */
 #define BLIT_DBG_VERBOSE 0
@@ -84,7 +87,7 @@ extern "C" {
 #define BEZIER_OPTIM_CIRCLE 0.551915024494f
 
 /* Draw lines for control points of Bezier curves */
-#define BEZIER_DBG_CONTROL_POINTS   0
+#define BEZIER_DBG_CONTROL_POINTS 0
 
 /**********************
  *      TYPEDEFS
@@ -101,11 +104,13 @@ extern "C" {
  * @param[in] width Width of buffer in pixels
  * @param[in] height Height of buffer in pixels
  * @param[in] stride Stride of the buffer in bytes
- * @param[in] ptr Pointer to the buffer (must be aligned according VG-Lite requirements)
+ * @param[in] ptr Pointer to the buffer (must be aligned according VG-Lite
+ * requirements)
  * @param[in] source Boolean to check if this is a source buffer
  */
-lv_res_t lv_vglite_init_buf(vg_lite_buffer_t * vgbuf, uint32_t width, uint32_t height, uint32_t stride,
-                            const lv_color_t * ptr, bool source);
+lv_res_t lv_vglite_init_buf(vg_lite_buffer_t *vgbuf, uint32_t width,
+                            uint32_t height, uint32_t stride,
+                            const lv_color_t *ptr, bool source);
 
 #if BLIT_DBG_AREAS
 /**
@@ -117,8 +122,9 @@ lv_res_t lv_vglite_init_buf(vg_lite_buffer_t * vgbuf, uint32_t width, uint32_t h
  * @param fill_area Rectangle coordinates
  * @param color Rectangle color
  */
-void lv_vglite_dbg_draw_rectangle(lv_color_t * dest_buf, lv_coord_t dest_width, lv_coord_t dest_height,
-                                  lv_area_t * fill_area, lv_color_t color);
+void lv_vglite_dbg_draw_rectangle(lv_color_t *dest_buf, lv_coord_t dest_width,
+                                  lv_coord_t dest_height, lv_area_t *fill_area,
+                                  lv_color_t color);
 #endif
 
 /**
@@ -130,50 +136,51 @@ void lv_vglite_invalidate_cache(void);
  *      MACROS
  **********************/
 
-#define VG_LITE_COND_STOP(cond, txt)          \
-    do {                                      \
-        if (cond) {                           \
-            LV_LOG_ERROR("%s. STOP!", txt);   \
-            for ( ; ; );                      \
-        }                                     \
-    } while(0)
+#define VG_LITE_COND_STOP(cond, txt)                                           \
+  do {                                                                         \
+    if (cond) {                                                                \
+      LV_LOG_ERROR("%s. STOP!", txt);                                          \
+      for (;;)                                                                 \
+        ;                                                                      \
+    }                                                                          \
+  } while (0)
 
 #if LV_GPU_NXP_VG_LITE_LOG_ERRORS
-#define VG_LITE_ERR_RETURN_INV(err, fmt, ...) \
-    do {                                      \
-        if(err != VG_LITE_SUCCESS) {          \
-            LV_LOG_ERROR(fmt, ##__VA_ARGS__); \
-            return LV_RES_INV;                \
-        }                                     \
-    } while (0)
+#define VG_LITE_ERR_RETURN_INV(err, fmt, ...)                                  \
+  do {                                                                         \
+    if (err != VG_LITE_SUCCESS) {                                              \
+      LV_LOG_ERROR(fmt, ##__VA_ARGS__);                                        \
+      return LV_RES_INV;                                                       \
+    }                                                                          \
+  } while (0)
 #else
-#define VG_LITE_ERR_RETURN_INV(err, fmt, ...) \
-    do {                                      \
-        if(err != VG_LITE_SUCCESS) {          \
-            return LV_RES_INV;                \
-        }                                     \
-    }while(0)
+#define VG_LITE_ERR_RETURN_INV(err, fmt, ...)                                  \
+  do {                                                                         \
+    if (err != VG_LITE_SUCCESS) {                                              \
+      return LV_RES_INV;                                                       \
+    }                                                                          \
+  } while (0)
 #endif /*LV_GPU_NXP_VG_LITE_LOG_ERRORS*/
 
 #if LV_GPU_NXP_VG_LITE_LOG_TRACES
-#define VG_LITE_LOG_TRACE(fmt, ...)           \
-    do {                                      \
-        LV_LOG_ERROR(fmt, ##__VA_ARGS__);     \
-    } while (0)
+#define VG_LITE_LOG_TRACE(fmt, ...)                                            \
+  do {                                                                         \
+    LV_LOG_ERROR(fmt, ##__VA_ARGS__);                                          \
+  } while (0)
 
-#define VG_LITE_RETURN_INV(fmt, ...)          \
-    do {                                      \
-        LV_LOG_ERROR(fmt, ##__VA_ARGS__);     \
-        return LV_RES_INV;                    \
-    } while (0)
+#define VG_LITE_RETURN_INV(fmt, ...)                                           \
+  do {                                                                         \
+    LV_LOG_ERROR(fmt, ##__VA_ARGS__);                                          \
+    return LV_RES_INV;                                                         \
+  } while (0)
 #else
-#define VG_LITE_LOG_TRACE(fmt, ...)           \
-    do {                                      \
-    } while (0)
-#define VG_LITE_RETURN_INV(fmt, ...)          \
-    do {                                      \
-        return LV_RES_INV;                    \
-    }while(0)
+#define VG_LITE_LOG_TRACE(fmt, ...)                                            \
+  do {                                                                         \
+  } while (0)
+#define VG_LITE_RETURN_INV(fmt, ...)                                           \
+  do {                                                                         \
+    return LV_RES_INV;                                                         \
+  } while (0)
 #endif /*LV_GPU_NXP_VG_LITE_LOG_TRACES*/
 
 #endif /*LV_USE_GPU_NXP_VG_LITE*/
