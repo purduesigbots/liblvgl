@@ -12,7 +12,7 @@ jobs:
     steps:
       # check out HEAD on the branch
       - name: checkout code
-        uses: actions/checkout@3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
       # format the latest commit
