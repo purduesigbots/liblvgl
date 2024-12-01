@@ -90,7 +90,14 @@ disp_daemon_task and it does, but it's not working as the flush_cb,
 touch_cb, and other callbacks aren't triggering after boot-up. 
 */
 
-void display_initialize(void) {
+/*
+Why is this called on startup? Well, it used to be called on startup
+by the PROS kernel, but the weakly declared display_initialize
+would not get overridden by the function below if a PROS project
+is compiled as a monolith
+*/
+
+__attribute__((constructor(102))) static void display_initialize(void) {
 	// 1. Call lv_init().
 	lv_init();
 
