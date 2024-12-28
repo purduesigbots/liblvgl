@@ -91,10 +91,10 @@ touch_cb, and other callbacks aren't triggering after boot-up.
 */
 
 /*
-Why is this called on startup? Well, it used to be called on startup
-by the PROS kernel, but the weakly declared display_initialize
-would not get overridden by the function below if a PROS project
-is compiled as a monolith
+We use the `constructor` attribute here because this used to
+be called on startup by the PROS kernel, but the weakly 
+symbol display_initialize would not get overridden by the 
+function below if a PROS project is compiled as a monolith
 */
 
 __attribute__((constructor(102))) static void display_initialize(void) {
