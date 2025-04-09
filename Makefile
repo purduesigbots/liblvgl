@@ -43,9 +43,9 @@ TEMPLATE_FILES=$(INCDIR)/liblvgl/**
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-TEMPLATE_KERNEL_SEMVER:=">=4.0.0"
+TEMPLATE_KERNEL_SEMVER:=">=4.2.0"
 
-template: clean-template library
+template:: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
 	$Dcp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR)
