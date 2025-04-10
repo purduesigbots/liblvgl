@@ -26,7 +26,7 @@ EXCLUDE_COLD_LIBRARIES:=
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 IS_LIBRARY:=1
 LIBNAME:=liblvgl
-VERSION:=8.3.8
+VERSION:=8.3.9
 # EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/unpublishedfile.c
 # this line excludes opcontrol.c and similar files
 EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(file).$(cext)) $(foreach cxxext,$(CXXEXTS),$(file).$(cxxext)))
@@ -43,9 +43,9 @@ TEMPLATE_FILES=$(INCDIR)/liblvgl/**
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-TEMPLATE_KERNEL_SEMVER:=">=4.0.0"
+TEMPLATE_KERNEL_SEMVER:=">=4.2.0"
 
-template: clean-template library
+template:: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
 	$Dcp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR)

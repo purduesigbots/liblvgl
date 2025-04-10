@@ -3,17 +3,15 @@
  * \ingroup cpp-llemu
  * 
  * Legacy LCD Emulator
- * 
- * This file defines a high-level API for emulating the three-button, UART-based
+ *
+ * \details This file defines a high-level API for emulating the three-button, UART-based
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
- *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/adi.html to learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -27,17 +25,33 @@
 #include <string>
 
 /******************************************************************************/
+/**                        LLEMU Conditional Include                         **/
+/**                                                                          **/
+/**   When the libvgl versions of llemu.hpp is present, common.mk will       **/
+/**   define a macro which lets this file know that liblvgl's llemu.hpp is   **/
+/**   present. If it is, we conditionally include it so that it gets         **/
+/**   included into api.h.                                                   **/
+/******************************************************************************/
+#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
+#include "liblvgl/llemu.hpp"
+#endif
+
+/******************************************************************************/
 /**                                 LLEMU Weak Stubs                         **/
 /**                                                                          **/
 /**   These functions allow main.cpp to be compiled without LVGL present     **/
 /******************************************************************************/
 
 namespace pros {
-
+    
 /**
  * \ingroup cpp-llemu 
  */
+#if defined(_PROS_KERNEL_SUPPRESS_LLEMU_WARNING) || defined(_PROS_INCLUDE_LIBLVGL_LLEMU_HPP)
 namespace lcd {
+#else
+namespace [[deprecated("Without liblvgl, LLEMU functions will not display anything. To install liblvgl run \"pros c install liblvgl\" in the PROS terminal.")]] lcd {
+#endif
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunused-function"
     namespace {
@@ -53,23 +67,33 @@ namespace lcd {
 
     using lcd_btn_cb_fn_t = void (*)(void);
 
-
-    // Weak symbols that allow the main.cpp file to still work with LVGL
-    // decoupled from the kernel.
-    // For the Doxygen comments related to these functions, please see the file
-    // "liblvgl/llemu.hpp" in the liblvgl repo
-    extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text);
-    extern __attribute__((weak)) bool clear_line(std::int16_t line);
-    extern __attribute__((weak)) bool initialize(void);
-    extern __attribute__((weak)) std::uint8_t read_buttons(void);
-    extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb);
+    /* 
+     * These weak symbols allow the example main.cpp in to compile even when 
+     * the liblvgl template is missing from the project. 
+     * 
+     * For documentation on these functions, please see the doxygen comments for
+     * these functions in the libvgl llemu headers.
+     */
     extern __attribute__((weak)) bool is_initialized(void);
-
-
+    extern __attribute__((weak)) bool initialize(void);
+    extern __attribute__((weak)) bool shutdown(void);
+    extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text);
+    extern __attribute__((weak)) bool clear(void);
+    extern __attribute__((weak)) bool clear_line(std::int16_t line);
+    // TODO: Text_Align is defined in liblvgl so this ain't going to compile for now. 
+    // extern __attribute__((weak)) void set_text_align(Text_Align text_align);
+    extern __attribute__((weak)) void register_btn0_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) void register_btn2_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) std::uint8_t read_buttons(void);
     
     /**
      * \addtogroup cpp-llemu
-     *  @{
+     * @{ 
+     */
+    
+    /*
+     * Note: This template resides in this file since the 
      */
 
     /**
@@ -84,18 +108,26 @@ namespace lcd {
      *        The line on which to display the text [0-7]
      * \param fmt
      *        Format string
-     * \param ...
+     * \param ...args
      *        Optional list of arguments for the format string
      *
      * \return True if the operation was successful, or false otherwise, setting
      * errno values as specified above.
+     * 
+     * \b Example
+     * \code
+     * #include "pros/llemu.hpp"
+     * 
+     * void initialize() {
+     *   pros::lcd::initialize();
+     *   pros::lcd::print(0, "My formatted text: %d!", 2);
+     * }
+     * \endcode
      */
     template <typename... Params>
     bool print(std::int16_t line, const char* fmt, Params... args) {
 	    return pros::c::lcd_print(line, fmt, convert_args(args)...);
     }
-
-    /// @}
 
     #ifndef LCD_BTN_LEFT
         #define LCD_BTN_LEFT 4
@@ -108,19 +140,8 @@ namespace lcd {
     #ifndef LCD_BTN_RIGHT
         #define LCD_BTN_RIGHT 1
     #endif
+    /// @}
 } // namespace lcd
 } // namespace pros
-
-/******************************************************************************/
-/**                        LLEMU Conditional Include                         **/
-/**                                                                          **/
-/**   When the libvgl versions of llemu.hpp is present, common.mk will       **/
-/**   define a macro which lets this file know that liblvgl's llemu.hpp is   **/
-/**   present. If it is, we conditionally include it so that it gets         **/
-/**   included into api.h.                                                   **/
-/******************************************************************************/
-#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
-#include "liblvgl/llemu.hpp"
-#endif
 
 #endif // _PROS_LLEMU_HPP_

@@ -4,13 +4,10 @@
  *
  * Contains prototypes for functions related to the VEX Inertial sensor.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/imu.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -44,12 +41,24 @@ namespace pros {
  * @brief Indicates IMU status.
  */
 typedef enum imu_status_e {
+	E_IMU_STATUS_READY = 0,  // IMU is connected but not currently calibrating
 	/** The IMU is calibrating */
-	E_IMU_STATUS_CALIBRATING = 0x01,
+	E_IMU_STATUS_CALIBRATING = 1,
 	/** Used to indicate that an error state was reached in the imu_get_status function,\
 	not that the IMU is necessarily in an error state */
 	E_IMU_STATUS_ERROR = 0xFF,
 } imu_status_e_t;
+
+typedef enum imu_orientation_e {
+	E_IMU_Z_UP = 0,                 // IMU has the Z axis UP (VEX Logo facing DOWN)
+	E_IMU_Z_DOWN = 1,               // IMU has the Z axis DOWN (VEX Logo facing UP)
+	E_IMU_X_UP = 2,                 // IMU has the X axis UP
+	E_IMU_X_DOWN = 3,               // IMU has the X axis DOWN
+	E_IMU_Y_UP = 4,                 // IMU has the Y axis UP
+	E_IMU_Y_DOWN = 5,               // IMU has the Y axis DOWN
+	E_IMU_ORIENTATION_ERROR = 0xFF  // NOTE: used for returning an error from the get_physical_orientation function, not
+	                                // that the IMU is necessarily in an error state
+} imu_orientation_e_t;
 
 /**
  * \struct quaternion_s_t
@@ -430,8 +439,8 @@ imu_status_e_t imu_get_status(uint8_t port);
  *
  * void opcontrol() {
  *   while (true) {
- *     imu_gyro_s_t gyro = imu_get_gyro_rate(IMU_PORT);
- *     printf("IMU gyro values: {x: %f, y: %f, z: %f}\n", gyro.x, gyro.y, gyro.z);
+ *     int32_t val = imu_set_euler(IMU_PORT, {45, 60, 90});
+ *     printf("IMU : {gyro vals: %d}\n", val);
  *     delay(20);
  *   }
  * }
@@ -936,6 +945,21 @@ int32_t imu_set_roll(uint8_t port, double target);
  * \endcode
  */
 int32_t imu_set_yaw(uint8_t port, double target);
+
+/**
+ * Returns the physical orientation of the IMU
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \returns The orientation of the Inertial Sensor or PROS_ERR if an error occured.
+ *
+ */
+imu_orientation_e_t imu_get_physical_orientation(uint8_t port);
 
 /** @} */
 
