@@ -274,14 +274,14 @@ typedef void * lv_img_decoder_user_data_t;
 #define LV_ATTRIBUTE_FLUSH_READY
 
 /* Required alignment size for buffers */
-#define LV_ATTRIBUTE_MEM_ALIGN_SIZE
+#define LV_ATTRIBUTE_MEM_ALIGN_SIZE LV_DRAW_BUF_ALIGN
 
 /* With size optimization (-Os) the compiler might not align data to
  * 4 or 8 byte boundary. Some HW may need even 32 or 64 bytes.
  * This alignment will be explicitly applied where needed.
  * LV_ATTRIBUTE_MEM_ALIGN_SIZE should be used to specify required align size.
  * E.g. __attribute__((aligned(LV_ATTRIBUTE_MEM_ALIGN_SIZE))) */
-#define LV_ATTRIBUTE_MEM_ALIGN
+#define LV_ATTRIBUTE_MEM_ALIGN __attribute__((aligned(LV_ATTRIBUTE_MEM_ALIGN_SIZE)))
 
 /* Attribute to mark large constant arrays for example
  * font's bitmaps */
