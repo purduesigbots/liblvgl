@@ -210,13 +210,6 @@ _SDA_BASE_ = __sdata_start + ((__sbss_end - __sdata_start) / 2 );
 _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
 
 /* Generate Stack and Heap definitions */
-.stack (NOLOAD) : ALIGN(8) {
-   _stack_end = .;
-   . += _STACK_SIZE;
-   . = ALIGN(8);
-   __stack = .;
-   _stack_start = .;
-} > RAM
 
 .heap (NOLOAD) : {
    . = ALIGN(16);
