@@ -22,6 +22,7 @@
 #ifdef __cplusplus
 #include <cerrno>
 #include <cmath>
+#include <cstdbool>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
